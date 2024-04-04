@@ -21,7 +21,7 @@
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" name="Blue"/>
+                        <color key="backgroundColor" name="LaunchScreenBlue"/>
                         <constraints>
                             <constraint firstItem="mh4-d1-Sw3" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="7Di-6a-zqF"/>
                             <constraint firstItem="mh4-d1-Sw3" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="e5r-yj-hof"/>
@@ -35,7 +35,7 @@
     </scenes>
     <resources>
         <image name="LaunchScreenLogo" width="91" height="94"/>
-        <namedColor name="Blue">
+        <namedColor name="LaunchScreenBlue">
             <color red="0.21568627450980393" green="0.44705882352941179" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
