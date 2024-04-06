@@ -14,8 +14,10 @@
 		877CB6602BBF397900C4164D /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB65F2BBF397900C4164D /* TrackerTests.swift */; };
 		877CB66A2BBF397900C4164D /* TrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB6692BBF397900C4164D /* TrackerUITests.swift */; };
 		877CB66C2BBF397900C4164D /* TrackerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB66B2BBF397900C4164D /* TrackerUITestsLaunchTests.swift */; };
-		877CB6792BBF42C600C4164D /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB6782BBF42C500C4164D /* Tracker.swift */; };
+		877CB6792BBF42C600C4164D /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB6782BBF42C500C4164D /* TrackerViewController.swift */; };
 		877CB67B2BBF455E00C4164D /* UIView extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB67A2BBF455E00C4164D /* UIView extensions.swift */; };
+		877CB6B92BC16E6100C4164D /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB6B82BC16E6100C4164D /* StatisticViewController.swift */; };
+		877CB6BB2BC1746000C4164D /* tabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB6BA2BC1746000C4164D /* tabBarViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,8 +49,10 @@
 		877CB6652BBF397900C4164D /* TrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		877CB6692BBF397900C4164D /* TrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerUITests.swift; sourceTree = "<group>"; };
 		877CB66B2BBF397900C4164D /* TrackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		877CB6782BBF42C500C4164D /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
+		877CB6782BBF42C500C4164D /* TrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewController.swift; sourceTree = "<group>"; };
 		877CB67A2BBF455E00C4164D /* UIView extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView extensions.swift"; sourceTree = "<group>"; };
+		877CB6B82BC16E6100C4164D /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
+		877CB6BA2BC1746000C4164D /* tabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tabBarViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,8 +108,10 @@
 				877CB6512BBF397900C4164D /* Assets.xcassets */,
 				877CB6532BBF397900C4164D /* LaunchScreen.storyboard */,
 				877CB6562BBF397900C4164D /* Info.plist */,
-				877CB6782BBF42C500C4164D /* Tracker.swift */,
+				877CB6B82BC16E6100C4164D /* StatisticViewController.swift */,
+				877CB6782BBF42C500C4164D /* TrackerViewController.swift */,
 				877CB67A2BBF455E00C4164D /* UIView extensions.swift */,
+				877CB6BA2BC1746000C4164D /* tabBarViewController.swift */,
 			);
 			path = Tracker;
 			sourceTree = "<group>";
@@ -257,9 +263,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				877CB6792BBF42C600C4164D /* Tracker.swift in Sources */,
+				877CB6BB2BC1746000C4164D /* tabBarViewController.swift in Sources */,
+				877CB6792BBF42C600C4164D /* TrackerViewController.swift in Sources */,
 				877CB67B2BBF455E00C4164D /* UIView extensions.swift in Sources */,
 				877CB6492BBF397700C4164D /* AppDelegate.swift in Sources */,
+				877CB6B92BC16E6100C4164D /* StatisticViewController.swift in Sources */,
 				877CB64B2BBF397700C4164D /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
