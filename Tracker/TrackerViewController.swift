@@ -11,6 +11,7 @@ final class TrackerViewController: UIViewController{
         configureConstraints()
     }
     
+    
     private func addSubViews(){
         view.addSubview(noTracksLabel)
         view.addSubview(imageForNoTracks)
@@ -36,6 +37,7 @@ final class TrackerViewController: UIViewController{
         noTracksLabel.textAlignment = .center
         noTracksLabel.translatesAutoresizingMaskIntoConstraints = false
     }
+    
     private lazy var imageForNoTracks: UIImageView = {
         let image = UIImage(named: "NoTracks")
         let noTracksImage = UIImageView(image: image)
@@ -44,16 +46,50 @@ final class TrackerViewController: UIViewController{
     }()
     
     private func configureNavigationBar(){
-        let customNavBar = NavigationBarCustom()
-          customNavBar.translatesAutoresizingMaskIntoConstraints = false
+        navigationItem.title = "Трекеры"
         
-          // Добавляем customNavBar как subview к navigationBar
-          navigationController?.navigationBar.addSubview(customNavBar)
-        NSLayoutConstraint.activate([
-            customNavBar.leadingAnchor.constraint(equalTo: navigationController!.navigationBar.leadingAnchor),
-            customNavBar.trailingAnchor.constraint(equalTo: navigationController!.navigationBar.trailingAnchor),
-            customNavBar.bottomAnchor.constraint(equalTo: navigationController!.navigationBar.bottomAnchor),
-            customNavBar.topAnchor.constraint(equalTo: navigationController!.navigationBar.topAnchor)
-        ])
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+        addButton.tintColor = .black
+        navigationItem.leftBarButtonItem = addButton
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ru_RU")
+        dateFormatter.dateFormat = "dd.MM.yy"
+        let dateString = dateFormatter.string(from: Date())
+        
+        // Создание кнопки для даты
+        let dateButton = UIButton(type: .system)
+        dateButton.setTitle(dateString, for: .normal)
+        dateButton.setTitleColor(.black, for: .normal)
+        dateButton.titleLabel?.font = UIFont.systemFont(ofSize: 17)
+        dateButton.backgroundColor = UIColor(named: "GrayForNavBar")
+        dateButton.layer.cornerRadius = 8
+        dateButton.layer.masksToBounds = true
+        dateButton.translatesAutoresizingMaskIntoConstraints = false
+        dateButton.addTarget(self, action: #selector(dateTapped), for: .touchUpInside)
+        
+        let dateItem = UIBarButtonItem(customView: dateButton)
+        navigationItem.rightBarButtonItem = dateItem
+        
+        let maxWidthConstraint = dateButton.widthAnchor.constraint(lessThanOrEqualToConstant: 120)
+        maxWidthConstraint.isActive = true
+        
+        let searchController = UISearchController(searchResultsController: nil)
+            searchController.searchBar.placeholder = "Поиск"
+            searchController.searchBar.searchTextField.backgroundColor = UIColor(named: "GrayForNavBar")
+            searchController.searchBar.searchTextField.layer.cornerRadius = 6
+            searchController.searchBar.searchTextField.clipsToBounds = true
+            searchController.searchBar.searchTextField.font = UIFont.systemFont(ofSize: 16)
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = true // или false если не хотим скрывать
     }
+    
+    @objc private func addTapped() {
+        
+    }
+    
+    @objc private func dateTapped() {
+        
+    }
+    
 }

@@ -13,6 +13,7 @@ final class TabBarViewController: UITabBarController{
         
         
         let trackerViewController = UINavigationController(rootViewController: tracker)
+        trackerViewController.navigationBar.prefersLargeTitles = true
         let statisticViewController = UINavigationController(rootViewController: statistic)
         trackerViewController.tabBarItem = UITabBarItem(
             title: "Трекеры",
