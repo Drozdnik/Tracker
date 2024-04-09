@@ -33,20 +33,22 @@ final class NewHabbitViewController: UIViewController{
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            scrollView.rightAnchor.constraint(equalTo: view.rightAnchor),
             
-            contentView.topAnchor.constraint(equalTo: view.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: view.widthAnchor),
+//            contentView.heightAnchor.constraint(equalTo: view.heightAnchor)
         ])
     }
     
     private func setupContentView(){
-        contentView.addSubview(textField)
         contentView.addSubview(tableView)
+        contentView.addSubview(textField)
         configureConstraintsForContentView()
     }
     
@@ -55,11 +57,14 @@ final class NewHabbitViewController: UIViewController{
             textField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
             textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            textField.widthAnchor.constraint(equalToConstant: 286),
+            textField.heightAnchor.constraint(equalToConstant: 63),
             
             tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: textField.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 425)
+            tableView.heightAnchor.constraint(equalToConstant: 150)
+//            tableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 425)
         ])
     }
     // Сделать ext для UIViewController и вызывать оттуда configureNavBar(title)
@@ -72,18 +77,19 @@ final class NewHabbitViewController: UIViewController{
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        //        NSLayoutConstraint.activate([
-        //            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
-        //            tableView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
-        //            tableView.trailingAnchor.constraint(equalTo: textField.trailingAnchor),
-        //            tableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        //        ])
+        tableView.layer.cornerRadius = 16
+        tableView.layer.masksToBounds = true
+        
     }
     
     private lazy var textField: UITextField = {
         let textField = UITextField()
-        textField.borderStyle = .roundedRect
-        textField.placeholder = "Введите название трекера"
+        textField.placeholder = " Введите название трекера"
+        textField.borderStyle = .none
+        textField.layer.cornerRadius = 16
+        textField.layer.masksToBounds = true
+        textField.backgroundColor = UIColor(named: "GrayForNavBar")
+        textField.setLeftPaddingPoints(16)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -99,14 +105,8 @@ extension NewHabbitViewController: UITableViewDataSource{
         cell.accessoryType = .disclosureIndicator
         cell.textLabel?.text = indexPath.row == 0 ? "Категория" : "Расписание"
         cell.textLabel?.textColor = .black
-        cell.backgroundColor = .lightGray
-        // Добавление разделительной линии
-        //        if indexPath.row == 0 {
-        //                  let separatorView = UIView(frame: CGRect(x: 0, y: cell.frame.size.height - 1, width: cell.frame.size.width, height: 1))
-        //                  separatorView.backgroundColor = .lightGray // Или любой другой цвет
-        //                  separatorView.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
-        //                  cell.addSubview(separatorView)
-        //              }
+        cell.backgroundColor = UIColor(named: "GrayForNavBar")
+    
         return cell
     }
 }

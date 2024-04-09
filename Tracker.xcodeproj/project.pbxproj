@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		872A559D2BC5606C00A9920D /* ChooseTypeOfTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872A559C2BC5606C00A9920D /* ChooseTypeOfTracker.swift */; };
 		872A559F2BC5AB7D00A9920D /* NewHabbitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872A559E2BC5AB7D00A9920D /* NewHabbitViewController.swift */; };
+		872A55A12BC5F0E300A9920D /* UITextField extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872A55A02BC5F0E300A9920D /* UITextField extension.swift */; };
 		877CB6492BBF397700C4164D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB6482BBF397700C4164D /* AppDelegate.swift */; };
 		877CB64B2BBF397700C4164D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB64A2BBF397700C4164D /* SceneDelegate.swift */; };
 		877CB6522BBF397900C4164D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 877CB6512BBF397900C4164D /* Assets.xcassets */; };
@@ -43,6 +44,7 @@
 /* Begin PBXFileReference section */
 		872A559C2BC5606C00A9920D /* ChooseTypeOfTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseTypeOfTracker.swift; sourceTree = "<group>"; };
 		872A559E2BC5AB7D00A9920D /* NewHabbitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabbitViewController.swift; sourceTree = "<group>"; };
+		872A55A02BC5F0E300A9920D /* UITextField extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField extension.swift"; sourceTree = "<group>"; };
 		877CB6452BBF397700C4164D /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		877CB6482BBF397700C4164D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		877CB64A2BBF397700C4164D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				877CB6782BBF42C500C4164D /* TrackerViewController.swift */,
 				872A559C2BC5606C00A9920D /* ChooseTypeOfTracker.swift */,
 				872A559E2BC5AB7D00A9920D /* NewHabbitViewController.swift */,
+				872A55A02BC5F0E300A9920D /* UITextField extension.swift */,
 				877CB67A2BBF455E00C4164D /* UIView extensions.swift */,
 				877CB6BA2BC1746000C4164D /* tabBarViewController.swift */,
 				87F476242BC2EA8F001260C9 /* TrackerModels.swift */,
@@ -280,6 +283,7 @@
 				877CB6492BBF397700C4164D /* AppDelegate.swift in Sources */,
 				877CB6B92BC16E6100C4164D /* StatisticViewController.swift in Sources */,
 				877CB64B2BBF397700C4164D /* SceneDelegate.swift in Sources */,
+				872A55A12BC5F0E300A9920D /* UITextField extension.swift in Sources */,
 				872A559F2BC5AB7D00A9920D /* NewHabbitViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
