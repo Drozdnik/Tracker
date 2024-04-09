@@ -19,7 +19,6 @@ final class NewHabbitViewController: UIViewController{
         setupContentView()
         configureNavBar()
         setupTableView()
-        configureConstraintsForContentView()
         //Регестрируем ячейку  таблицы
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
@@ -63,8 +62,7 @@ final class NewHabbitViewController: UIViewController{
             tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: textField.trailingAnchor),
-            tableView.heightAnchor.constraint(equalToConstant: 150)
-//            tableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 425)
+            tableView.heightAnchor.constraint(equalToConstant: 149)
         ])
     }
     // Сделать ext для UIViewController и вызывать оттуда configureNavBar(title)
