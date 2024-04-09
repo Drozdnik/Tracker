@@ -25,7 +25,7 @@ final class ChooseTypeOfTracker: UIViewController{
         ])
     }
     
-    private   func configureNavBar(){
+  private   func configureNavBar(){
         let title = "Создание трекера"
         navigationItem.title = title
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
@@ -39,7 +39,7 @@ final class ChooseTypeOfTracker: UIViewController{
         firstButton.backgroundColor = UIColor(named: "TotalBlack")
         firstButton.layer.cornerRadius = 16
         firstButton.layer.masksToBounds = true
-        //        firstButton.addTarget(self, action: <#T##Selector#>, for: .touchUpInside)
+        firstButton.addTarget(self, action: #selector(habbitButtonTapped), for: .touchUpInside)
         
         let secondButton = UIButton()
         secondButton.setTitle("Нерегулярное событие", for: .normal)
@@ -72,4 +72,10 @@ final class ChooseTypeOfTracker: UIViewController{
         
         return container
     }()
+    
+    @objc private func habbitButtonTapped(){
+        let vc = NewHabbitViewController()
+        let navigationController = UINavigationController(rootViewController: vc)
+        present(navigationController, animated: true)
+    }
 }
