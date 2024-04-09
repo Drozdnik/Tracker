@@ -3,6 +3,9 @@ import UIKit
 
 final class TrackerViewController: UIViewController{
     let noTracksLabel = UILabel()
+    var categories: [TrackerCategory] = []
+    var completedTrackers: [TrackerRecord] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -71,7 +74,7 @@ final class TrackerViewController: UIViewController{
         let dateItem = UIBarButtonItem(customView: dateButton)
         navigationItem.rightBarButtonItem = dateItem
         
-        let maxWidthConstraint = dateButton.widthAnchor.constraint(lessThanOrEqualToConstant: 120)
+        let maxWidthConstraint = dateButton.widthAnchor.constraint(equalToConstant: 77)
         maxWidthConstraint.isActive = true
         
         let searchController = UISearchController(searchResultsController: nil)
@@ -85,7 +88,9 @@ final class TrackerViewController: UIViewController{
     }
     
     @objc private func addTapped() {
-        
+        let vc = ChooseTypeOfTracker()
+        let navigationController = UINavigationController(rootViewController: vc)
+        present(navigationController, animated: true)
     }
     
     @objc private func dateTapped() {
