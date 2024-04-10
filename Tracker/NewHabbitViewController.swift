@@ -41,7 +41,7 @@ final class NewHabbitViewController: UIViewController{
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: view.widthAnchor),
-//            contentView.heightAnchor.constraint(equalTo: view.heightAnchor)
+            contentView.heightAnchor.constraint(equalTo: view.heightAnchor)
         ])
     }
     
