@@ -14,6 +14,7 @@
 		872A55A62BC70DD200A9920D /* ColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872A55A52BC70DD200A9920D /* ColorCollectionViewCell.swift */; };
 		872A55A82BC70EE600A9920D /* ConstantsForCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872A55A72BC70EE600A9920D /* ConstantsForCells.swift */; };
 		872A55AA2BC70FB900A9920D /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872A55A92BC70FB900A9920D /* UIColorExtension.swift */; };
+		8763D39D2BC854A500B31704 /* CollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763D39C2BC854A500B31704 /* CollectionHeaderView.swift */; };
 		877CB6492BBF397700C4164D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB6482BBF397700C4164D /* AppDelegate.swift */; };
 		877CB64B2BBF397700C4164D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB64A2BBF397700C4164D /* SceneDelegate.swift */; };
 		877CB6522BBF397900C4164D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 877CB6512BBF397900C4164D /* Assets.xcassets */; };
@@ -53,6 +54,7 @@
 		872A55A52BC70DD200A9920D /* ColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewCell.swift; sourceTree = "<group>"; };
 		872A55A72BC70EE600A9920D /* ConstantsForCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstantsForCells.swift; sourceTree = "<group>"; };
 		872A55A92BC70FB900A9920D /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		8763D39C2BC854A500B31704 /* CollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionHeaderView.swift; sourceTree = "<group>"; };
 		877CB6452BBF397700C4164D /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		877CB6482BBF397700C4164D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		877CB64A2BBF397700C4164D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				872A559E2BC5AB7D00A9920D /* NewHabbitViewController.swift */,
+				8763D39C2BC854A500B31704 /* CollectionHeaderView.swift */,
 				872A55A32BC70DAD00A9920D /* EmojiCollectionViewCell.swift */,
 				872A55A52BC70DD200A9920D /* ColorCollectionViewCell.swift */,
 				872A55A92BC70FB900A9920D /* UIColorExtension.swift */,
@@ -301,6 +304,7 @@
 				877CB6792BBF42C600C4164D /* TrackerViewController.swift in Sources */,
 				87F476252BC2EA8F001260C9 /* TrackerModels.swift in Sources */,
 				877CB67B2BBF455E00C4164D /* UIView extensions.swift in Sources */,
+				8763D39D2BC854A500B31704 /* CollectionHeaderView.swift in Sources */,
 				872A55A42BC70DAD00A9920D /* EmojiCollectionViewCell.swift in Sources */,
 				872A55A82BC70EE600A9920D /* ConstantsForCells.swift in Sources */,
 				872A55A62BC70DD200A9920D /* ColorCollectionViewCell.swift in Sources */,

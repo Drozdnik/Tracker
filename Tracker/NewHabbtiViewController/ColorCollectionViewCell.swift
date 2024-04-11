@@ -10,6 +10,14 @@ import UIKit
 
 class ColorCollectionViewCell: UICollectionViewCell {
     
+    private lazy var colorView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 8
+        view.layer.masksToBounds = true
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
@@ -20,11 +28,18 @@ class ColorCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupLayout() {
-        // Можно добавить дополнительные UI элементы, если нужно
-        contentView.backgroundColor = .clear // Потом здесь будет настоящий цвет
+        contentView.addSubview(colorView) // Добавить colorView на contentView
+        
+        // Настроить ограничения для colorView
+        NSLayoutConstraint.activate([
+            colorView.heightAnchor.constraint(equalToConstant: 40),
+            colorView.widthAnchor.constraint(equalToConstant: 40),
+            colorView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            colorView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        ])
     }
     
     func configure(with color: UIColor) {
-        contentView.backgroundColor = color
+        colorView.backgroundColor = color // Установить фоновый цвет colorView
     }
 }

@@ -26,8 +26,13 @@ class EmojiCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(emojiLabel)
         NSLayoutConstraint.activate([
             emojiLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            emojiLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            emojiLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            emojiLabel.heightAnchor.constraint(equalToConstant: 38),
+            emojiLabel.widthAnchor.constraint(equalToConstant: 32)
         ])
+        
+        emojiLabel.textAlignment = .center
+        emojiLabel.font = UIFont.systemFont(ofSize: 32)
     }
     
     func configure(with emoji: String) {

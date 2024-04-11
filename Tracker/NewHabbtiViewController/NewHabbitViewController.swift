@@ -23,7 +23,9 @@ final class NewHabbitViewController: UIViewController{
         emojiCollectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "EmojiCell")
         colorCollectionView.register(ColorCollectionViewCell.self, forCellWithReuseIdentifier: "ColorCell")
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
- 
+        emojiCollectionView.register(CollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderView.identifier)
+        
+        colorCollectionView.register(CollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderView.identifier)
     }
     
     
@@ -66,7 +68,7 @@ final class NewHabbitViewController: UIViewController{
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            contentView.heightAnchor.constraint(equalTo: view.heightAnchor)
+            //            contentView.heightAnchor.constraint(equalTo: view.heightAnchor)
         ])
     }
     
@@ -86,18 +88,19 @@ final class NewHabbitViewController: UIViewController{
             emojiCollectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 50),
             emojiCollectionView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
             emojiCollectionView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
-            emojiCollectionView.heightAnchor.constraint(equalToConstant: 374),
+            emojiCollectionView.heightAnchor.constraint(equalToConstant: 250), // по макету 374
             
-            colorCollectionView.topAnchor.constraint(equalTo: emojiCollectionView.bottomAnchor, constant: 34),
+            colorCollectionView.topAnchor.constraint(equalTo: emojiCollectionView.bottomAnchor, constant: 0),
             colorCollectionView.leadingAnchor.constraint(equalTo: emojiCollectionView.leadingAnchor),
             colorCollectionView.trailingAnchor.constraint(equalTo: emojiCollectionView.trailingAnchor),
-            colorCollectionView.heightAnchor.constraint(equalToConstant: 374)
+            colorCollectionView.heightAnchor.constraint(equalToConstant: 374),
+            colorCollectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
         ])
     }
     
     
     // Сделать ext для UIViewController и вызывать оттуда configureNavBar(title)
-
+    
     
     private lazy var textField: UITextField = {
         let textField = UITextField()
@@ -113,7 +116,7 @@ final class NewHabbitViewController: UIViewController{
     
     private lazy var emojiCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 52, height: 52)
+        //        layout.itemSize = CGSize(width: 52, height: 52)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -122,7 +125,7 @@ final class NewHabbitViewController: UIViewController{
     
     private lazy var colorCollectionView: UICollectionView = {
         let layout  = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 52, height: 52)
+        layout.itemSize = CGSize(width: 40, height: 40)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -132,7 +135,7 @@ final class NewHabbitViewController: UIViewController{
 //Таблица
 extension NewHabbitViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -141,7 +144,7 @@ extension NewHabbitViewController: UITableViewDataSource{
         cell.textLabel?.text = indexPath.row == 0 ? "Категория" : "Расписание"
         cell.textLabel?.textColor = .black
         cell.backgroundColor = UIColor(named: "GrayForNavBar")
-    
+        
         return cell
     }
 }
@@ -156,6 +159,7 @@ extension NewHabbitViewController: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView === emojiCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCell", for: indexPath) as! EmojiCollectionViewCell
+            
             let emoji = emojiList[indexPath.row]
             cell.configure(with: emoji)
             return cell
@@ -167,19 +171,42 @@ extension NewHabbitViewController: UICollectionViewDataSource{
         }
         fatalError("Unexpected collection view")
     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind{
+        case UICollectionView.elementKindSectionHeader:
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CollectionHeaderView.identifier, for: indexPath) as! CollectionHeaderView
+            
+            if collectionView == emojiCollectionView{
+                header.configure(with: "Emoji")
+            } else if collectionView == colorCollectionView{
+                header.configure(with: "Цвет")
+            }
+            return header
+        default:
+            assert(false, "Ошбика")
+        }
     }
+}
 
 extension NewHabbitViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView === emojiCollectionView {
             return emojiList.count
-        }else {
+        } else {
             return colorList.count
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize { // 1
+        return CGSize(width: collectionView.bounds.width / 6, height: 52)   // 2
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 52, height: 52)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.bounds.width, height: 52)
     }
 }
+
