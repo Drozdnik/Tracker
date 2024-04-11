@@ -30,7 +30,7 @@ final class NewHabbitViewController: UIViewController{
     
     
     private func setupContentView(){
-        contentView.addSubviews([tableView, textField, emojiCollectionView, colorCollectionView])
+        contentView.addSubviews([tableView, textField, emojiCollectionView, colorCollectionView, cancelButton, createButton])
         configureConstraintsForContentView()
     }
     
@@ -44,6 +44,7 @@ final class NewHabbitViewController: UIViewController{
         tableView.dataSource = self
         tableView.delegate = self
         tableView.layer.cornerRadius = 16
+        tableView.isScrollEnabled = false
         tableView.layer.masksToBounds = true
         emojiCollectionView.dataSource = self
         emojiCollectionView.delegate = self
@@ -77,7 +78,6 @@ final class NewHabbitViewController: UIViewController{
             textField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
             textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            textField.widthAnchor.constraint(equalToConstant: 286),
             textField.heightAnchor.constraint(equalToConstant: 63),
             
             tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
@@ -93,8 +93,19 @@ final class NewHabbitViewController: UIViewController{
             colorCollectionView.topAnchor.constraint(equalTo: emojiCollectionView.bottomAnchor, constant: 0),
             colorCollectionView.leadingAnchor.constraint(equalTo: emojiCollectionView.leadingAnchor),
             colorCollectionView.trailingAnchor.constraint(equalTo: emojiCollectionView.trailingAnchor),
-            colorCollectionView.heightAnchor.constraint(equalToConstant: 374),
-            colorCollectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
+            colorCollectionView.heightAnchor.constraint(equalToConstant: 250),
+
+            
+            cancelButton.topAnchor.constraint(equalTo: colorCollectionView.bottomAnchor, constant: 16),
+            cancelButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            cancelButton.heightAnchor.constraint(equalToConstant: 60),
+            cancelButton.widthAnchor.constraint(equalToConstant: 166),
+            cancelButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -24),
+            
+            createButton.topAnchor.constraint(equalTo: cancelButton.topAnchor),
+            createButton.heightAnchor.constraint(equalTo: cancelButton.heightAnchor),
+            createButton.widthAnchor.constraint(equalTo: cancelButton.widthAnchor),
+            createButton.trailingAnchor.constraint(equalTo: colorCollectionView.trailingAnchor)
         ])
     }
     
@@ -131,20 +142,47 @@ final class NewHabbitViewController: UIViewController{
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
+    
+    private lazy var cancelButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Отменить", for: .normal)
+        button.setTitleColor(.red, for: .normal)
+        button.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.red.cgColor
+        button.layer.cornerRadius = 16
+        button.layer.masksToBounds = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private lazy var createButton: UIButton = {
+       let button = UIButton()
+        button.setTitle("Создать", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button .addTarget(self, action: #selector (didTapCreateButton), for: .touchUpInside)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.backgroundColor = UIColor(named: "TotalBlack")
+        button.layer.cornerRadius = 16
+        button.layer.masksToBounds = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
 }
 //Таблица
 extension NewHabbitViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.accessoryType = .disclosureIndicator
+        
         cell.textLabel?.text = indexPath.row == 0 ? "Категория" : "Расписание"
         cell.textLabel?.textColor = .black
         cell.backgroundColor = UIColor(named: "GrayForNavBar")
-        
         return cell
     }
 }
@@ -207,6 +245,26 @@ extension NewHabbitViewController: UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.bounds.width, height: 52)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell else { return }
+        cell.setSelectedState()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell else { return }
+        cell.setDeselectedState()
+    }
+}
+
+extension NewHabbitViewController{
+    @objc  private func didTapCancelButton(){
+        
+    }
+    
+    @objc private func didTapCreateButton(){
+        
     }
 }
 

@@ -12,6 +12,15 @@ class EmojiCollectionViewCell: UICollectionViewCell {
     
     let emojiLabel = UILabel()
     
+    override var isSelected: Bool {
+           didSet {
+               contentView.backgroundColor = isSelected ? UIColor(named: "GrayForNavBar"): UIColor.clear
+               contentView.layer.cornerRadius = 16
+               contentView.layer.masksToBounds = true
+               // Если вы хотите, чтобы только фон emojiLabel менялся, замените contentView на emojiLabel в строке выше.
+           }
+       }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
@@ -38,4 +47,5 @@ class EmojiCollectionViewCell: UICollectionViewCell {
     func configure(with emoji: String) {
         emojiLabel.text = emoji
     }
+    
 }

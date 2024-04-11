@@ -42,4 +42,15 @@ class ColorCollectionViewCell: UICollectionViewCell {
     func configure(with color: UIColor) {
         colorView.backgroundColor = color // Установить фоновый цвет colorView
     }
+    // Методы при выборе и при отмене
+    // Я не понял как сделать на макете в следующем спринте сделаю
+    func setSelectedState() {
+           contentView.layer.borderWidth = 2
+           contentView.layer.borderColor = UIColor.blue.cgColor
+       }
+    
+    func setDeselectedState() {
+        contentView.layer.borderWidth = 0
+        contentView.layer.borderColor = nil
+    }
 }
