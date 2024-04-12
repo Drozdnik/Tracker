@@ -260,7 +260,6 @@ extension NewHabbitViewController: UICollectionViewDelegateFlowLayout{
 
 extension NewHabbitViewController{
     @objc  private func didTapCancelButton(){
-        
     }
     
     @objc private func didTapCreateButton(){

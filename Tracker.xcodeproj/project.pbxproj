@@ -15,6 +15,9 @@
 		872A55A82BC70EE600A9920D /* ConstantsForCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872A55A72BC70EE600A9920D /* ConstantsForCells.swift */; };
 		872A55AA2BC70FB900A9920D /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872A55A92BC70FB900A9920D /* UIColorExtension.swift */; };
 		8763D39D2BC854A500B31704 /* CollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763D39C2BC854A500B31704 /* CollectionHeaderView.swift */; };
+		8763D3A12BC9C33D00B31704 /* ChooseDayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763D3A02BC9C33D00B31704 /* ChooseDayViewController.swift */; };
+		8763D3A32BC9C3A000B31704 /* WeekDay enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763D3A22BC9C3A000B31704 /* WeekDay enum.swift */; };
+		8763D3A62BC9C57700B31704 /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763D3A52BC9C57700B31704 /* ScheduleTableViewCell.swift */; };
 		877CB6492BBF397700C4164D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB6482BBF397700C4164D /* AppDelegate.swift */; };
 		877CB64B2BBF397700C4164D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB64A2BBF397700C4164D /* SceneDelegate.swift */; };
 		877CB6522BBF397900C4164D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 877CB6512BBF397900C4164D /* Assets.xcassets */; };
@@ -55,6 +58,9 @@
 		872A55A72BC70EE600A9920D /* ConstantsForCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstantsForCells.swift; sourceTree = "<group>"; };
 		872A55A92BC70FB900A9920D /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		8763D39C2BC854A500B31704 /* CollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionHeaderView.swift; sourceTree = "<group>"; };
+		8763D3A02BC9C33D00B31704 /* ChooseDayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDayViewController.swift; sourceTree = "<group>"; };
+		8763D3A22BC9C3A000B31704 /* WeekDay enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WeekDay enum.swift"; sourceTree = "<group>"; };
+		8763D3A52BC9C57700B31704 /* ScheduleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		877CB6452BBF397700C4164D /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		877CB6482BBF397700C4164D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		877CB64A2BBF397700C4164D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +117,16 @@
 			path = NewHabbtiViewController;
 			sourceTree = "<group>";
 		};
+		8763D3A42BC9C4E200B31704 /* ChooseDayForHabbit */ = {
+			isa = PBXGroup;
+			children = (
+				8763D3A22BC9C3A000B31704 /* WeekDay enum.swift */,
+				8763D3A02BC9C33D00B31704 /* ChooseDayViewController.swift */,
+				8763D3A52BC9C57700B31704 /* ScheduleTableViewCell.swift */,
+			);
+			path = ChooseDayForHabbit;
+			sourceTree = "<group>";
+		};
 		877CB63C2BBF397700C4164D = {
 			isa = PBXGroup;
 			children = (
@@ -134,6 +150,7 @@
 		877CB6472BBF397700C4164D /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				8763D3A42BC9C4E200B31704 /* ChooseDayForHabbit */,
 				872A55A22BC70D5100A9920D /* NewHabbtiViewController */,
 				877CB6482BBF397700C4164D /* AppDelegate.swift */,
 				877CB64A2BBF397700C4164D /* SceneDelegate.swift */,
@@ -303,7 +320,10 @@
 				877CB6BB2BC1746000C4164D /* tabBarViewController.swift in Sources */,
 				877CB6792BBF42C600C4164D /* TrackerViewController.swift in Sources */,
 				87F476252BC2EA8F001260C9 /* TrackerModels.swift in Sources */,
+				8763D3A32BC9C3A000B31704 /* WeekDay enum.swift in Sources */,
 				877CB67B2BBF455E00C4164D /* UIView extensions.swift in Sources */,
+				8763D3A12BC9C33D00B31704 /* ChooseDayViewController.swift in Sources */,
+				8763D3A62BC9C57700B31704 /* ScheduleTableViewCell.swift in Sources */,
 				8763D39D2BC854A500B31704 /* CollectionHeaderView.swift in Sources */,
 				872A55A42BC70DAD00A9920D /* EmojiCollectionViewCell.swift in Sources */,
 				872A55A82BC70EE600A9920D /* ConstantsForCells.swift in Sources */,

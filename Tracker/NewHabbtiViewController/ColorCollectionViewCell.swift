@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class ColorCollectionViewCell: UICollectionViewCell {
+final class ColorCollectionViewCell: UICollectionViewCell {
     
     private lazy var colorView: UIView = {
         let view = UIView()
