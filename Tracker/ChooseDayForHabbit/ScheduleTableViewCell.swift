@@ -22,7 +22,7 @@ final class ScheduleTableViewCell: UITableViewCell{
     
     static let identifier = "ScheduleTableViewCell"
     
-    lazy var dayLabel: UILabel = { // вот тут может упасть тк lazy
+    lazy var dayLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         return label
@@ -36,7 +36,6 @@ final class ScheduleTableViewCell: UITableViewCell{
     private func configureView() {
         dayLabel.translatesAutoresizingMaskIntoConstraints = false
         daySwitch.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
             dayLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             dayLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),

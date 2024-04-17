@@ -17,7 +17,6 @@ final class EmojiCollectionViewCell: UICollectionViewCell {
                contentView.backgroundColor = isSelected ? UIColor(named: "GrayForNavBar"): UIColor.clear
                contentView.layer.cornerRadius = 16
                contentView.layer.masksToBounds = true
-               // Если вы хотите, чтобы только фон emojiLabel менялся, замените contentView на emojiLabel в строке выше.
            }
        }
     

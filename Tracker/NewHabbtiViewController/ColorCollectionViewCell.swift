@@ -29,8 +29,7 @@ final class ColorCollectionViewCell: UICollectionViewCell {
     
     private func setupLayout() {
         contentView.addSubview(colorView) // Добавить colorView на contentView
-        
-        // Настроить ограничения для colorView
+    
         NSLayoutConstraint.activate([
             colorView.heightAnchor.constraint(equalToConstant: 40),
             colorView.widthAnchor.constraint(equalToConstant: 40),
@@ -40,7 +39,7 @@ final class ColorCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with color: UIColor) {
-        colorView.backgroundColor = color // Установить фоновый цвет colorView
+        colorView.backgroundColor = color
     }
     // Методы при выборе и при отмене
     // Я не понял как сделать на макете в следующем спринте сделаю
