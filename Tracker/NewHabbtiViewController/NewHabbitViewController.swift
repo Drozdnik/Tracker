@@ -51,7 +51,8 @@ final class NewHabbitViewController: UIViewController{
         colorCollectionView.dataSource = self
         colorCollectionView.delegate = self
     }
-    func setupScrollView() {
+    
+    private func setupScrollView() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         
@@ -191,6 +192,16 @@ extension NewHabbitViewController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            tableView.deselectRow(at: indexPath, animated: true)
+
+            if indexPath.row == 1 {
+                let vc = ChooseDayViewController()
+                let navigationController = UINavigationController(rootViewController: vc)
+                present(navigationController, animated: true)
+            }
+        }
 }
 // Коллекция
 extension NewHabbitViewController: UICollectionViewDataSource{

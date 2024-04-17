@@ -13,8 +13,41 @@ final class ChooseDayViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.register(ScheduleTableViewCell.self, forCellReuseIdentifier: ScheduleTableViewCell.identifier)
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        addSubViews()
+        configureConstraints()
+        configureNavBar()
     }
     
+    private func addSubViews(){
+        view.addSubviews([tableView, doneButton])
+        view.backgroundColor = .white
+        tableView.backgroundColor = UIColor(named: "GrayForNavBar")
+    }
+    
+    private func configureConstraints(){
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 25),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.heightAnchor.constraint(equalToConstant: 525),
+            
+            doneButton.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 24),
+            doneButton.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
+            doneButton.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
+            doneButton.heightAnchor.constraint(equalToConstant: 60),
+//            doneButton.widthAnchor.constraint(equalToConstant: 280)
+        ])
+    }
+    private func configureNavBar(){
+        navigationItem.title = "Расписание"
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
+    }
     private lazy var doneButton:UIButton = {
         let button = UIButton()
         button.setTitle("Готово", for: .normal)
@@ -43,4 +76,7 @@ extension ChooseDayViewController: UITableViewDataSource{
 }
 
 extension ChooseDayViewController:UITableViewDelegate{
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
+    }
 }
