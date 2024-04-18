@@ -75,6 +75,7 @@ extension ChooseDayViewController: UITableViewDataSource{
             return UITableViewCell()
         }
         let day = Weekday.allCases[indexPath.row]
+        cell.selectionStyle = .none
         cell.backgroundColor = UIColor(named: "GrayForTableViews")?.withAlphaComponent(0.3)
         cell.dayLabel.text = day.rawValue
         cell.daySwitch.tag = indexPath.row

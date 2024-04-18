@@ -452,8 +452,8 @@
             filePath = "Tracker/ChooseDayForHabbit/ChooseDayViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "112"
-            endingLineNumber = "112"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
             landmarkName = "switchChanged(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -468,8 +468,8 @@
             filePath = "Tracker/ChooseDayForHabbit/ChooseDayViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "111"
-            endingLineNumber = "111"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
             landmarkName = "switchChanged(_:)"
             landmarkType = "7">
          </BreakpointContent>

@@ -30,6 +30,7 @@ final class ScheduleTableViewCell: UITableViewCell{
     
     lazy var daySwitch: UISwitch = {
         let switchControl = UISwitch()
+        switchControl.onTintColor = UIColor(named: "LaunchScreenBlue")
         return switchControl
     }()
     
