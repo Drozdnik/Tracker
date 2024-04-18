@@ -78,7 +78,7 @@ extension ChooseDayViewController: UITableViewDataSource{
         cell.backgroundColor = UIColor(named: "GrayForTableViews")?.withAlphaComponent(0.3)
         cell.dayLabel.text = day.rawValue
         cell.daySwitch.tag = indexPath.row
-//        cell.daySwitch.isOn = schedule.days[indexPath.row]
+        cell.daySwitch.isOn = schedule.days[indexPath.row]
         cell.daySwitch.addTarget(self, action: #selector(switchChanged(_:)), for: .valueChanged)
         return cell
     }
