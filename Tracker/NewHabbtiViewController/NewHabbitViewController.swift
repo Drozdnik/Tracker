@@ -9,9 +9,21 @@ import Foundation
 import UIKit
 
 final class NewHabbitViewController: UIViewController{
+    
+    var habitName: String = ""
+    var habitCategory: String = ""
+    var habitSchedule: Schedule = Schedule(days: Array(repeating: false, count: 7)) {
+        didSet{
+            print ("\(habitSchedule)")
+        }
+    }
+    var habitEmoji: String = ""
+    var habitColor: UIColor = .white
+    
     let scrollView = UIScrollView()
     let contentView = UIView()
     let tableView = UITableView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -196,6 +208,11 @@ extension NewHabbitViewController: UITableViewDelegate{
 
             if indexPath.row == 1 {
                 let vc = ChooseDayViewController()
+                vc.schedule = self.habitSchedule
+                vc.scheduleUpdated = { [weak self] updatetShedule in
+                    guard let self else {return}
+                    self.habitSchedule = updatetShedule
+                }
                 let navigationController = UINavigationController(rootViewController: vc)
                 present(navigationController, animated: true)
             }

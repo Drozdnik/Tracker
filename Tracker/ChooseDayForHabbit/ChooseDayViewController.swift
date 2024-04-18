@@ -10,6 +10,8 @@ import UIKit
 
 final class ChooseDayViewController: UIViewController{
     private let tableView: UITableView = UITableView()
+    var schedule: Schedule!
+    var scheduleUpdated:((Schedule) -> Void?)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +46,6 @@ final class ChooseDayViewController: UIViewController{
             doneButton.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
             doneButton.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
             doneButton.heightAnchor.constraint(equalToConstant: 60),
-            //            doneButton.widthAnchor.constraint(equalToConstant: 280)
         ])
     }
     private func configureNavBar(){
@@ -58,6 +59,7 @@ final class ChooseDayViewController: UIViewController{
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
         button.backgroundColor = UIColor(named: "TotalBlack")
+        button.addTarget(self, action: #selector(doneButtonTapped(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -75,6 +77,9 @@ extension ChooseDayViewController: UITableViewDataSource{
         let day = Weekday.allCases[indexPath.row]
         cell.backgroundColor = UIColor(named: "GrayForTableViews")?.withAlphaComponent(0.3)
         cell.dayLabel.text = day.rawValue
+        cell.daySwitch.tag = indexPath.row
+//        cell.daySwitch.isOn = schedule.days[indexPath.row]
+        cell.daySwitch.addTarget(self, action: #selector(switchChanged(_:)), for: .valueChanged)
         return cell
     }
     
@@ -98,5 +103,17 @@ extension ChooseDayViewController: UITableViewDataSource{
 extension ChooseDayViewController:UITableViewDelegate{
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
+    }
+}
+
+extension ChooseDayViewController{
+    @objc func switchChanged(_ sender: UISwitch) {
+        let day = sender.tag
+        schedule.updateDay(index: day, selected: sender.isOn)
+    }
+    
+    @objc func doneButtonTapped(_ sender: UIButton) {
+        scheduleUpdated?(schedule)
+        dismiss(animated: true)
     }
 }

@@ -28,7 +28,7 @@ final class ScheduleTableViewCell: UITableViewCell{
         return label
     }()
     
-    private lazy var daySwitch: UISwitch = {
+    lazy var daySwitch: UISwitch = {
         let switchControl = UISwitch()
         return switchControl
     }()

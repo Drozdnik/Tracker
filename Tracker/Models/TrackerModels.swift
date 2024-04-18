@@ -7,10 +7,6 @@
 
 import Foundation
 import UIKit
-struct Schedule{
-    
-}
-
 
 class Tracker{
     let id: UUID 
