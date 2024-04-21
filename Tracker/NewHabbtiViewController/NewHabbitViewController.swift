@@ -12,11 +12,7 @@ final class NewHabbitViewController: UIViewController{
     
     private var habitName: String = ""
     private var habitCategory: String = ""
-    private var habitSchedule: Schedule = Schedule(days: Array(repeating: false, count: 7)) {
-        didSet{
-            print ("\(habitSchedule)")
-        }
-    }
+    private var habitSchedule: Schedule = Schedule(days: Array(repeating: false, count: 7))
     private  var habitEmoji: String = ""
     private var habitColor: UIColor = .white
     
@@ -200,10 +196,9 @@ final class NewHabbitViewController: UIViewController{
 extension NewHabbitViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
             if text == "\n" {
-
                 habitName = textView.text
                 textView.resignFirstResponder()
-
+                updateCreateButtonState()
                 return false
             }
             
@@ -218,7 +213,6 @@ extension NewHabbitViewController: UITextViewDelegate {
             } else {
                 characterLimitLabel.isHidden = true
             }
-            
             return true  
         }
     
@@ -376,6 +370,7 @@ extension NewHabbitViewController{
     }
     
     @objc  private func didTapCancelButton(){
+        dismiss(animated: true, completion: nil)
     }
     
     @objc private func didTapCreateButton(){
