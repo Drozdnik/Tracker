@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 final class ChooseTypeOfTracker: UIViewController{
+    var newHabbitComplete: ((TrackerCategory) -> Void)?
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -77,8 +78,8 @@ final class ChooseTypeOfTracker: UIViewController{
         let vc = NewHabbitViewController()
         let navigationController = UINavigationController(rootViewController: vc)
         vc.newHabbitComplete = { [weak self] category in
-            guard let self else {return}
-            
+            self?.newHabbitComplete?(category)
+            self?.dismiss(animated: true)
         }
         present(navigationController, animated: true)
     }

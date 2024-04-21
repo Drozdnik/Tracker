@@ -90,6 +90,10 @@ final class TrackerViewController: UIViewController{
     @objc private func addTapped() {
         let vc = ChooseTypeOfTracker()
         let navigationController = UINavigationController(rootViewController: vc)
+        vc.newHabbitComplete = { [weak self] category in
+            self?.categories.append(category)
+            self?.dismiss(animated: true) // Dismiss the navigation controller presented modally
+        }
         present(navigationController, animated: true)
     }
     
