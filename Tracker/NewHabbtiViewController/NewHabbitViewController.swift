@@ -10,15 +10,15 @@ import UIKit
 
 final class NewHabbitViewController: UIViewController{
     
-    var habitName: String = ""
-    var habitCategory: String = ""
-    var habitSchedule: Schedule = Schedule(days: Array(repeating: false, count: 7)) {
+    private var habitName: String = ""
+    private var habitCategory: String = ""
+    private var habitSchedule: Schedule = Schedule(days: Array(repeating: false, count: 7)) {
         didSet{
             print ("\(habitSchedule)")
         }
     }
-    var habitEmoji: String = ""
-    var habitColor: UIColor = .white
+    private  var habitEmoji: String = ""
+    private var habitColor: UIColor = .white
     
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -31,6 +31,7 @@ final class NewHabbitViewController: UIViewController{
         setupContentView()
         configureNavBar()
         setupTableView()
+        updateCreateButtonState()
         //Регестрируем ячейку таблицы и коллекция
         emojiCollectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "EmojiCell")
         colorCollectionView.register(ColorCollectionViewCell.self, forCellWithReuseIdentifier: "ColorCell")
@@ -42,7 +43,7 @@ final class NewHabbitViewController: UIViewController{
     
     
     private func setupContentView(){
-        contentView.addSubviews([tableView, textField, emojiCollectionView, colorCollectionView, cancelButton, createButton])
+        contentView.addSubviews([tableView, textField, characterLimitLabel,  emojiCollectionView, colorCollectionView, cancelButton, createButton])
         configureConstraintsForContentView()
     }
     
@@ -83,7 +84,6 @@ final class NewHabbitViewController: UIViewController{
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            //            contentView.heightAnchor.constraint(equalTo: view.heightAnchor)
         ])
     }
     
@@ -94,7 +94,10 @@ final class NewHabbitViewController: UIViewController{
             textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             textField.heightAnchor.constraint(equalToConstant: 63),
             
-            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
+            characterLimitLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
+            characterLimitLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            tableView.topAnchor.constraint(equalTo: characterLimitLabel.bottomAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: textField.trailingAnchor),
             tableView.heightAnchor.constraint(equalToConstant: 149),
@@ -125,21 +128,31 @@ final class NewHabbitViewController: UIViewController{
     
     
     // Сделать ext для UIViewController и вызывать оттуда configureNavBar(title)
-    private lazy var textField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = " Введите название трекера"
-        textField.borderStyle = .none
-        textField.layer.cornerRadius = 16
-        textField.layer.masksToBounds = true
-        textField.backgroundColor = UIColor(named: "GrayForNavBar")
-        textField.setLeftPaddingPoints(16)
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
+    private lazy var textField: UITextView = {
+        let textView = UITextView()
+        textView.text = "Введите название трекера"
+        textView.textColor = UIColor.lightGray
+        textView.backgroundColor = UIColor(named: "GrayForNavBar")
+        textView.font = UIFont.systemFont(ofSize: 17)
+        textView.layer.cornerRadius = 16
+        textView.layer.masksToBounds = true
+        textView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        textView.delegate = self
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        return textView
+    }()
+    
+    private lazy var characterLimitLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Ограничение 38 символов"
+        label.textColor = .red
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     private lazy var emojiCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        //        layout.itemSize = CGSize(width: 52, height: 52)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -184,11 +197,43 @@ final class NewHabbitViewController: UIViewController{
 }
 
 //textField
-extension NewHabbitViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        habitName = textField.text ?? ""
-        textField.resignFirstResponder()
-        return true
+extension NewHabbitViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+            if text == "\n" {
+
+                habitName = textView.text
+                textView.resignFirstResponder()
+
+                return false
+            }
+            
+            // Проверка на количество символов
+            let currentText = textView.text ?? ""
+            guard let stringRange = Range(range, in: currentText) else { return false }
+            let changedText = currentText.replacingCharacters(in: stringRange, with: text)
+            
+            if changedText.count > 38 {
+                characterLimitLabel.isHidden = false
+                return false
+            } else {
+                characterLimitLabel.isHidden = true
+            }
+            
+            return true  
+        }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
+            textView.text = nil
+            textView.textColor = UIColor.black 
+        }
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Введите название трекера"
+            textView.textColor = UIColor.lightGray
+        }
     }
 }
 //Таблица
@@ -225,6 +270,7 @@ extension NewHabbitViewController: UITableViewDelegate{
             habitCategory = "Важное"
             let categoryIndexPath = IndexPath(row: 0, section: 0)
             tableView.reloadRows(at: [categoryIndexPath], with: .none)
+            updateCreateButtonState()
         } else if indexPath.row == 1 {
             let vc = ChooseDayViewController()
             vc.schedule = self.habitSchedule
@@ -234,9 +280,8 @@ extension NewHabbitViewController: UITableViewDelegate{
                 
                 let scheduleIndexPath = IndexPath(row: 1, section: 0)
                 tableView.reloadRows(at: [scheduleIndexPath], with: .none)
-                
-                //
                 self.habitSchedule = updatedShedule
+                updateCreateButtonState()
             }
             let navigationController = UINavigationController(rootViewController: vc)
             present(navigationController, animated: true)
@@ -299,9 +344,19 @@ extension NewHabbitViewController: UICollectionViewDelegateFlowLayout{
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell else { return }
-        cell.setSelectedState()
+        if collectionView == self.emojiCollectionView {
+            // Обновляем переменную habitEmoji на основе выбранного индекса
+            self.habitEmoji = emojiList[indexPath.item]
+            updateCreateButtonState()
+        } else if collectionView == self.colorCollectionView {
+            // Обновляем переменную habitColor на основе выбранного индекса
+            self.habitColor = colorList[indexPath.item]
+            guard let cell = collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell else { return }
+            updateCreateButtonState()
+            cell.setSelectedState()
+        }
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell else { return }
@@ -310,11 +365,21 @@ extension NewHabbitViewController: UICollectionViewDelegateFlowLayout{
 }
 
 extension NewHabbitViewController{
+    private func updateCreateButtonState(){
+        let isFormComplete = !habitName.isEmpty &&
+        !habitEmoji.isEmpty &&
+        habitColor != UIColor.white &&
+        !habitCategory.isEmpty &&
+        habitSchedule.days.contains(true)
+        createButton.isEnabled = isFormComplete
+        createButton.backgroundColor = isFormComplete ? .black : .gray
+    }
+    
     @objc  private func didTapCancelButton(){
     }
     
     @objc private func didTapCreateButton(){
-        
+        print ("aboba")
     }
 }
 
