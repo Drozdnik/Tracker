@@ -107,7 +107,7 @@ final class NewHabbitViewController: UIViewController{
             colorCollectionView.leadingAnchor.constraint(equalTo: emojiCollectionView.leadingAnchor),
             colorCollectionView.trailingAnchor.constraint(equalTo: emojiCollectionView.trailingAnchor),
             colorCollectionView.heightAnchor.constraint(equalToConstant: 250),
-
+            
             
             cancelButton.topAnchor.constraint(equalTo: colorCollectionView.bottomAnchor, constant: 16),
             cancelButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
@@ -169,7 +169,7 @@ final class NewHabbitViewController: UIViewController{
     }()
     
     private lazy var createButton: UIButton = {
-       let button = UIButton()
+        let button = UIButton()
         button.setTitle("Создать", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button .addTarget(self, action: #selector (didTapCreateButton), for: .touchUpInside)
@@ -188,10 +188,14 @@ extension NewHabbitViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.accessoryType = .disclosureIndicator
-        
-        cell.textLabel?.text = indexPath.row == 0 ? "Категория" : "Расписание"
+        var cell =  UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
+        if indexPath.row == 0 {
+            cell.textLabel?.text = "Категория"
+        } else if indexPath.row == 1{
+            cell.textLabel?.text = "Расписание"
+            cell.detailTextLabel?.text = self.habitSchedule.dayToShortDay()
+            cell.detailTextLabel?.textColor = .gray
+        }
         cell.textLabel?.textColor = .black
         cell.backgroundColor = UIColor(named: "GrayForNavBar")
         return cell
@@ -204,19 +208,26 @@ extension NewHabbitViewController: UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            tableView.deselectRow(at: indexPath, animated: true)
-
-            if indexPath.row == 1 {
-                let vc = ChooseDayViewController()
-                vc.schedule = self.habitSchedule
-                vc.scheduleUpdated = { [weak self] updatetShedule in
-                    guard let self else {return}
-                    self.habitSchedule = updatetShedule
-                }
-                let navigationController = UINavigationController(rootViewController: vc)
-                present(navigationController, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if indexPath.row == 1 {
+            let vc = ChooseDayViewController()
+            vc.schedule = self.habitSchedule
+            vc.scheduleUpdated = { [weak self] updatedShedule in
+                guard let self else {return}
+                self.habitSchedule = updatedShedule
+                
+                let scheduleIndexPath = IndexPath(row: 1, section: 0)
+                tableView.reloadRows(at: [scheduleIndexPath], with: .none)
+                
+                //
+                self.habitSchedule = updatedShedule
+                print("Updated habitSchedule: \(self.habitSchedule.days)")
             }
+            let navigationController = UINavigationController(rootViewController: vc)
+            present(navigationController, animated: true)
         }
+    }
 }
 // Коллекция
 extension NewHabbitViewController: UICollectionViewDataSource{
