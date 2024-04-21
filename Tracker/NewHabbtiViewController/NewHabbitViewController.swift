@@ -52,6 +52,7 @@ final class NewHabbitViewController: UIViewController{
     }
     
     private func setupTableView(){
+        textField.delegate = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
@@ -181,6 +182,15 @@ final class NewHabbitViewController: UIViewController{
         return button
     }()
 }
+
+//textField
+extension NewHabbitViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        habitName = textField.text ?? ""
+        textField.resignFirstResponder()
+        return true
+    }
+}
 //Таблица
 extension NewHabbitViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -188,14 +198,16 @@ extension NewHabbitViewController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell =  UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
+        let cell =  UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         if indexPath.row == 0 {
             cell.textLabel?.text = "Категория"
+            cell.detailTextLabel?.text = habitCategory
         } else if indexPath.row == 1{
             cell.textLabel?.text = "Расписание"
             cell.detailTextLabel?.text = self.habitSchedule.dayToShortDay()
-            cell.detailTextLabel?.textColor = .gray
         }
+        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        cell.detailTextLabel?.textColor = .gray
         cell.textLabel?.textColor = .black
         cell.backgroundColor = UIColor(named: "GrayForNavBar")
         return cell
@@ -209,8 +221,11 @@ extension NewHabbitViewController: UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        if indexPath.row == 1 {
+        if indexPath.row == 0 {
+            habitCategory = "Важное"
+            let categoryIndexPath = IndexPath(row: 0, section: 0)
+            tableView.reloadRows(at: [categoryIndexPath], with: .none)
+        } else if indexPath.row == 1 {
             let vc = ChooseDayViewController()
             vc.schedule = self.habitSchedule
             vc.scheduleUpdated = { [weak self] updatedShedule in
@@ -222,7 +237,6 @@ extension NewHabbitViewController: UITableViewDelegate{
                 
                 //
                 self.habitSchedule = updatedShedule
-                print("Updated habitSchedule: \(self.habitSchedule.days)")
             }
             let navigationController = UINavigationController(rootViewController: vc)
             present(navigationController, animated: true)
