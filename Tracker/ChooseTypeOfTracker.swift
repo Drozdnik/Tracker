@@ -76,6 +76,10 @@ final class ChooseTypeOfTracker: UIViewController{
     @objc private func habbitButtonTapped(){
         let vc = NewHabbitViewController()
         let navigationController = UINavigationController(rootViewController: vc)
+        vc.newHabbitComplete = { [weak self] category in
+            guard let self else {return}
+            
+        }
         present(navigationController, animated: true)
     }
 }

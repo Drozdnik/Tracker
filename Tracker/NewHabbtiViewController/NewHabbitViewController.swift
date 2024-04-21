@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 final class NewHabbitViewController: UIViewController{
-    
+    var newHabbitComplete: ((TrackerCategory) -> Void)?
     private var habitName: String = ""
     private var habitCategory: String = ""
     private var habitSchedule: Schedule = Schedule(days: Array(repeating: false, count: 7))
@@ -374,7 +374,18 @@ extension NewHabbitViewController{
     }
     
     @objc private func didTapCreateButton(){
-        print ("aboba")
+        let newTracker = Tracker (
+            id: UUID(),
+            name: habitName,
+            color: habitColor,
+            emoji: habitEmoji,
+            schedule: habitSchedule
+        )
+        
+        let newCategory = TrackerCategory(title: habitCategory, trackers: [newTracker])
+        
+        newHabbitComplete?(newCategory)
+        dismiss(animated: true)
     }
 }
 
