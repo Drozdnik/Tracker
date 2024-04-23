@@ -6,7 +6,7 @@ final class TrackerViewController: UIViewController{
     let noTracksLabel = UILabel()
 //    var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord] = []
-    var categories: [TrackerCategory] = [TrackerCategory(title: "123", trackers: [
+    var categories: [TrackerCategory] = [TrackerCategory(title: "Важное", trackers: [
        Tracker(id: UUID(), name: "123123", color: .blue, emoji: "🌟", schedule: Schedule(days: [true])),
        Tracker(id: UUID(), name: "456456", color: .green, emoji: "🌟", schedule: Schedule(days: [true])),
        Tracker(id: UUID(), name: "456456", color: .red, emoji: "🌟", schedule: Schedule(days: [true])),
@@ -110,10 +110,17 @@ final class TrackerViewController: UIViewController{
     @objc private func addTapped() {
         let vc = ChooseTypeOfTracker()
         let navigationController = UINavigationController(rootViewController: vc)
-        vc.newHabbitComplete = { [weak self] category in
-            self?.categories.append(category)
-            self?.collectionView.reloadData()
-            self?.dismiss(animated: true)
+        
+        vc.newHabbitComplete = { [weak self] title, tracker in
+            guard let self else {return}
+            if let index = self.categories.firstIndex(where: { $0.title == title }) {
+                self.categories[index].trackers.append(tracker)
+            } else {
+                let newCategory = TrackerCategory(title: title, trackers: [tracker])
+                self.categories.append(newCategory)
+            }
+            self.collectionView.reloadData()
+            self.dismiss(animated: true)
         }
         present(navigationController, animated: true)
     }

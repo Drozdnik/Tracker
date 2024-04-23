@@ -25,8 +25,8 @@ class Tracker{
 }
 
 struct TrackerCategory{
-    let title: String
-    let trackers: [Tracker]
+    var title: String
+    var trackers: [Tracker]
     
     init(title: String, trackers: [Tracker]) {
         self.title = title
