@@ -1,11 +1,16 @@
 import Foundation
 import UIKit
 
+
 final class TrackerViewController: UIViewController{
     let noTracksLabel = UILabel()
-    var categories: [TrackerCategory] = []
+//    var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord] = []
-    
+    var categories: [TrackerCategory] = [TrackerCategory(title: "123", trackers: [
+       Tracker(id: UUID(), name: "123123", color: .blue, emoji: "🌟", schedule: Schedule(days: [true])),
+       Tracker(id: UUID(), name: "456456", color: .green, emoji: "🌟", schedule: Schedule(days: [true])),
+       Tracker(id: UUID(), name: "456456", color: .red, emoji: "🌟", schedule: Schedule(days: [true])),
+    ])]
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -34,17 +39,22 @@ final class TrackerViewController: UIViewController{
             noTracksLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            collectionView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            collectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
+            collectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16)
         ])
     }
     
     private func configureNoTracksLabel(){
-        noTracksLabel.text = "Что будем отслеживать?"
-        noTracksLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        noTracksLabel.textAlignment = .center
-        noTracksLabel.translatesAutoresizingMaskIntoConstraints = false
+        if categories.isEmpty  {
+            noTracksLabel.text = "Что будем отслеживать?"
+            noTracksLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+            noTracksLabel.textAlignment = .center
+            noTracksLabel.translatesAutoresizingMaskIntoConstraints = false
+        } else {
+            noTracksLabel.isHidden = true
+            imageForNoTracks.isHidden = true
+        }
     }
     
     private lazy var imageForNoTracks: UIImageView = {
@@ -59,6 +69,7 @@ final class TrackerViewController: UIViewController{
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
 //        layout.sectionInset = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 9) // Вот тут похоже придется все поменять
         collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "TrackerCell")
         collectionView.dataSource = self
@@ -133,12 +144,13 @@ extension TrackerViewController: UICollectionViewDataSource{
        }
 }
 
-extension TrackerViewController: UICollectionViewDelegate{
+extension TrackerViewController: UICollectionViewDelegateFlowLayout{
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 300, height: 300)
+        return CGSize(width: (collectionView.bounds.width / 2) - 9 , height: 148)
     }
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//           return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-//       }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 2
+    }
 }

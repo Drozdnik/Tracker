@@ -327,8 +327,9 @@ extension NewHabbitViewController: UICollectionViewDelegateFlowLayout{
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize { // 1
-        return CGSize(width: collectionView.bounds.width / 6, height: 52)   // 2
+        return CGSize(width: collectionView.bounds.width / 6, height: 52)  
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
