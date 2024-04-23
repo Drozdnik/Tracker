@@ -48,6 +48,7 @@ final class ChooseTypeOfTracker: UIViewController{
         secondButton.backgroundColor = UIColor(named: "TotalBlack")
         secondButton.layer.cornerRadius = 16
         secondButton.layer.masksToBounds = true
+        secondButton.addTarget(self, action: #selector(irregularButtonTapped), for: .touchUpInside)
         
         container.addSubviews([firstButton, secondButton])
         container.translatesAutoresizingMaskIntoConstraints = false
@@ -76,6 +77,7 @@ final class ChooseTypeOfTracker: UIViewController{
     
     @objc private func habbitButtonTapped(){
         let vc = NewHabbitViewController()
+        vc.trackerType = .habit
         let navigationController = UINavigationController(rootViewController: vc)
         vc.newHabbitComplete = { [weak self] title, tracker in
             self?.newHabbitComplete?(title, tracker)
@@ -83,4 +85,16 @@ final class ChooseTypeOfTracker: UIViewController{
         }
         present(navigationController, animated: true)
     }
+    
+    @objc private func irregularButtonTapped(){
+        let vc = NewHabbitViewController()
+        vc.trackerType = .irregularEvent
+        let navigationController = UINavigationController(rootViewController: vc)
+        vc.newHabbitComplete = { [weak self] title, tracker in
+            self?.newHabbitComplete?(title, tracker)
+            self?.dismiss(animated: true)
+        }
+        present(navigationController, animated: true)
+    }
+
 }

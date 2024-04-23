@@ -9,12 +9,17 @@ import Foundation
 import UIKit
 
 class TrackerCollectionViewCell: UICollectionViewCell {
+    var onIncrementCount: ((IndexPath) -> Void)?
+    var indexPath: IndexPath?
+    var isCompleted: Bool = false
+    var completedTrackers: [TrackerRecord] = []
+    var selectedDate: Date = Date()
     
     // Элементы UI для верхней секции
     private let emojiLabel = UILabel()
     private let nameLabel = UILabel()
     private let topContainer = UIView()
-    
+    private var countOfDays: String = ""
     // Элементы UI для нижней секции
     private let dayLabel = UILabel()
     private let addButton = UIButton()
@@ -50,12 +55,14 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         // Настройка внешнего вида элементов
         topContainer.layer.cornerRadius = 12
         addButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        addButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
         
         addButton.tintColor = .white
         emojiLabel.backgroundColor = .white.withAlphaComponent(0.3)
         emojiLabel.layer.cornerRadius = 12
         emojiLabel.layer.masksToBounds = true
         emojiLabel.font = UIFont.systemFont(ofSize: 16)
+        
         addButton.layer.cornerRadius = 16
         addButton.layer.masksToBounds = true
         
@@ -63,6 +70,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         nameLabel.numberOfLines = 2
         nameLabel.lineBreakMode = .byWordWrapping
         nameLabel.textAlignment = .left
+        
     }
     
     private func setupConstraints() {
@@ -77,7 +85,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
             emojiLabel.leadingAnchor.constraint(equalTo: topContainer.leadingAnchor, constant: 12),
             emojiLabel.heightAnchor.constraint(equalToConstant: 24),
             emojiLabel.widthAnchor.constraint(equalToConstant: 24),
-        
+            
             nameLabel.topAnchor.constraint(equalTo: emojiLabel.bottomAnchor, constant: 12), // Изменено
             nameLabel.leadingAnchor.constraint(equalTo: topContainer.leadingAnchor, constant: 12), // Изменено
             nameLabel.trailingAnchor.constraint(equalTo: topContainer.trailingAnchor, constant: -12), // Неизменно
@@ -99,13 +107,59 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func configureWith(tracker: Tracker) {
+    func configureWith(tracker: Tracker, completedTrackers: [TrackerRecord], selectedDate: Date) {
         emojiLabel.text = tracker.emoji
         nameLabel.text = tracker.name
-        dayLabel.text = "\(tracker.schedule)"
         topContainer.backgroundColor = tracker.color
         addButton.backgroundColor = tracker.color
+        countOfDays = getDayText(count: tracker.count)
+        dayLabel.text = "\(countOfDays)"
+        self.completedTrackers = completedTrackers
+        self.selectedDate = selectedDate
         bottomContainer.backgroundColor = .clear
+        isCompleted = completedTrackers.contains {
+            $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: selectedDate)
+        }
+        
+        updateButtonAppearance()
+    }
+    
+    
+    func updateButtonAppearance() {
+        if isCompleted {
+        
+            addButton.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
+            addButton.layer.opacity = 0.3
+            addButton.isEnabled = false
+        } else {
+            addButton.setImage(UIImage(systemName: "plus"), for: .normal)
+            addButton.isEnabled = true
+        }
+    }
+    
+    func getNoun(number: Int, one: String, two: String, five: String) -> String {
+        let n = abs(number) % 100
+        if n >= 5 && n <= 20 {
+            return five
+        }
+        switch n % 10 {
+        case 1:
+            return one
+        case 2...4:
+            return two
+        default:
+            return five
+        }
+    }
+    
+    func getDayText(count: Int) -> String {
+        return "\(count) " + getNoun(number: count, one: "день", two: "дня", five: "дней")
+    }
+    
+    @objc func plusButtonTapped() {
+        if let indexPath = indexPath {
+            onIncrementCount?(indexPath)
+        }
     }
 }
 

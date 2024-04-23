@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 final class NewHabbitViewController: UIViewController{
+    var trackerType: TrackerType = .habit
     var newHabbitComplete: ((String, Tracker) -> Void)?
     private var habitName: String = ""
     private var habitCategory: String = ""
@@ -22,6 +23,9 @@ final class NewHabbitViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if trackerType == .irregularEvent{
+            habitSchedule = Schedule(days: Array(repeating: true, count: 7))
+        }
         view.backgroundColor = .white
         setupScrollView()
         setupContentView()
@@ -233,7 +237,7 @@ extension NewHabbitViewController: UITextViewDelegate {
 //Таблица
 extension NewHabbitViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return trackerType == .habit ? 2 : 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -281,7 +285,22 @@ extension NewHabbitViewController: UITableViewDelegate{
             present(navigationController, animated: true)
         }
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if trackerType == .irregularEvent{
+            let cornerRadius: CGFloat = 10
+            tableView.separatorStyle = .none
+            cell.layer.cornerRadius = cornerRadius
+            cell.layer.masksToBounds = true
+            
+            if tableView.numberOfRows(inSection: indexPath.section) == 1 {
+                cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+            }
+        }
+    }
+
 }
+
 // Коллекция
 extension NewHabbitViewController: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

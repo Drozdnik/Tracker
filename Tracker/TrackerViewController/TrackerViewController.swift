@@ -4,19 +4,22 @@ import UIKit
 
 final class TrackerViewController: UIViewController{
     let noTracksLabel = UILabel()
-//    var categories: [TrackerCategory] = []
+    
+    var selectedDate: Date = Date()
     var completedTrackers: [TrackerRecord] = []
-    var categories: [TrackerCategory] = [TrackerCategory(title: "Важноеска", trackers: [
-       Tracker(id: UUID(), name: "123123", color: .blue, emoji: "🌟", schedule: Schedule(days: [true])),
-       Tracker(id: UUID(), name: "456456", color: .green, emoji: "🌟", schedule: Schedule(days: [true])),
-       Tracker(id: UUID(), name: "456456", color: .red, emoji: "🌟", schedule: Schedule(days: [true])),
-    ])]
+    var allCategories: [TrackerCategory] = []
+    var categories: [TrackerCategory]  = []
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureNavigationBar()
         addSubViews()
         configureConstraints()
+        configureDatePicker()
+        filterTrakersForSelectedDate()
+        collectionView.reloadData()
     }
     
     
@@ -70,7 +73,6 @@ final class TrackerViewController: UIViewController{
         collectionView.backgroundColor = .clear
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
-//        layout.sectionInset = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 9) // Вот тут похоже придется все поменять
         collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "TrackerCell")
         collectionView.register(CollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderView.identifier)
         collectionView.dataSource = self
@@ -78,35 +80,67 @@ final class TrackerViewController: UIViewController{
         return collectionView
     }()
     
+    private func configureDatePicker() {
+        let dateButton = UIDatePicker()
+        dateButton.datePickerMode = .date
+        dateButton.locale = Locale(identifier: "ru_RU")
+        dateButton.timeZone = TimeZone(identifier: "Europe/Moscow")
+        dateButton.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: dateButton)
+      
+        let currentDate = Date()
+        dateButton.setDate(currentDate, animated: false)
+       
+        let calendar = Calendar(identifier: .gregorian)
+        if let minDate = calendar.date(byAdding: .year, value: -10, to: currentDate),
+           let maxDate = calendar.date(byAdding: .year, value: 10, to: currentDate) {
+            dateButton.minimumDate = minDate
+            dateButton.maximumDate = maxDate
+        }
+    }
+        
     private func configureNavigationBar(){
         navigationItem.title = "Трекеры"
         
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
         addButton.tintColor = .black
         navigationItem.leftBarButtonItem = addButton
+
         
-        // Создание кнопки для даты
-        let dateButton = UIDatePicker()
-        dateButton.datePickerMode = .date
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: dateButton)
-        dateButton.locale = Locale(identifier: "ru_RU")
-        let currentDate = Date()
-        let calendar = Calendar.current
-        let minDate = calendar.date(byAdding: .year, value: -10, to: currentDate)
-        let maxDate = calendar.date(byAdding: .year, value: 10, to: currentDate)
-        dateButton.minimumDate = minDate
-        dateButton.maximumDate = maxDate
-        dateButton.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
         
         let searchController = UISearchController(searchResultsController: nil)
-            searchController.searchBar.placeholder = "Поиск"
-            searchController.searchBar.searchTextField.backgroundColor = UIColor(named: "GrayForNavBar")
-            searchController.searchBar.searchTextField.layer.cornerRadius = 6
-            searchController.searchBar.searchTextField.clipsToBounds = true
-            searchController.searchBar.searchTextField.font = UIFont.systemFont(ofSize: 16)
+        searchController.searchBar.placeholder = "Поиск"
+        searchController.searchBar.searchTextField.backgroundColor = UIColor(named: "GrayForNavBar")
+        searchController.searchBar.searchTextField.layer.cornerRadius = 6
+        searchController.searchBar.searchTextField.clipsToBounds = true
+        searchController.searchBar.searchTextField.font = UIFont.systemFont(ofSize: 16)
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true // или false если не хотим скрывать
     }
+    
+    private func isDate(_ date: Date, matchesScheduleOf tracker: Tracker) -> Bool {
+        let calendar = Calendar.current
+        let weekday = calendar.component(.weekday, from: date)
+        return tracker.schedule.days[weekday - 2] // вот тут проверить что вернет
+    }
+    
+    func filterTrakersForSelectedDate() {
+       
+            var calendar = Calendar(identifier: .gregorian)
+            calendar.locale = Locale(identifier: "ru_RU")
+            calendar.firstWeekday = 2 
+            calendar.timeZone = TimeZone(identifier: "Europe/Moscow") ?? calendar.timeZone
+            
+            let weekday = calendar.component(.weekday, from: selectedDate)
+            let adjustedWeekdayIndex = (weekday + 5) % 7
+            
+        categories = allCategories.map { category in
+               let filteredTrackers = category.trackers.filter { $0.schedule.days[adjustedWeekdayIndex] }
+               return TrackerCategory(title: category.title, trackers: filteredTrackers)
+           }.filter { !$0.trackers.isEmpty }
+        
+    }
+
     
     @objc private func addTapped() {
         let vc = ChooseTypeOfTracker()
@@ -120,18 +154,19 @@ final class TrackerViewController: UIViewController{
                 let newCategory = TrackerCategory(title: title, trackers: [tracker])
                 self.categories.append(newCategory)
             }
+            self.allCategories = self.categories
+            filterTrakersForSelectedDate()
             self.collectionView.reloadData()
             self.dismiss(animated: true)
+            configureNoTracksLabel()
         }
         present(navigationController, animated: true)
     }
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
-        let selectedDate = sender.date
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy" // Формат даты
-        let formattedDate = dateFormatter.string(from: selectedDate)
-        print("Выбранная дата: \(formattedDate)")
+        selectedDate = sender.date
+            filterTrakersForSelectedDate()
+            collectionView.reloadData()
     }
 }
 
@@ -143,13 +178,29 @@ extension TrackerViewController: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return categories[section].trackers.count
     }
-     
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCell", for: indexPath) as! TrackerCollectionViewCell
-           let tracker = categories[indexPath.section].trackers[indexPath.row]
-          cell.configureWith(tracker: tracker)
-           return cell
-       }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCell", for: indexPath) as! TrackerCollectionViewCell
+        let tracker = categories[indexPath.section].trackers[indexPath.row]
+        cell.indexPath = indexPath
+        cell.onIncrementCount = { [weak self] indexPath in
+            guard let self = self else { return }
+              let trackerItem = self.categories[indexPath.section].trackers[indexPath.item]
+            trackerItem.count += 1
+              if self.isDate(self.selectedDate, matchesScheduleOf: trackerItem) {
+                  if !self.completedTrackers.contains(where: { $0.trackerId == trackerItem.id && Calendar.current.isDate($0.date, inSameDayAs: self.selectedDate) }) {
+
+                      let newRecord = TrackerRecord(trackerId: trackerItem.id, date: self.selectedDate)
+                      self.completedTrackers.append(newRecord)
+                      
+                      collectionView.reloadItems(at: [indexPath])
+                }
+            }
+        }
+        cell.configureWith(tracker: tracker, completedTrackers: completedTrackers, selectedDate: selectedDate)
+        return cell
+    }
+    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard kind == UICollectionView.elementKindSectionHeader else {
             fatalError("Unexpected element kind")
@@ -159,17 +210,17 @@ extension TrackerViewController: UICollectionViewDataSource{
             withReuseIdentifier: CollectionHeaderView.identifier,
             for: indexPath
         ) as! CollectionHeaderView
-
+        
         let categoryTitle = categories[indexPath.section].title
         headerView.configure(with: categoryTitle)
-
+        
         return headerView
     }
     
 }
 
 extension TrackerViewController: UICollectionViewDelegateFlowLayout{
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: (collectionView.bounds.width / 2) - 9 , height: 148)
     }
