@@ -20,3 +20,4 @@ let colorList: [UIColor] = [
     "#F6C48BFF","#7994F5FF","#832CF1FF","#AD56DAFF", "#8D72E6FF", "#2FD058FF"
 ].compactMap{UIColor(hex: $0)}
 
+

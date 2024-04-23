@@ -6,7 +6,7 @@ final class TrackerViewController: UIViewController{
     let noTracksLabel = UILabel()
 //    var categories: [TrackerCategory] = []
     var completedTrackers: [TrackerRecord] = []
-    var categories: [TrackerCategory] = [TrackerCategory(title: "Важное", trackers: [
+    var categories: [TrackerCategory] = [TrackerCategory(title: "Важноеска", trackers: [
        Tracker(id: UUID(), name: "123123", color: .blue, emoji: "🌟", schedule: Schedule(days: [true])),
        Tracker(id: UUID(), name: "456456", color: .green, emoji: "🌟", schedule: Schedule(days: [true])),
        Tracker(id: UUID(), name: "456456", color: .red, emoji: "🌟", schedule: Schedule(days: [true])),
@@ -72,6 +72,7 @@ final class TrackerViewController: UIViewController{
         
 //        layout.sectionInset = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 9) // Вот тут похоже придется все поменять
         collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "TrackerCell")
+        collectionView.register(CollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderView.identifier)
         collectionView.dataSource = self
         collectionView.delegate = self
         return collectionView
@@ -149,6 +150,22 @@ extension TrackerViewController: UICollectionViewDataSource{
           cell.configureWith(tracker: tracker)
            return cell
        }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionHeader else {
+            fatalError("Unexpected element kind")
+        }
+        let headerView = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: CollectionHeaderView.identifier,
+            for: indexPath
+        ) as! CollectionHeaderView
+
+        let categoryTitle = categories[indexPath.section].title
+        headerView.configure(with: categoryTitle)
+
+        return headerView
+    }
+    
 }
 
 extension TrackerViewController: UICollectionViewDelegateFlowLayout{
@@ -159,5 +176,9 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.bounds.width, height: 50)
     }
 }

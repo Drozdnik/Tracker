@@ -14,8 +14,8 @@ class Tracker{
     let color: UIColor
     let emoji: String
     let schedule: Schedule
-    
-    init(id: UUID, name: String, color: UIColor, emoji: String, schedule: Schedule) {
+    var count: Int = 0
+    init(id: UUID, name: String, color: UIColor, emoji: String, schedule: Schedule, count: Int  = 0) {
         self.id = id
         self.name = name
         self.color = color

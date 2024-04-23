@@ -50,7 +50,19 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         // Настройка внешнего вида элементов
         topContainer.layer.cornerRadius = 12
         addButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        
         addButton.tintColor = .white
+        emojiLabel.backgroundColor = .white.withAlphaComponent(0.3)
+        emojiLabel.layer.cornerRadius = 12
+        emojiLabel.layer.masksToBounds = true
+        emojiLabel.font = UIFont.systemFont(ofSize: 16)
+        addButton.layer.cornerRadius = 16
+        addButton.layer.masksToBounds = true
+        
+        nameLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        nameLabel.numberOfLines = 2
+        nameLabel.lineBreakMode = .byWordWrapping
+        nameLabel.textAlignment = .left
     }
     
     private func setupConstraints() {
@@ -65,10 +77,10 @@ class TrackerCollectionViewCell: UICollectionViewCell {
             emojiLabel.leadingAnchor.constraint(equalTo: topContainer.leadingAnchor, constant: 12),
             emojiLabel.heightAnchor.constraint(equalToConstant: 24),
             emojiLabel.widthAnchor.constraint(equalToConstant: 24),
-            
-            nameLabel.leadingAnchor.constraint(equalTo: emojiLabel.trailingAnchor, constant: 12),
-            nameLabel.trailingAnchor.constraint(equalTo: topContainer.trailingAnchor, constant: -12),
-            nameLabel.centerYAnchor.constraint(equalTo: emojiLabel.centerYAnchor),
+        
+            nameLabel.topAnchor.constraint(equalTo: emojiLabel.bottomAnchor, constant: 12), // Изменено
+            nameLabel.leadingAnchor.constraint(equalTo: topContainer.leadingAnchor, constant: 12), // Изменено
+            nameLabel.trailingAnchor.constraint(equalTo: topContainer.trailingAnchor, constant: -12), // Неизменно
             
             // Ограничения для bottomContainer
             bottomContainer.topAnchor.constraint(equalTo: topContainer.bottomAnchor),
@@ -92,8 +104,8 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         nameLabel.text = tracker.name
         dayLabel.text = "\(tracker.schedule)"
         topContainer.backgroundColor = tracker.color
-      
-        bottomContainer.backgroundColor = tracker.color.withAlphaComponent(0.5)
+        addButton.backgroundColor = tracker.color
+        bottomContainer.backgroundColor = .clear
     }
 }
 
