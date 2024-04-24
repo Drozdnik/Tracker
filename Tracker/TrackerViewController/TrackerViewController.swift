@@ -186,19 +186,31 @@ extension TrackerViewController: UICollectionViewDataSource{
         cell.onIncrementCount = { [weak self] indexPath in
             guard let self = self else { return }
             let trackerItem = self.categories[indexPath.section].trackers[indexPath.item]
+
             
-            if self.isDate(self.selectedDate, matchesScheduleOf: trackerItem) {
-                if Calendar.current.isDate(self.selectedDate, inSameDayAs: self.currentDate) {
-                    if !self.completedTrackers.contains(where: { $0.trackerId == trackerItem.id && Calendar.current.isDate($0.date, inSameDayAs: self.selectedDate) }) {
-                        trackerItem.count += 1
-                        let newRecord = TrackerRecord(trackerId: trackerItem.id, date: self.selectedDate)
-                        self.completedTrackers.append(newRecord)
-                        
-                        collectionView.reloadItems(at: [indexPath])
-                    }
+            let isToday = Calendar.current.isDate(selectedDate, inSameDayAs: currentDate)
+            let isIrregularEvent = trackerItem.schedule.days.allSatisfy({ !$0 })
+            
+            if isIrregularEvent {
+                if isToday && !self.completedTrackers.contains(where: { $0.trackerId == trackerItem.id && Calendar.current.isDate($0.date, inSameDayAs: self.currentDate) }) {
+                    
+                    trackerItem.count += 1
+                    let newRecord = TrackerRecord(trackerId: trackerItem.id, date: self.currentDate)
+                    self.completedTrackers.append(newRecord)
+                    self.collectionView.reloadItems(at: [indexPath])
                 }
+            } else if !isToday {
+                return
+            } else if !self.completedTrackers.contains(where: { $0.trackerId == trackerItem.id && Calendar.current.isDate($0.date, inSameDayAs: self.selectedDate) }) {
+                // Для регулярного события увеличиваем счетчик в соответствии с расписанием
+                trackerItem.count += 1
+                let newRecord = TrackerRecord(trackerId: trackerItem.id, date: self.selectedDate)
+                self.completedTrackers.append(newRecord)
+                self.collectionView.reloadItems(at: [indexPath])
             }
         }
+        
+        
         cell.configureWith(tracker: tracker, completedTrackers: completedTrackers, selectedDate: selectedDate, currentDate: currentDate)
         return cell
     }

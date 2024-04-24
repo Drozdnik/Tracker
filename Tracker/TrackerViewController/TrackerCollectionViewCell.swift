@@ -22,7 +22,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     private var countOfDays: String = ""
     // Элементы UI для нижней секции
     private let dayLabel = UILabel()
-    private let addButton = UIButton()
+    let addButton = UIButton()
     private let bottomContainer = UIView()
     static let identifier = "TrackerCell"
     override init(frame: CGRect) {
@@ -121,16 +121,20 @@ class TrackerCollectionViewCell: UICollectionViewCell {
 
         // Определение, выполнен ли трекер на выбранную дату
         isCompleted = completedTrackers.contains {
-            $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: selectedDate)
-        }
+                $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: selectedDate)
+            }
 
         // Сравнение выбранной даты с текущей датой
         let isToday = Calendar.current.isDate(selectedDate, inSameDayAs: currentDate)
 
-        // Установка доступности кнопки на основе того, является ли выбранная дата сегодняшним днем и не завершен ли трекер
-        addButton.isEnabled = isToday && !isCompleted
+        // Проверка, является ли трекер нерегулярным событием
+        let isIrregularEvent = tracker.schedule.days.allSatisfy({ !$0 })
+
+        // Установка доступности кнопки
+        addButton.isEnabled = (isIrregularEvent && isToday) || (!isIrregularEvent && !isCompleted && isToday)
         updateButtonAppearance()
     }
+    
     func updateButtonAppearance() {
         if isCompleted {
         
@@ -158,6 +162,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    
     func getDayText(count: Int) -> String {
         return "\(count) " + getNoun(number: count, one: "день", two: "дня", five: "дней")
     }
@@ -169,3 +174,9 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     }
 }
 
+extension Date {
+    func weekdayIndex() -> Int {
+        let calendar = Calendar.current
+        return calendar.component(.weekday, from: self) - 2 
+    }
+}
