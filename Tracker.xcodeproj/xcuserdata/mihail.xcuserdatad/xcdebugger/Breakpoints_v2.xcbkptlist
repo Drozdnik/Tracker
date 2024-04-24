@@ -970,8 +970,8 @@
             filePath = "Tracker/TrackerViewController/TrackerCollectionViewCell.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
             landmarkName = "configureWith(tracker:completedTrackers:selectedDate:currentDate:)"
             landmarkType = "7">
             <Locations>

@@ -62,6 +62,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         emojiLabel.layer.cornerRadius = 12
         emojiLabel.layer.masksToBounds = true
         emojiLabel.font = UIFont.systemFont(ofSize: 16)
+        emojiLabel.textAlignment = .center
         
         addButton.layer.cornerRadius = 16
         addButton.layer.masksToBounds = true
