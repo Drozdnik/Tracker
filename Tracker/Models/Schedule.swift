@@ -15,12 +15,16 @@ class Schedule{
     }
     
     func dayToShortDay() -> String{
-        var selectedDay: [String] = []
-        for (index, isSelected) in days.enumerated() {
-            if isSelected{
-                selectedDay.append(dayNames[index])
+        if days.allSatisfy({$0}){
+            return "Каждый день"
+        } else {
+            var selectedDay: [String] = []
+            for (index, isSelected) in days.enumerated() {
+                if isSelected{
+                    selectedDay.append(dayNames[index])
+                }
             }
+            return selectedDay.joined(separator: ", ")
         }
-        return selectedDay.joined(separator: ", ")
     }
 }

@@ -121,7 +121,6 @@
 				872A55A52BC70DD200A9920D /* ColorCollectionViewCell.swift */,
 				872A55A92BC70FB900A9920D /* UIColorExtension.swift */,
 				872A55A72BC70EE600A9920D /* ConstantsForCells.swift */,
-				87E3FF412BD86C0500F79C21 /* Tracker type.swift */,
 			);
 			path = NewHabbtiViewController;
 			sourceTree = "<group>";
@@ -159,6 +158,7 @@
 		877CB6472BBF397700C4164D /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				87E3FF432BD9701B00F79C21 /* ChooseTypeOfTracker */,
 				87E3FF3A2BD5AFF600F79C21 /* TrackerViewController */,
 				8763D3A42BC9C4E200B31704 /* ChooseDayForHabbit */,
 				872A55A22BC70D5100A9920D /* NewHabbtiViewController */,
@@ -169,7 +169,6 @@
 				877CB6562BBF397900C4164D /* Info.plist */,
 				877CB6B82BC16E6100C4164D /* StatisticViewController.swift */,
 				87E3FF392BD19FB900F79C21 /* Models */,
-				872A559C2BC5606C00A9920D /* ChooseTypeOfTracker.swift */,
 				872A55A02BC5F0E300A9920D /* UITextField extension.swift */,
 				877CB67A2BBF455E00C4164D /* UIView extensions.swift */,
 				877CB6BA2BC1746000C4164D /* tabBarViewController.swift */,
@@ -211,6 +210,15 @@
 				87E3FF3F2BD8289400F79C21 /* CategoryHeaderView.swift */,
 			);
 			path = TrackerViewController;
+			sourceTree = "<group>";
+		};
+		87E3FF432BD9701B00F79C21 /* ChooseTypeOfTracker */ = {
+			isa = PBXGroup;
+			children = (
+				87E3FF412BD86C0500F79C21 /* Tracker type.swift */,
+				872A559C2BC5606C00A9920D /* ChooseTypeOfTracker.swift */,
+			);
+			path = ChooseTypeOfTracker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
