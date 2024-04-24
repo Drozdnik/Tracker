@@ -9,7 +9,7 @@ final class TrackerViewController: UIViewController{
     var completedTrackers: [TrackerRecord] = []
     var allCategories: [TrackerCategory] = []
     var categories: [TrackerCategory]  = []
-
+    var currentDate: Date = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -185,19 +185,21 @@ extension TrackerViewController: UICollectionViewDataSource{
         cell.indexPath = indexPath
         cell.onIncrementCount = { [weak self] indexPath in
             guard let self = self else { return }
-              let trackerItem = self.categories[indexPath.section].trackers[indexPath.item]
-            trackerItem.count += 1
-              if self.isDate(self.selectedDate, matchesScheduleOf: trackerItem) {
-                  if !self.completedTrackers.contains(where: { $0.trackerId == trackerItem.id && Calendar.current.isDate($0.date, inSameDayAs: self.selectedDate) }) {
-
-                      let newRecord = TrackerRecord(trackerId: trackerItem.id, date: self.selectedDate)
-                      self.completedTrackers.append(newRecord)
-                      
-                      collectionView.reloadItems(at: [indexPath])
+            let trackerItem = self.categories[indexPath.section].trackers[indexPath.item]
+            
+            if self.isDate(self.selectedDate, matchesScheduleOf: trackerItem) {
+                if Calendar.current.isDate(self.selectedDate, inSameDayAs: self.currentDate) {
+                    if !self.completedTrackers.contains(where: { $0.trackerId == trackerItem.id && Calendar.current.isDate($0.date, inSameDayAs: self.selectedDate) }) {
+                        trackerItem.count += 1
+                        let newRecord = TrackerRecord(trackerId: trackerItem.id, date: self.selectedDate)
+                        self.completedTrackers.append(newRecord)
+                        
+                        collectionView.reloadItems(at: [indexPath])
+                    }
                 }
             }
         }
-        cell.configureWith(tracker: tracker, completedTrackers: completedTrackers, selectedDate: selectedDate)
+        cell.configureWith(tracker: tracker, completedTrackers: completedTrackers, selectedDate: selectedDate, currentDate: currentDate)
         return cell
     }
     

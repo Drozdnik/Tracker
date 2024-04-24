@@ -107,7 +107,8 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func configureWith(tracker: Tracker, completedTrackers: [TrackerRecord], selectedDate: Date) {
+    func configureWith(tracker: Tracker, completedTrackers: [TrackerRecord], selectedDate: Date, currentDate: Date) {
+        // Настройка UI элементов
         emojiLabel.text = tracker.emoji
         nameLabel.text = tracker.name
         topContainer.backgroundColor = tracker.color
@@ -117,14 +118,19 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         self.completedTrackers = completedTrackers
         self.selectedDate = selectedDate
         bottomContainer.backgroundColor = .clear
+
+        // Определение, выполнен ли трекер на выбранную дату
         isCompleted = completedTrackers.contains {
             $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: selectedDate)
         }
-        
+
+        // Сравнение выбранной даты с текущей датой
+        let isToday = Calendar.current.isDate(selectedDate, inSameDayAs: currentDate)
+
+        // Установка доступности кнопки на основе того, является ли выбранная дата сегодняшним днем и не завершен ли трекер
+        addButton.isEnabled = isToday && !isCompleted
         updateButtonAppearance()
     }
-    
-    
     func updateButtonAppearance() {
         if isCompleted {
         
