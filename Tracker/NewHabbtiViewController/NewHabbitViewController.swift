@@ -48,7 +48,12 @@ final class NewHabbitViewController: UIViewController{
     }
     
     private func configureNavBar(){
-        navigationItem.title = "Новая привычка"
+        if trackerType == .habit{
+            navigationItem.title = "Новая привычка"
+        } else if trackerType == .irregularEvent {
+            navigationItem.title = "Новое нерегулярное событие"
+        }
+       
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
     }
     
@@ -88,21 +93,22 @@ final class NewHabbitViewController: UIViewController{
     }
     
     private func configureConstraintsForContentView(){
+        let heightConstants: CGFloat = trackerType == .habit ? 149 : 75
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
             textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             textField.heightAnchor.constraint(equalToConstant: 63),
             
-            characterLimitLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
+            characterLimitLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 5), //
             characterLimitLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            tableView.topAnchor.constraint(equalTo: characterLimitLabel.bottomAnchor, constant: 24),
+            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: textField.trailingAnchor),
-            tableView.heightAnchor.constraint(equalToConstant: 149),
+            tableView.heightAnchor.constraint(equalToConstant: heightConstants),
             
-            emojiCollectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 50),
+            emojiCollectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
             emojiCollectionView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
             emojiCollectionView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
             emojiCollectionView.heightAnchor.constraint(equalToConstant: 250), // по макету 374
@@ -125,7 +131,7 @@ final class NewHabbitViewController: UIViewController{
             createButton.trailingAnchor.constraint(equalTo: colorCollectionView.trailingAnchor)
         ])
     }
-    
+ 
     
     // Сделать ext для UIViewController и вызывать оттуда configureNavBar(title)
     private lazy var textField: UITextView = {
