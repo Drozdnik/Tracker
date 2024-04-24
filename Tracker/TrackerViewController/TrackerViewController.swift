@@ -125,20 +125,20 @@ final class TrackerViewController: UIViewController{
     }
     
     func filterTrakersForSelectedDate() {
-       
-            var calendar = Calendar(identifier: .gregorian)
-            calendar.locale = Locale(identifier: "ru_RU")
-            calendar.firstWeekday = 2 
-            calendar.timeZone = TimeZone(identifier: "Europe/Moscow") ?? calendar.timeZone
-            
-            let weekday = calendar.component(.weekday, from: selectedDate)
-            let adjustedWeekdayIndex = (weekday + 5) % 7
-            
-        categories = allCategories.map { category in
-               let filteredTrackers = category.trackers.filter { $0.schedule.days[adjustedWeekdayIndex] }
-               return TrackerCategory(title: category.title, trackers: filteredTrackers)
-           }.filter { !$0.trackers.isEmpty }
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.locale = Locale(identifier: "ru_RU")
+        calendar.firstWeekday = 2
+        calendar.timeZone = TimeZone(identifier: "Europe/Moscow") ?? calendar.timeZone
         
+        let isToday = Calendar.current.isDate(selectedDate, inSameDayAs: currentDate)
+
+        categories = allCategories.map { category in
+            let filteredTrackers = category.trackers.filter { tracker in
+                let isIrregular = tracker.schedule.days.allSatisfy({ !$0 })
+                return isIrregular ? isToday : tracker.schedule.days[calendar.component(.weekday, from: selectedDate) - 2]
+            }
+            return TrackerCategory(title: category.title, trackers: filteredTrackers)
+        }.filter { !$0.trackers.isEmpty }
     }
 
     

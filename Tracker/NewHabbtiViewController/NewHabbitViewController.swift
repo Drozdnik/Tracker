@@ -23,9 +23,9 @@ final class NewHabbitViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if trackerType == .irregularEvent{
-            habitSchedule = Schedule(days: Array(repeating: true, count: 7))
-        }
+//        if trackerType == .irregularEvent{
+//            habitSchedule = Schedule(days: Array(repeating: true, count: 7))
+//        }
         view.backgroundColor = .white
         setupScrollView()
         setupContentView()
@@ -390,7 +390,7 @@ extension NewHabbitViewController{
         !habitEmoji.isEmpty &&
         habitColor != UIColor.white &&
         !habitCategory.isEmpty &&
-        habitSchedule.days.contains(true)
+        (trackerType != .irregularEvent ? habitSchedule.days.contains(true) : true)
         createButton.isEnabled = isFormComplete
         createButton.backgroundColor = isFormComplete ? .black : .gray
     }
