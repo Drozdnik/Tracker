@@ -27,6 +27,7 @@ final class TrackerViewController: UIViewController{
         view.addSubview(noTracksLabel)
         view.addSubview(imageForNoTracks)
         view.addSubview(collectionView)
+        view.addSubview(filterButton)
     }
     
     private func configureConstraints(){
@@ -43,8 +44,15 @@ final class TrackerViewController: UIViewController{
             
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            collectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16)
+            collectionView.bottomAnchor.constraint(equalTo: filterButton.topAnchor, constant: -2),
+            collectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
+            
+            
+            filterButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 115),
+            filterButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -114),
+            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            filterButton.heightAnchor.constraint(equalToConstant: 50),
+            filterButton.widthAnchor.constraint(equalToConstant: 114)
         ])
     }
     
@@ -87,10 +95,10 @@ final class TrackerViewController: UIViewController{
         dateButton.timeZone = TimeZone(identifier: "Europe/Moscow")
         dateButton.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: dateButton)
-      
+        
         let currentDate = Date()
         dateButton.setDate(currentDate, animated: false)
-       
+        
         let calendar = Calendar(identifier: .gregorian)
         if let minDate = calendar.date(byAdding: .year, value: -10, to: currentDate),
            let maxDate = calendar.date(byAdding: .year, value: 10, to: currentDate) {
@@ -98,14 +106,27 @@ final class TrackerViewController: UIViewController{
             dateButton.maximumDate = maxDate
         }
     }
-        
+    
+    private lazy var filterButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Фильтры", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.backgroundColor = .systemBlue
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor(named: "BlueForFilter")
+        button.layer.cornerRadius = 16
+        button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     private func configureNavigationBar(){
         navigationItem.title = "Трекеры"
         
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
         addButton.tintColor = .black
         navigationItem.leftBarButtonItem = addButton
-
+        
         
         
         let searchController = UISearchController(searchResultsController: nil)
@@ -131,7 +152,7 @@ final class TrackerViewController: UIViewController{
         calendar.timeZone = TimeZone(identifier: "Europe/Moscow") ?? calendar.timeZone
         
         let isToday = Calendar.current.isDate(selectedDate, inSameDayAs: currentDate)
-
+        
         categories = allCategories.map { category in
             let filteredTrackers = category.trackers.filter { tracker in
                 let isIrregular = tracker.schedule.days.allSatisfy({ !$0 })
@@ -140,7 +161,7 @@ final class TrackerViewController: UIViewController{
             return TrackerCategory(title: category.title, trackers: filteredTrackers)
         }.filter { !$0.trackers.isEmpty }
     }
-
+    
     
     @objc private func addTapped() {
         let vc = ChooseTypeOfTracker()
@@ -165,11 +186,16 @@ final class TrackerViewController: UIViewController{
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         selectedDate = sender.date
-            filterTrakersForSelectedDate()
-            collectionView.reloadData()
+        filterTrakersForSelectedDate()
+        collectionView.reloadData()
+    }
+    
+    
+    @objc private func filterButtonTapped() {
+        // Действие при нажатии на кнопку
+        print("Фильтр нажат")
     }
 }
-
 extension TrackerViewController: UICollectionViewDataSource{
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return categories.count
