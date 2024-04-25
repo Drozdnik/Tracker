@@ -224,13 +224,11 @@ extension TrackerViewController: UICollectionViewDataSource{
                 return
             }
 
-            // Если дата не будущая, обрабатываем изменения
             if let index = self.completedTrackers.firstIndex(where: { $0.trackerId == trackerItem.id && Calendar.current.isDate($0.date, inSameDayAs: self.currentDate) }) {
-                // Если трекер уже отмечен, уменьшаем счетчик и удаляем его из списка
                 trackerItem.count -= 1
                 self.completedTrackers.remove(at: index)
             } else {
-                // Если трекер не отмечен, увеличиваем счетчик и добавляем его в список
+
                 trackerItem.count += 1
                 let newRecord = TrackerRecord(trackerId: trackerItem.id, date: self.currentDate)
                 self.completedTrackers.append(newRecord)
