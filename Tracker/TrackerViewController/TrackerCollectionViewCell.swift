@@ -16,9 +16,9 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     var selectedDate: Date = Date()
     
     // Элементы UI для верхней секции
-    private let emojiLabel = UILabel()
-    private let nameLabel = UILabel()
-    private let topContainer = UIView()
+    private lazy var emojiLabel = UILabel()
+    private lazy var nameLabel = UILabel()
+    private lazy var topContainer = UIView()
     private var countOfDays: String = ""
     // Элементы UI для нижней секции
     private let dayLabel = UILabel()
