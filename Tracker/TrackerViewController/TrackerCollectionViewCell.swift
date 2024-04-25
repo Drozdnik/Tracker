@@ -69,9 +69,11 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         
         nameLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         nameLabel.numberOfLines = 2
+        nameLabel.textColor = .white
         nameLabel.lineBreakMode = .byWordWrapping
         nameLabel.textAlignment = .left
         
+        dayLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
     }
     
     private func setupConstraints() {
@@ -118,21 +120,11 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         dayLabel.text = "\(countOfDays)"
         self.completedTrackers = completedTrackers
         self.selectedDate = selectedDate
-        bottomContainer.backgroundColor = .clear
 
-        // Определение, выполнен ли трекер на выбранную дату
+        // Проверка выполнения трекера
         isCompleted = completedTrackers.contains {
-                $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: selectedDate)
-            }
-
-        // Сравнение выбранной даты с текущей датой
-        let isToday = Calendar.current.isDate(selectedDate, inSameDayAs: currentDate)
-
-        // Проверка, является ли трекер нерегулярным событием
-        let isIrregularEvent = tracker.schedule.days.allSatisfy({ !$0 })
-
-        // Установка доступности кнопки
-        addButton.isEnabled = (isIrregularEvent && isToday) || (!isIrregularEvent && !isCompleted && isToday)
+            $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: selectedDate)
+        }
         updateButtonAppearance()
     }
     
@@ -141,7 +133,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         
             addButton.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
             addButton.layer.opacity = 0.3
-            addButton.isEnabled = false
+            addButton.isEnabled = true
         } else {
             addButton.setImage(UIImage(systemName: "plus"), for: .normal)
             addButton.isEnabled = true

@@ -137,12 +137,14 @@ final class NewHabbitViewController: UIViewController{
     private lazy var textField: UITextView = {
         let textView = UITextView()
         textView.text = "Введите название трекера"
+        textView.textAlignment = .left
+        
         textView.textColor = UIColor.lightGray
         textView.backgroundColor = UIColor(named: "GrayForNavBar")
         textView.font = UIFont.systemFont(ofSize: 17)
         textView.layer.cornerRadius = 16
         textView.layer.masksToBounds = true
-        textView.textContainerInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        textView.textContainerInset = UIEdgeInsets(top: 20, left: 16, bottom: 12, right: 12)
         textView.delegate = self
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
@@ -392,7 +394,7 @@ extension NewHabbitViewController{
         !habitCategory.isEmpty &&
         (trackerType != .irregularEvent ? habitSchedule.days.contains(true) : true)
         createButton.isEnabled = isFormComplete
-        createButton.backgroundColor = isFormComplete ? .black : .gray
+        createButton.backgroundColor = isFormComplete ? .black : UIColor(named: "GrayForCreateButton")
     }
     
     @objc  private func didTapCancelButton(){

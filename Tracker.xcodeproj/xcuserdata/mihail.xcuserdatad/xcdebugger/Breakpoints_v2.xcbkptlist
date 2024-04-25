@@ -46,8 +46,8 @@
             filePath = "Tracker/NewHabbtiViewController/NewHabbitViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "313"
-            endingLineNumber = "313"
+            startingLineNumber = "315"
+            endingLineNumber = "315"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -436,8 +436,8 @@
             filePath = "Tracker/NewHabbtiViewController/NewHabbitViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "279"
-            endingLineNumber = "279"
+            startingLineNumber = "281"
+            endingLineNumber = "281"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -484,8 +484,8 @@
             filePath = "Tracker/NewHabbtiViewController/NewHabbitViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -500,8 +500,8 @@
             filePath = "Tracker/NewHabbtiViewController/NewHabbitViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "286"
-            endingLineNumber = "286"
+            startingLineNumber = "288"
+            endingLineNumber = "288"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -516,8 +516,8 @@
             filePath = "Tracker/NewHabbtiViewController/NewHabbitViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "285"
-            endingLineNumber = "285"
+            startingLineNumber = "287"
+            endingLineNumber = "287"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -532,8 +532,8 @@
             filePath = "Tracker/NewHabbtiViewController/NewHabbitViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "389"
-            endingLineNumber = "389"
+            startingLineNumber = "391"
+            endingLineNumber = "391"
             landmarkName = "updateCreateButtonState()"
             landmarkType = "7">
          </BreakpointContent>
@@ -548,8 +548,8 @@
             filePath = "Tracker/NewHabbtiViewController/NewHabbitViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "395"
-            endingLineNumber = "395"
+            startingLineNumber = "397"
+            endingLineNumber = "397"
             landmarkName = "updateCreateButtonState()"
             landmarkType = "7">
          </BreakpointContent>
@@ -564,8 +564,8 @@
             filePath = "Tracker/NewHabbtiViewController/NewHabbitViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "396"
-            endingLineNumber = "396"
+            startingLineNumber = "398"
+            endingLineNumber = "398"
             landmarkName = "updateCreateButtonState()"
             landmarkType = "7">
          </BreakpointContent>
@@ -580,8 +580,8 @@
             filePath = "Tracker/NewHabbtiViewController/NewHabbitViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "394"
-            endingLineNumber = "394"
+            startingLineNumber = "396"
+            endingLineNumber = "396"
             landmarkName = "updateCreateButtonState()"
             landmarkType = "7">
          </BreakpointContent>
@@ -718,7 +718,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "7B439542-5EDC-4F6D-BC83-158E82F3A457"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tracker/TrackerViewController/TrackerViewController.swift"
@@ -849,6 +849,36 @@
                   endingLineNumber = "8"
                   offsetFromSymbolStart = "196">
                </Location>
+               <Location
+                  uuid = "7B439542-5EDC-4F6D-BC83-158E82F3A457 - 5de5e3cff7a8787d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.TrackerViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; Tracker.TrackerViewController"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mihail/Desktop/Tracker/Tracker/TrackerViewController/TrackerViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "8"
+                  endingLineNumber = "8"
+                  offsetFromSymbolStart = "236">
+               </Location>
+               <Location
+                  uuid = "7B439542-5EDC-4F6D-BC83-158E82F3A457 - 46933daf879bf8c1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Tracker.TrackerViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;Tracker.TrackerViewController&gt;"
+                  moduleName = "Tracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mihail/Desktop/Tracker/Tracker/TrackerViewController/TrackerViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "8"
+                  endingLineNumber = "8"
+                  offsetFromSymbolStart = "204">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -856,7 +886,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "8DC39879-B2C0-4973-8091-62169F9B6E5B"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tracker/TrackerViewController/TrackerViewController.swift"
@@ -957,71 +987,37 @@
                   endingLineNumber = "12"
                   offsetFromSymbolStart = "424">
                </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "838E5104-8BE2-427A-94E8-6AE08CAE0738"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tracker/TrackerViewController/TrackerCollectionViewCell.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
-            landmarkName = "configureWith(tracker:completedTrackers:selectedDate:currentDate:)"
-            landmarkType = "7">
-            <Locations>
                <Location
-                  uuid = "838E5104-8BE2-427A-94E8-6AE08CAE0738 - f51508383a307735"
+                  uuid = "8DC39879-B2C0-4973-8091-62169F9B6E5B - 5de5e3cff7a878f9"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Tracker.TrackerCollectionViewCell.configureWith(tracker: Tracker.Tracker, completedTrackers: Swift.Array&lt;Tracker.TrackerRecord&gt;, selectedDate: Foundation.Date, currentDate: Foundation.Date) -&gt; ()"
+                  symbolName = "Tracker.TrackerViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; Tracker.TrackerViewController"
                   moduleName = "Tracker"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mihail/Desktop/Tracker/Tracker/TrackerViewController/TrackerCollectionViewCell.swift"
+                  urlString = "file:///Users/mihail/Desktop/Tracker/Tracker/TrackerViewController/TrackerViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "134"
-                  endingLineNumber = "134"
-                  offsetFromSymbolStart = "2252">
+                  startingLineNumber = "12"
+                  endingLineNumber = "12"
+                  offsetFromSymbolStart = "464">
                </Location>
                <Location
-                  uuid = "838E5104-8BE2-427A-94E8-6AE08CAE0738 - f51508383a307735"
+                  uuid = "8DC39879-B2C0-4973-8091-62169F9B6E5B - 46933daf879bf845"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Tracker.TrackerCollectionViewCell.configureWith(tracker: Tracker.Tracker, completedTrackers: Swift.Array&lt;Tracker.TrackerRecord&gt;, selectedDate: Foundation.Date, currentDate: Foundation.Date) -&gt; ()"
+                  symbolName = "Tracker.TrackerViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;Tracker.TrackerViewController&gt;"
                   moduleName = "Tracker"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mihail/Desktop/Tracker/Tracker/TrackerViewController/TrackerCollectionViewCell.swift"
+                  urlString = "file:///Users/mihail/Desktop/Tracker/Tracker/TrackerViewController/TrackerViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "134"
-                  endingLineNumber = "134"
-                  offsetFromSymbolStart = "2256">
+                  startingLineNumber = "12"
+                  endingLineNumber = "12"
+                  offsetFromSymbolStart = "432">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "7E1A2F7D-1F5E-4FFF-9370-26CEAD88D582"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tracker/TrackerViewController/TrackerViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "218"
-            endingLineNumber = "218"
-            landmarkName = "collectionView(_:cellForItemAt:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
