@@ -242,7 +242,8 @@ extension TrackerViewController: UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard kind == UICollectionView.elementKindSectionHeader else {
-            fatalError("Unexpected element kind")
+            assertionFailure("Header error")
+            return UICollectionReusableView()
         }
         let headerView = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind,
