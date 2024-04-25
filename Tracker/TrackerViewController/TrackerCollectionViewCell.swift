@@ -77,7 +77,6 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupConstraints() {
-        // Ограничения для topContainer
         NSLayoutConstraint.activate([
             topContainer.topAnchor.constraint(equalTo: contentView.topAnchor),
             topContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -89,17 +88,15 @@ class TrackerCollectionViewCell: UICollectionViewCell {
             emojiLabel.heightAnchor.constraint(equalToConstant: 24),
             emojiLabel.widthAnchor.constraint(equalToConstant: 24),
             
-            nameLabel.topAnchor.constraint(equalTo: emojiLabel.bottomAnchor, constant: 12), // Изменено
-            nameLabel.leadingAnchor.constraint(equalTo: topContainer.leadingAnchor, constant: 12), // Изменено
-            nameLabel.trailingAnchor.constraint(equalTo: topContainer.trailingAnchor, constant: -12), // Неизменно
+            nameLabel.topAnchor.constraint(equalTo: emojiLabel.bottomAnchor, constant: 12),
+            nameLabel.leadingAnchor.constraint(equalTo: topContainer.leadingAnchor, constant: 12),
+            nameLabel.trailingAnchor.constraint(equalTo: topContainer.trailingAnchor, constant: -12),
             
-            // Ограничения для bottomContainer
             bottomContainer.topAnchor.constraint(equalTo: topContainer.bottomAnchor),
             bottomContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             bottomContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             bottomContainer.heightAnchor.constraint(equalToConstant: 58),
             
-            // Ограничения для dayLabel и addButton в bottomContainer
             dayLabel.leadingAnchor.constraint(equalTo: bottomContainer.leadingAnchor, constant: 12),
             dayLabel.centerYAnchor.constraint(equalTo: bottomContainer.centerYAnchor),
             
@@ -110,27 +107,26 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func configureWith(tracker: Tracker, completedTrackers: [TrackerRecord], selectedDate: Date, currentDate: Date) {
-        // Настройка UI элементов
+    func configureWith(tracker: Tracker, completedTrackers: [TrackerRecord], currentDate: Date) {
         emojiLabel.text = tracker.emoji
         nameLabel.text = tracker.name
         topContainer.backgroundColor = tracker.color
         addButton.backgroundColor = tracker.color
         countOfDays = getDayText(count: tracker.count)
         dayLabel.text = "\(countOfDays)"
+        addButton.layer.opacity = 1
         self.completedTrackers = completedTrackers
-        self.selectedDate = selectedDate
-
-        // Проверка выполнения трекера
+        
         isCompleted = completedTrackers.contains {
-            $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: selectedDate)
+            $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: currentDate)
         }
+        
         updateButtonAppearance()
     }
     
     func updateButtonAppearance() {
         if isCompleted {
-        
+            
             addButton.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
             addButton.layer.opacity = 0.3
             addButton.isEnabled = true
@@ -170,6 +166,6 @@ class TrackerCollectionViewCell: UICollectionViewCell {
 extension Date {
     func weekdayIndex() -> Int {
         let calendar = Calendar.current
-        return calendar.component(.weekday, from: self) - 2 
+        return calendar.component(.weekday, from: self) - 2
     }
 }

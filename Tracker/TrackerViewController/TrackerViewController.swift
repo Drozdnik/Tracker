@@ -5,11 +5,11 @@ import UIKit
 final class TrackerViewController: UIViewController{
     let noTracksLabel = UILabel()
     
-    var selectedDate: Date = Date()
+    var currentDate: Date = Date()
     var completedTrackers: [TrackerRecord] = []
     var allCategories: [TrackerCategory] = []
     var categories: [TrackerCategory]  = []
-    var currentDate: Date = Date()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +18,7 @@ final class TrackerViewController: UIViewController{
         addSubViews()
         configureConstraints()
         configureDatePicker()
-        filterTrakersForSelectedDate()
+        filterTrakersForCurrentDay()
         collectionView.reloadData()
     }
     
@@ -145,19 +145,17 @@ final class TrackerViewController: UIViewController{
         return tracker.schedule.days[weekday - 2] // вот тут проверить что вернет
     }
     
-    func filterTrakersForSelectedDate() {
+    func filterTrakersForCurrentDay() {
         var calendar = Calendar(identifier: .gregorian)
         calendar.locale = Locale(identifier: "ru_RU")
-        calendar.firstWeekday = 2
-        calendar.timeZone = TimeZone(identifier: "Europe/Moscow") ?? calendar.timeZone
-        
-        let isToday = Calendar.current.isDate(selectedDate, inSameDayAs: currentDate)
+        calendar.firstWeekday = 2 // Понедельник как первый день недели
+        calendar.timeZone = TimeZone(identifier: "Europe/Moscow") ?? TimeZone.current
         
         categories = allCategories.map { category in
             let filteredTrackers = category.trackers.filter { tracker in
                 let isIrregular = tracker.schedule.days.allSatisfy({ !$0 })
-                let weekdayIndex = (calendar.component(.weekday, from: selectedDate) - 1) % 7
-                return isIrregular ? isToday : tracker.schedule.days[weekdayIndex]
+                let weekdayIndex = (calendar.component(.weekday, from: currentDate) - 1) % 7
+                return isIrregular ? false : tracker.schedule.days[weekdayIndex]
             }
             return TrackerCategory(title: category.title, trackers: filteredTrackers)
         }.filter { !$0.trackers.isEmpty }
@@ -177,7 +175,7 @@ final class TrackerViewController: UIViewController{
                 self.categories.append(newCategory)
             }
             self.allCategories = self.categories
-            filterTrakersForSelectedDate()
+            filterTrakersForCurrentDay()
             self.collectionView.reloadData()
             self.dismiss(animated: true)
             configureNoTracksLabel()
@@ -186,8 +184,8 @@ final class TrackerViewController: UIViewController{
     }
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
-        selectedDate = sender.date
-        filterTrakersForSelectedDate()
+        currentDate = sender.date
+        filterTrakersForCurrentDay()
         collectionView.reloadData()
     }
     
@@ -210,28 +208,37 @@ extension TrackerViewController: UICollectionViewDataSource{
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCell", for: indexPath) as! TrackerCollectionViewCell
         let tracker = categories[indexPath.section].trackers[indexPath.row]
         cell.indexPath = indexPath
+
         cell.onIncrementCount = { [weak self] indexPath in
             guard let self = self else { return }
             let trackerItem = self.categories[indexPath.section].trackers[indexPath.item]
-            let isToday = Calendar.current.isDate(self.selectedDate, inSameDayAs: self.currentDate)
-            
-            if isToday {
-                if let index = self.completedTrackers.firstIndex(where: { $0.trackerId == trackerItem.id && Calendar.current.isDate($0.date, inSameDayAs: self.selectedDate) }) {
-                    // Трекер уже выполнен, уменьшаем счетчик и удаляем его из списка
-                    trackerItem.count -= 1
-                    self.completedTrackers.remove(at: index)
-                } else {
-                    // Трекер не выполнен, увеличиваем счетчик и добавляем его в список
-                    trackerItem.count += 1
-                    let newRecord = TrackerRecord(trackerId: trackerItem.id, date: self.selectedDate)
-                    self.completedTrackers.append(newRecord)
-                }
-                self.collectionView.reloadItems(at: [indexPath])
+
+            // Проверяем, является ли дата будущей
+            let calendar = Calendar.current
+            let today = calendar.startOfDay(for: Date()) // Получаем начало текущего дня для точного сравнения
+            let currentDateStart = calendar.startOfDay(for: self.currentDate) // Получаем начало дня currentDate для точного сравнения
+            let isFutureDate = calendar.compare(currentDateStart, to: today, toGranularity: .day) == .orderedDescending
+
+            // Если дата будущая, ничего не делаем
+            if isFutureDate {
+                return
             }
+
+            // Если дата не будущая, обрабатываем изменения
+            if let index = self.completedTrackers.firstIndex(where: { $0.trackerId == trackerItem.id && Calendar.current.isDate($0.date, inSameDayAs: self.currentDate) }) {
+                // Если трекер уже отмечен, уменьшаем счетчик и удаляем его из списка
+                trackerItem.count -= 1
+                self.completedTrackers.remove(at: index)
+            } else {
+                // Если трекер не отмечен, увеличиваем счетчик и добавляем его в список
+                trackerItem.count += 1
+                let newRecord = TrackerRecord(trackerId: trackerItem.id, date: self.currentDate)
+                self.completedTrackers.append(newRecord)
+            }
+            self.collectionView.reloadItems(at: [indexPath])
         }
-        
-        
-        cell.configureWith(tracker: tracker, completedTrackers: completedTrackers, selectedDate: selectedDate, currentDate: currentDate)
+
+        cell.configureWith(tracker: tracker, completedTrackers: self.completedTrackers, currentDate: self.currentDate)
         return cell
     }
     
