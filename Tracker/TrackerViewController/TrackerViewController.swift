@@ -154,7 +154,7 @@ final class TrackerViewController: UIViewController{
         categories = allCategories.map { category in
             let filteredTrackers = category.trackers.filter { tracker in
                 let isIrregular = tracker.schedule.days.allSatisfy({ !$0 })
-                let weekdayIndex = (calendar.component(.weekday, from: currentDate) - 1) % 7
+                let weekdayIndex = (calendar.component(.weekday, from: currentDate) + 5) % 7
                 return isIrregular ? false : tracker.schedule.days[weekdayIndex]
             }
             return TrackerCategory(title: category.title, trackers: filteredTrackers)
