@@ -146,19 +146,21 @@ final class TrackerViewController: UIViewController{
     }
     
     func filterTrakersForCurrentDay() {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.locale = Locale(identifier: "ru_RU")
-        calendar.firstWeekday = 2 // Понедельник как первый день недели
-        calendar.timeZone = TimeZone(identifier: "Europe/Moscow") ?? TimeZone.current
-        
-        categories = allCategories.map { category in
-            let filteredTrackers = category.trackers.filter { tracker in
-                let isIrregular = tracker.schedule.days.allSatisfy({ !$0 })
-                let weekdayIndex = (calendar.component(.weekday, from: currentDate) + 5) % 7
-                return isIrregular ? false : tracker.schedule.days[weekdayIndex]
-            }
-            return TrackerCategory(title: category.title, trackers: filteredTrackers)
-        }.filter { !$0.trackers.isEmpty }
+            var calendar = Calendar(identifier: .gregorian)
+            calendar.locale = Locale(identifier: "ru_RU")
+            calendar.timeZone = TimeZone(identifier: "Europe/Moscow") ?? TimeZone.current
+            let today = calendar.startOfDay(for: Date())
+            let isToday = Calendar.current.isDate(currentDate, inSameDayAs: today)
+            
+            categories = allCategories.map { category in
+                let filteredTrackers = category.trackers.filter { tracker in
+                    let isIrregular = tracker.schedule.days.allSatisfy({ !$0 })
+                    let weekdayIndex = (calendar.component(.weekday, from: currentDate) + 5) % 7
+                    
+                    return isIrregular ? isToday : tracker.schedule.days[weekdayIndex]
+                }
+                return TrackerCategory(title: category.title, trackers: filteredTrackers)
+            }.filter { !$0.trackers.isEmpty }
     }
     
     
