@@ -126,10 +126,11 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     
     func updateButtonAppearance() {
         if isCompleted {
+            let configuration = UIImage.SymbolConfiguration(weight: .bold)
+            let checkmarkImage = UIImage(systemName: "checkmark", withConfiguration: configuration)
+               addButton.setImage(checkmarkImage, for: .normal)
             
-            addButton.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
             addButton.layer.opacity = 0.3
-            addButton.isEnabled = true
         } else {
             addButton.setImage(UIImage(systemName: "plus"), for: .normal)
             addButton.isEnabled = true
