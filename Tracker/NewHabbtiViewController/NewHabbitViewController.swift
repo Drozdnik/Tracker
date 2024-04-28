@@ -23,9 +23,7 @@ final class NewHabbitViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        if trackerType == .irregularEvent{
-//            habitSchedule = Schedule(days: Array(repeating: true, count: 7))
-//        }
+
         view.backgroundColor = .white
         setupScrollView()
         setupContentView()
@@ -204,7 +202,6 @@ final class NewHabbitViewController: UIViewController{
     }()
 }
 
-//textField
 extension NewHabbitViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
             if text == "\n" {
@@ -367,15 +364,13 @@ extension NewHabbitViewController: UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.emojiCollectionView {
-            // Обновляем переменную habitEmoji на основе выбранного индекса
             self.habitEmoji = emojiList[indexPath.item]
             updateCreateButtonState()
         } else if collectionView == self.colorCollectionView {
-            // Обновляем переменную habitColor на основе выбранного индекса
             self.habitColor = colorList[indexPath.item]
             guard let cell = collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell else { return }
             updateCreateButtonState()
-            cell.setSelectedState()
+            cell.setSelectedState(with: self.habitColor)
         }
     }
     
