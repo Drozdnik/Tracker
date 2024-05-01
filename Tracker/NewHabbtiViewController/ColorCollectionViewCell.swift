@@ -43,7 +43,7 @@ final class ColorCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             borderView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             borderView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            borderView.heightAnchor.constraint(equalTo: colorView.heightAnchor, constant: 10), // Adjust size as needed
+            borderView.heightAnchor.constraint(equalTo: colorView.heightAnchor, constant: 10), 
             borderView.widthAnchor.constraint(equalTo: colorView.widthAnchor, constant: 10),
             
             colorView.heightAnchor.constraint(equalToConstant: 40),
@@ -59,7 +59,7 @@ final class ColorCollectionViewCell: UICollectionViewCell {
     
     func setSelectedState(with borderColor: UIColor) {
         borderView.layer.borderColor = borderColor.cgColor
-        borderView.backgroundColor = UIColor.white.withAlphaComponent(0.5) 
+        borderView.backgroundColor = UIColor.white.withAlphaComponent(0.5)
     }
     
     func setDeselectedState() {
