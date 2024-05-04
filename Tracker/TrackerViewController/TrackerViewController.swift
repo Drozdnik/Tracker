@@ -8,8 +8,8 @@ final class TrackerViewController: UIViewController{
     var currentDate: Date = Date()
     var completedTrackers: [TrackerRecord] = []
     var allCategories: [TrackerCategory] = []
-    var categories: [TrackerCategory]  = []
-    
+    var categories  : [TrackerCategory]  = []
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,7 +142,7 @@ final class TrackerViewController: UIViewController{
     private func isDate(_ date: Date, matchesScheduleOf tracker: Tracker) -> Bool {
         let calendar = Calendar.current
         let weekday = calendar.component(.weekday, from: date)
-        return tracker.schedule.days[weekday - 2] // вот тут проверить что вернет
+        return tracker.schedule.days[weekday - 2]
     }
     
     func filterTrakersForCurrentDay() {
