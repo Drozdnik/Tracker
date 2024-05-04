@@ -18,10 +18,15 @@ final class TrackerViewController: UIViewController{
         addSubViews()
         configureConstraints()
         configureDatePicker()
+        loadCategories()
         filterTrakersForCurrentDay()
         collectionView.reloadData()
     }
-    
+    // MARK: DataManager
+    private func loadCategories() {
+        let categories = DataManager.shared.fetchCategories()
+       
+    }
     
     private func addSubViews(){
         view.addSubview(noTracksLabel)
@@ -127,8 +132,7 @@ final class TrackerViewController: UIViewController{
         addButton.tintColor = .black
         navigationItem.leftBarButtonItem = addButton
         
-        
-        
+    
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = "Поиск"
         searchController.searchBar.searchTextField.backgroundColor = UIColor(named: "GrayForNavBar")
