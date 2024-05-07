@@ -10,7 +10,7 @@ import UIKit
 @objc(ColorTransformer)
 class ColorTransformer: NSSecureUnarchiveFromDataTransformer {
     override class func transformedValueClass() -> AnyClass {
-        return UIColor.self
+        return NSData.self
     }
 
     override class func allowsReverseTransformation() -> Bool {
@@ -18,12 +18,32 @@ class ColorTransformer: NSSecureUnarchiveFromDataTransformer {
     }
 
     override func transformedValue(_ value: Any?) -> Any? {
-        guard let color = value as? UIColor else { return nil }
-        return try? NSKeyedArchiver.archivedData(withRootObject: color, requiringSecureCoding: true)
+        guard let color = value as? UIColor else {
+            print("Failed to cast UIColor")
+            return nil
+        }
+        do {
+            let data = try NSKeyedArchiver.archivedData(withRootObject: color, requiringSecureCoding: false)
+            print("Successfully converted UIColor to NSData")
+            return data
+        } catch {
+            print("Failed to convert UIColor to NSData: \(error)")
+            return nil
+        }
     }
 
     override func reverseTransformedValue(_ value: Any?) -> Any? {
-        guard let data = value as? Data else { return nil }
-        return try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIColor.self, from: data)
+        guard let data = value as? Data else {
+            print("Failed to cast NSData")
+            return nil
+        }
+        do {
+            let color = try NSKeyedUnarchiver.unarchivedObject(ofClass: UIColor.self, from: data)
+            print("Successfully converted NSData to UIColor")
+            return color
+        } catch {
+            print("Failed to convert NSData to UIColor: \(error)")
+            return nil
+        }
     }
 }

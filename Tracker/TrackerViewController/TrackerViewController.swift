@@ -4,7 +4,7 @@ import UIKit
 
 final class TrackerViewController: UIViewController{
     let noTracksLabel = UILabel()
-    
+    var viewModel: TrackerViewModel!
     var currentDate: Date = Date()
     var completedTrackers: [TrackerRecord] = []
     var allCategories: [TrackerCategory] = []
@@ -14,6 +14,16 @@ final class TrackerViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            let managedObjectContext = appDelegate.persistentContainer.viewContext
+            viewModel = TrackerViewModel(managedObjectContext: managedObjectContext)
+        }
+
+        viewModel.onDataUpdated = { [weak self] in
+            self?.loadCategories()
+        }
+        
         configureNavigationBar()
         addSubViews()
         configureConstraints()
@@ -24,8 +34,9 @@ final class TrackerViewController: UIViewController{
     }
     // MARK: DataManager
     private func loadCategories() {
-        let categories = DataManager.shared.fetchCategories()
-       
+        allCategories = viewModel.fetchAllCategories()
+        filterTrakersForCurrentDay()
+        collectionView.reloadData()
     }
     
     private func addSubViews(){
@@ -173,21 +184,19 @@ final class TrackerViewController: UIViewController{
         let navigationController = UINavigationController(rootViewController: vc)
         
         vc.newHabbitComplete = { [weak self] title, tracker in
-            guard let self else {return}
-            if let index = self.categories.firstIndex(where: { $0.title == title }) {
-                self.categories[index].trackers.append(tracker)
-            } else {
-                let newCategory = TrackerCategory(title: title, trackers: [tracker])
-                self.categories.append(newCategory)
-            }
-            self.allCategories = self.categories
-            filterTrakersForCurrentDay()
+            guard let self = self else { return }
+            // Assume `tracker` is an instance of a model that needs to be converted or directly used to create a CoreData object.
+            DataManager.shared.addOrUpdateTracker(tracker: tracker, categoryTitle: title)
+            
+            // Reload data from CoreData
+            self.loadCategories()
             self.collectionView.reloadData()
             self.dismiss(animated: true)
-            configureNoTracksLabel()
+            self.configureNoTracksLabel()
         }
         present(navigationController, animated: true)
     }
+
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         currentDate = sender.date
@@ -218,27 +227,27 @@ extension TrackerViewController: UICollectionViewDataSource{
         cell.onIncrementCount = { [weak self] indexPath in
             guard let self = self else { return }
             let trackerItem = self.categories[indexPath.section].trackers[indexPath.item]
-
-            // Проверяем, является ли дата будущей
             let calendar = Calendar.current
-            let today = calendar.startOfDay(for: Date()) // Получаем начало текущего дня для точного сравнения
-            let currentDateStart = calendar.startOfDay(for: self.currentDate) // Получаем начало дня currentDate для точного сравнения
+            let today = calendar.startOfDay(for: Date())
+            let currentDateStart = calendar.startOfDay(for: self.currentDate)
             let isFutureDate = calendar.compare(currentDateStart, to: today, toGranularity: .day) == .orderedDescending
 
-            // Если дата будущая, ничего не делаем
             if isFutureDate {
                 return
             }
 
+            var newCount = trackerItem.count
             if let index = self.completedTrackers.firstIndex(where: { $0.trackerId == trackerItem.id && Calendar.current.isDate($0.date, inSameDayAs: self.currentDate) }) {
                 trackerItem.count -= 1
+                newCount = trackerItem.count
                 self.completedTrackers.remove(at: index)
             } else {
-
                 trackerItem.count += 1
+                newCount = trackerItem.count
                 let newRecord = TrackerRecord(trackerId: trackerItem.id, date: self.currentDate)
                 self.completedTrackers.append(newRecord)
             }
+            DataManager.shared.updateTracker(trackerId: trackerItem.id, newCount: newCount)
             self.collectionView.reloadItems(at: [indexPath])
         }
 
