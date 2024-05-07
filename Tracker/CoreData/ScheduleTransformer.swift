@@ -18,11 +18,7 @@ class ScheduleTransformer: ValueTransformer {
         let encoder = JSONEncoder()
         do {
             let data = try encoder.encode(schedule)
-            // Печать данных после кодирования
-            if let jsonString = String(data: data, encoding: .utf8) {
-                print("Encoded JSON: \(jsonString)")
-            }
-            return data as NSData
+            return data
         } catch {
             print("Failed to encode schedule: \(error)")
             return nil
@@ -31,13 +27,9 @@ class ScheduleTransformer: ValueTransformer {
 
     override func reverseTransformedValue(_ value: Any?) -> Any? {
         guard let data = value as? Data else {
-            print("Failed to cast NSData")
+            print("Failed to cast NSData to Data")
             return nil
         }
-        // Печать данных в строковом формате для проверки
-        let jsonString = String(data: data, encoding: .utf8) ?? "Empty or corrupt data"
-        print("Decoding JSON: \(jsonString)")
-
         let decoder = JSONDecoder()
         do {
             let schedule = try decoder.decode(Schedule.self, from: data)
@@ -47,5 +39,6 @@ class ScheduleTransformer: ValueTransformer {
             return nil
         }
     }
+
 }
 

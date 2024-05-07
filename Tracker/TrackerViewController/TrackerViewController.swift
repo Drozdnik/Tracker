@@ -185,7 +185,6 @@ final class TrackerViewController: UIViewController{
         
         vc.newHabbitComplete = { [weak self] title, tracker in
             guard let self = self else { return }
-            // Assume `tracker` is an instance of a model that needs to be converted or directly used to create a CoreData object.
             DataManager.shared.addOrUpdateTracker(tracker: tracker, categoryTitle: title)
             
             // Reload data from CoreData
@@ -206,7 +205,6 @@ final class TrackerViewController: UIViewController{
     
     
     @objc private func filterButtonTapped() {
-        // Действие при нажатии на кнопку
         print("Фильтр нажат")
     }
 }
