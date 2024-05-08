@@ -5,7 +5,7 @@ class TrackerViewModel: NSObject {
     var onDataUpdated: (() -> Void)?
     private var fetchedResultsController: NSFetchedResultsController<TrackerCoreData>
     private let managedObjectContext: NSManagedObjectContext
-
+    
     init(managedObjectContext: NSManagedObjectContext) {
         self.managedObjectContext = managedObjectContext
         let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
@@ -15,20 +15,22 @@ class TrackerViewModel: NSObject {
         fetchedResultsController.delegate = self
         try? fetchedResultsController.performFetch()
     }
-
+    
     var count: Int {
         return fetchedResultsController.sections?[0].numberOfObjects ?? 0
     }
-
+    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-         onDataUpdated?()
-     }
+        onDataUpdated?()
+    }
     
     func tracker(at indexPath: IndexPath) -> Tracker {
         let trackerCoreData = fetchedResultsController.object(at: indexPath)
-        let color = Utility.decodeColor(trackerCoreData.color)
-        let schedule = Utility.decodeSchedule(trackerCoreData.scheduleData)
-
+        
+        let color = trackerCoreData.color.flatMap(Utility.decodeColor) ?? UIColor.black
+        
+        let schedule = trackerCoreData.scheduleData.flatMap(Utility.decodeSchedule) ?? Schedule(days: [false, false, false, false, false, false, false])
+        
         return Tracker(id: trackerCoreData.id!, name: trackerCoreData.name!, color: color, emoji: trackerCoreData.emoji!, schedule: schedule, count: Int(trackerCoreData.count))
     }
     
@@ -41,30 +43,29 @@ class TrackerViewModel: NSObject {
             return []
         }
     }
-
+    
     private func convertToTrackerCategory(coreData: TrackerCategoriesCoreData) -> TrackerCategory {
         let trackers = coreData.trackers as? Set<TrackerCoreData> ?? []
-
+        
         let modelTrackers = trackers.compactMap { trackerCoreData -> Tracker? in
             guard let id = trackerCoreData.id,
                   let name = trackerCoreData.name,
                   let emoji = trackerCoreData.emoji,
-                  let colorData = trackerCoreData.color as? NSData,
-                  let scheduleData = trackerCoreData.scheduleData as? NSData,
-                  let schedule = Utility.dataToSchedule(data: scheduleData) else {
+                  let colorString = trackerCoreData.color,
+                  let scheduleString = trackerCoreData.scheduleData,
+                  let color = Utility.decodeColor(colorString),
+                  let schedule = Utility.decodeSchedule(scheduleString) else {
                 print("One of the required properties is nil")
-                print("ID: \(trackerCoreData.id as Any), Name: \(trackerCoreData.name as Any), Emoji: \(trackerCoreData.emoji as Any)")
-                print("Color Data: \(trackerCoreData.color as Any), Schedule Data: \(trackerCoreData.scheduleData as Any)")
+                print("ID: \(String(describing: trackerCoreData.id)), Name: \(String(describing: trackerCoreData.name)), Emoji: \(String(describing: trackerCoreData.emoji))")
+                print("Color Data: \(String(describing: trackerCoreData.color)), Schedule Data: \(String(describing: trackerCoreData.scheduleData))")
                 return nil
             }
-
-            let color = Utility.dataToColor(data: colorData) ?? UIColor.black
+            
             return Tracker(id: id, name: name, color: color, emoji: emoji, schedule: schedule, count: Int(trackerCoreData.count))
         }
-
+        
         return TrackerCategory(title: coreData.title ?? "Unknown Title", trackers: modelTrackers)
     }
-
 }
 
 extension TrackerViewModel: NSFetchedResultsControllerDelegate {

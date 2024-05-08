@@ -25,29 +25,26 @@ extension UIColor {
                     b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
                     a = CGFloat(hexNumber & 0x000000ff) / 255
 
-                    self.init(red: r, green: g, blue: b, alpha: 1)
+                    self.init(red: r, green: g, blue: b, alpha: a)
                     return
                 }
             }
         }
-
         return nil
     }
-    
+
     func toHexString() -> String {
-           var r: CGFloat = 0
-           var g: CGFloat = 0
-           var b: CGFloat = 0
-           var a: CGFloat = 0
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
 
-           self.getRed(&r, green: &g, blue: &b, alpha: &a)
+        self.getRed(&r, green: &g, blue: &b, alpha: &a)
 
-           let hexString = String(format: "#%02lX%02lX%02lX%02lX",
-               lroundf(Float(r * 255)),
-               lroundf(Float(g * 255)),
-               lroundf(Float(b * 255)),
-               lroundf(Float(a * 255)))
-           return hexString
-       }
-    
+        return String(format: "#%02lX%02lX%02lX%02lX",
+                      lroundf(Float(r * 255)),
+                      lroundf(Float(g * 255)),
+                      lroundf(Float(b * 255)),
+                      lroundf(Float(a * 255)))
+    }
 }
