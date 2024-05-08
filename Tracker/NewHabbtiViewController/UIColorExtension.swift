@@ -34,5 +34,20 @@ extension UIColor {
         return nil
     }
     
+    func toHexString() -> String {
+           var r: CGFloat = 0
+           var g: CGFloat = 0
+           var b: CGFloat = 0
+           var a: CGFloat = 0
+
+           self.getRed(&r, green: &g, blue: &b, alpha: &a)
+
+           let hexString = String(format: "#%02lX%02lX%02lX%02lX",
+               lroundf(Float(r * 255)),
+               lroundf(Float(g * 255)),
+               lroundf(Float(b * 255)),
+               lroundf(Float(a * 255)))
+           return hexString
+       }
     
 }

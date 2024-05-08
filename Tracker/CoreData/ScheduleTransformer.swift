@@ -39,6 +39,5 @@ class ScheduleTransformer: ValueTransformer {
             return nil
         }
     }
-
 }
 

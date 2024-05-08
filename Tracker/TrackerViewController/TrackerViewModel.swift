@@ -26,17 +26,12 @@ class TrackerViewModel: NSObject {
     
     func tracker(at indexPath: IndexPath) -> Tracker {
         let trackerCoreData = fetchedResultsController.object(at: indexPath)
-        
-        let color: UIColor = Utility.dataToColor(data: trackerCoreData.color as! NSData) ?? UIColor.black
+        let color = Utility.decodeColor(trackerCoreData.color)
+        let schedule = Utility.decodeSchedule(trackerCoreData.scheduleData)
 
-        let schedule: Schedule? = Utility.dataToSchedule(data: trackerCoreData.scheduleData as! NSData)
-
-        guard let unwrappedSchedule = schedule else {
-            fatalError("Failed to decode schedule data")
-        }
-
-        return Tracker(id: trackerCoreData.id!, name: trackerCoreData.name!, color: color, emoji: trackerCoreData.emoji!, schedule: unwrappedSchedule, count: Int(trackerCoreData.count))
+        return Tracker(id: trackerCoreData.id!, name: trackerCoreData.name!, color: color, emoji: trackerCoreData.emoji!, schedule: schedule, count: Int(trackerCoreData.count))
     }
+    
     func fetchAllCategories() -> [TrackerCategory] {
         do {
             let categories = try managedObjectContext.fetch(TrackerCategoriesCoreData.fetchRequest()) as [TrackerCategoriesCoreData]

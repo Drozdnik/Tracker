@@ -63,7 +63,6 @@
         
         func addOrUpdateTracker(tracker: Tracker, categoryTitle: String) {
             let context = persistentContainer.viewContext
-
             let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "id == %@", tracker.id as CVarArg)
             do {
@@ -73,18 +72,8 @@
                 trackerEntity.id = tracker.id
                 trackerEntity.name = tracker.name
                 trackerEntity.emoji = tracker.emoji
-                if let colorData = Utility.colorToData(color: tracker.color) {
-                    trackerEntity.color = colorData
-                } else {
-                    print("Failed to convert color to NSData")
-                }
-
-                if let scheduleData = ScheduleTransformer().transformedValue(tracker.schedule) as? NSData {
-                    trackerEntity.scheduleData = scheduleData
-                } else {
-                    print("Failed to convert schedule to NSData")
-                }
-                
+                trackerEntity.color = Utility.encodeColor(tracker.color) // Конвертация UIColor в String
+                trackerEntity.scheduleData = Utility.encodeSchedule(tracker.schedule) // Конвертация Schedule в JSON String
                 trackerEntity.count = Int32(tracker.count)
 
                 let categoryFetchRequest: NSFetchRequest<TrackerCategoriesCoreData> = TrackerCategoriesCoreData.fetchRequest()
@@ -99,6 +88,7 @@
                 print("Failed to fetch or update tracker: \(error)")
             }
         }
+
 
 
         }

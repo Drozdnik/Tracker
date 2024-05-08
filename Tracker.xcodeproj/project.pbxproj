@@ -11,6 +11,8 @@
 		8710EDA12BE635C00091EC11 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8710EDA02BE635C00091EC11 /* DataManager.swift */; };
 		8710EDA32BE64D490091EC11 /* ColorTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8710EDA22BE64D490091EC11 /* ColorTransformer.swift */; };
 		8710EDA52BE65C1E0091EC11 /* ScheduleTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8710EDA42BE65C1E0091EC11 /* ScheduleTransformer.swift */; };
+		8710EDA72BE969530091EC11 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8710EDA62BE969530091EC11 /* Utility.swift */; };
+		8710EDA92BE96EEE0091EC11 /* TrackerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8710EDA82BE96EEE0091EC11 /* TrackerViewModel.swift */; };
 		872A559D2BC5606C00A9920D /* ChooseTypeOfTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872A559C2BC5606C00A9920D /* ChooseTypeOfTracker.swift */; };
 		872A559F2BC5AB7D00A9920D /* NewHabbitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872A559E2BC5AB7D00A9920D /* NewHabbitViewController.swift */; };
 		872A55A12BC5F0E300A9920D /* UITextField extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872A55A02BC5F0E300A9920D /* UITextField extension.swift */; };
@@ -61,6 +63,8 @@
 		8710EDA02BE635C00091EC11 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		8710EDA22BE64D490091EC11 /* ColorTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTransformer.swift; sourceTree = "<group>"; };
 		8710EDA42BE65C1E0091EC11 /* ScheduleTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTransformer.swift; sourceTree = "<group>"; };
+		8710EDA62BE969530091EC11 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		8710EDA82BE96EEE0091EC11 /* TrackerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewModel.swift; sourceTree = "<group>"; };
 		872A559C2BC5606C00A9920D /* ChooseTypeOfTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseTypeOfTracker.swift; sourceTree = "<group>"; };
 		872A559E2BC5AB7D00A9920D /* NewHabbitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHabbitViewController.swift; sourceTree = "<group>"; };
 		872A55A02BC5F0E300A9920D /* UITextField extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField extension.swift"; sourceTree = "<group>"; };
@@ -127,6 +131,7 @@
 				8710EDA42BE65C1E0091EC11 /* ScheduleTransformer.swift */,
 				8710EDA22BE64D490091EC11 /* ColorTransformer.swift */,
 				8710EDA02BE635C00091EC11 /* DataManager.swift */,
+				8710EDA62BE969530091EC11 /* Utility.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -243,6 +248,7 @@
 			children = (
 				877CB6782BBF42C500C4164D /* TrackerViewController.swift */,
 				87E3FF3B2BD5B24600F79C21 /* TrackerCollectionViewCell.swift */,
+				8710EDA82BE96EEE0091EC11 /* TrackerViewModel.swift */,
 				87E3FF3F2BD8289400F79C21 /* CategoryHeaderView.swift */,
 			);
 			path = TrackerViewController;
@@ -388,6 +394,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				872A559D2BC5606C00A9920D /* ChooseTypeOfTracker.swift in Sources */,
+				8710EDA92BE96EEE0091EC11 /* TrackerViewModel.swift in Sources */,
 				8710EDA12BE635C00091EC11 /* DataManager.swift in Sources */,
 				872A55AA2BC70FB900A9920D /* UIColorExtension.swift in Sources */,
 				877CB6BB2BC1746000C4164D /* tabBarViewController.swift in Sources */,
@@ -407,6 +414,7 @@
 				872A55A82BC70EE600A9920D /* ConstantsForCells.swift in Sources */,
 				872A55A62BC70DD200A9920D /* ColorCollectionViewCell.swift in Sources */,
 				877CB6492BBF397700C4164D /* AppDelegate.swift in Sources */,
+				8710EDA72BE969530091EC11 /* Utility.swift in Sources */,
 				877CB6B92BC16E6100C4164D /* StatisticViewController.swift in Sources */,
 				877CB64B2BBF397700C4164D /* SceneDelegate.swift in Sources */,
 				87E3FF382BD19F9A00F79C21 /* Schedule.swift in Sources */,

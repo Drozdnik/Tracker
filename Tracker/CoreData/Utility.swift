@@ -37,4 +37,22 @@ class Utility {
             return nil
         }
     }
+    
+    static func encodeColor(_ color: UIColor) -> String {
+        return color.toHexString()
+    }
+
+    static func decodeColor(_ colorString: String) -> UIColor {
+        return UIColor(hex: colorString) ?? UIColor.black // Возвращаем черный цвет как fallback
+    }
+
+    static func encodeSchedule(_ schedule: Schedule) -> String {
+        let dayStrings = schedule.days.map { $0 ? "1" : "0" } // Преобразуем [true, false] в ["1", "0"]
+        return dayStrings.joined(separator: ",") // Объединяем в строку через запятую
+    }
+
+    static func decodeSchedule(_ scheduleString: String) -> Schedule {
+        let dayStrings = scheduleString.split(separator: ",").map { $0 == "1" } // Разделяем строку и преобразуем в [Bool]
+        return Schedule(days: dayStrings)
+    }
 }
