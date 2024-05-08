@@ -708,8 +708,8 @@
             filePath = "Tracker/TrackerViewController/TrackerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
             landmarkName = "isDate(_:matchesScheduleOf:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1030,8 +1030,8 @@
             filePath = "Tracker/TrackerViewController/TrackerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "222"
-            endingLineNumber = "222"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
             <Locations>
@@ -1078,8 +1078,8 @@
             filePath = "Tracker/TrackerViewController/TrackerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
+            startingLineNumber = "187"
+            endingLineNumber = "187"
             landmarkName = "filterTrakersForCurrentDay()"
             landmarkType = "7">
             <Locations>
@@ -1141,8 +1141,8 @@
             filePath = "Tracker/TrackerViewController/TrackerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
             landmarkName = "addTapped()"
             landmarkType = "7">
             <Locations>
@@ -1189,8 +1189,8 @@
             filePath = "Tracker/TrackerViewController/TrackerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "187"
-            endingLineNumber = "187"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
             landmarkName = "addTapped()"
             landmarkType = "7">
          </BreakpointContent>

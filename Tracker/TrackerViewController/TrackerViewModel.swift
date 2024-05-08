@@ -34,13 +34,15 @@ class TrackerViewModel: NSObject {
         return Tracker(id: trackerCoreData.id!, name: trackerCoreData.name!, color: color, emoji: trackerCoreData.emoji!, schedule: schedule, count: Int(trackerCoreData.count))
     }
     
-    func fetchAllCategories() -> [TrackerCategory] {
+    func fetchAllCategories(completion: @escaping ([TrackerCategory]) -> Void) {
+        // Perform fetching
         do {
             let categories = try managedObjectContext.fetch(TrackerCategoriesCoreData.fetchRequest()) as [TrackerCategoriesCoreData]
-            return categories.map { convertToTrackerCategory(coreData: $0) }
+            let mappedCategories = categories.map { convertToTrackerCategory(coreData: $0) }
+            completion(mappedCategories)
         } catch {
-            print("Ошибка при загрузке категорий: \(error)")
-            return []
+            print("Error loading categories: \(error)")
+            completion([])  
         }
     }
     

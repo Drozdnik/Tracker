@@ -98,7 +98,7 @@ final class NewHabbitViewController: UIViewController{
             textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             textField.heightAnchor.constraint(equalToConstant: 63),
             
-            characterLimitLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 5), //
+            characterLimitLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 5),
             characterLimitLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
@@ -109,7 +109,7 @@ final class NewHabbitViewController: UIViewController{
             emojiCollectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
             emojiCollectionView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
             emojiCollectionView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
-            emojiCollectionView.heightAnchor.constraint(equalToConstant: 250), // по макету 374
+            emojiCollectionView.heightAnchor.constraint(equalToConstant: 250), 
             
             colorCollectionView.topAnchor.constraint(equalTo: emojiCollectionView.bottomAnchor, constant: 0),
             colorCollectionView.leadingAnchor.constraint(equalTo: emojiCollectionView.leadingAnchor),

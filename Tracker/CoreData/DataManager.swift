@@ -72,8 +72,8 @@
                 trackerEntity.id = tracker.id
                 trackerEntity.name = tracker.name
                 trackerEntity.emoji = tracker.emoji
-                trackerEntity.color = Utility.encodeColor(tracker.color) // Конвертация UIColor в String
-                trackerEntity.scheduleData = Utility.encodeSchedule(tracker.schedule) // Конвертация Schedule в JSON String
+                trackerEntity.color = Utility.encodeColor(tracker.color) 
+                trackerEntity.scheduleData = Utility.encodeSchedule(tracker.schedule)
                 trackerEntity.count = Int32(tracker.count)
 
                 let categoryFetchRequest: NSFetchRequest<TrackerCategoriesCoreData> = TrackerCategoriesCoreData.fetchRequest()

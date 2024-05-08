@@ -34,9 +34,13 @@ final class TrackerViewController: UIViewController{
     }
     // MARK: DataManager
     private func loadCategories() {
-        allCategories = viewModel.fetchAllCategories()
-        filterTrakersForCurrentDay()
-        collectionView.reloadData()
+        viewModel.fetchAllCategories { [weak self] categories in
+            DispatchQueue.main.async {
+                self?.allCategories = categories
+                self?.filterTrakersForCurrentDay()
+                self?.collectionView.reloadData()
+            }
+        }
     }
     
     private func addSubViews(){
@@ -72,15 +76,21 @@ final class TrackerViewController: UIViewController{
         ])
     }
     
-    private func configureNoTracksLabel(){
-        if categories.isEmpty  {
-            noTracksLabel.text = "Что будем отслеживать?"
-            noTracksLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-            noTracksLabel.textAlignment = .center
-            noTracksLabel.translatesAutoresizingMaskIntoConstraints = false
-        } else {
-            noTracksLabel.isHidden = true
-            imageForNoTracks.isHidden = true
+    private func configureNoTracksLabel() {
+        viewModel.fetchAllCategories { [weak self] categories in
+            DispatchQueue.main.async {
+                if categories.isEmpty {
+                    self?.noTracksLabel.isHidden = false
+                    self?.imageForNoTracks.isHidden = false
+                    self?.noTracksLabel.text = "Что будем отслеживать?"
+                    self?.noTracksLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+                    self?.noTracksLabel.textAlignment = .center
+                    self?.noTracksLabel.translatesAutoresizingMaskIntoConstraints = false
+                } else {
+                    self?.noTracksLabel.isHidden = true
+                    self?.imageForNoTracks.isHidden = true
+                }
+            }
         }
     }
     
