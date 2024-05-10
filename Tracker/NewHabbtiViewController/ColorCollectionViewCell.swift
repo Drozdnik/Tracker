@@ -14,7 +14,17 @@ final class ColorCollectionViewCell: UICollectionViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 8
-        view.layer.masksToBounds = true
+        view.layer.masksToBounds = false
+        return view
+    }()
+    
+    private lazy var borderView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 12
+        view.backgroundColor = .clear
+        view.layer.borderWidth = 2
+        view.layer.borderColor = UIColor.clear.cgColor
         return view
     }()
     
@@ -28,9 +38,14 @@ final class ColorCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupLayout() {
-        contentView.addSubview(colorView) // Добавить colorView на contentView
-    
+        contentView.addSubview(borderView)
+        contentView.addSubview(colorView)
         NSLayoutConstraint.activate([
+            borderView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            borderView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            borderView.heightAnchor.constraint(equalTo: colorView.heightAnchor, constant: 10), 
+            borderView.widthAnchor.constraint(equalTo: colorView.widthAnchor, constant: 10),
+            
             colorView.heightAnchor.constraint(equalToConstant: 40),
             colorView.widthAnchor.constraint(equalToConstant: 40),
             colorView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
@@ -41,15 +56,14 @@ final class ColorCollectionViewCell: UICollectionViewCell {
     func configure(with color: UIColor) {
         colorView.backgroundColor = color
     }
-    // Методы при выборе и при отмене
-    // Я не понял как сделать на макете в следующем спринте сделаю
-    func setSelectedState() {
-           contentView.layer.borderWidth = 2
-           contentView.layer.borderColor = UIColor.blue.cgColor
-       }
+    
+    func setSelectedState(with borderColor: UIColor) {
+        borderView.layer.borderColor = borderColor.cgColor
+        borderView.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+    }
     
     func setDeselectedState() {
-        contentView.layer.borderWidth = 0
-        contentView.layer.borderColor = nil
+        borderView.layer.borderColor = UIColor.clear.cgColor
+        borderView.backgroundColor = .clear
     }
 }

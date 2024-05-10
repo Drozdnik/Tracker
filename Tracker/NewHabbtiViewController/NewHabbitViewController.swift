@@ -23,9 +23,7 @@ final class NewHabbitViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        if trackerType == .irregularEvent{
-//            habitSchedule = Schedule(days: Array(repeating: true, count: 7))
-//        }
+
         view.backgroundColor = .white
         setupScrollView()
         setupContentView()
@@ -100,7 +98,7 @@ final class NewHabbitViewController: UIViewController{
             textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             textField.heightAnchor.constraint(equalToConstant: 63),
             
-            characterLimitLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 5), //
+            characterLimitLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 5),
             characterLimitLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
@@ -111,7 +109,7 @@ final class NewHabbitViewController: UIViewController{
             emojiCollectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
             emojiCollectionView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
             emojiCollectionView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
-            emojiCollectionView.heightAnchor.constraint(equalToConstant: 250), // по макету 374
+            emojiCollectionView.heightAnchor.constraint(equalToConstant: 250), 
             
             colorCollectionView.topAnchor.constraint(equalTo: emojiCollectionView.bottomAnchor, constant: 0),
             colorCollectionView.leadingAnchor.constraint(equalTo: emojiCollectionView.leadingAnchor),
@@ -204,7 +202,6 @@ final class NewHabbitViewController: UIViewController{
     }()
 }
 
-//textField
 extension NewHabbitViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
             if text == "\n" {
@@ -367,15 +364,13 @@ extension NewHabbitViewController: UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.emojiCollectionView {
-            // Обновляем переменную habitEmoji на основе выбранного индекса
             self.habitEmoji = emojiList[indexPath.item]
             updateCreateButtonState()
         } else if collectionView == self.colorCollectionView {
-            // Обновляем переменную habitColor на основе выбранного индекса
             self.habitColor = colorList[indexPath.item]
             guard let cell = collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell else { return }
             updateCreateButtonState()
-            cell.setSelectedState()
+            cell.setSelectedState(with: self.habitColor)
         }
     }
     

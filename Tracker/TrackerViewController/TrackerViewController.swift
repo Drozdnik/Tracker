@@ -4,24 +4,44 @@ import UIKit
 
 final class TrackerViewController: UIViewController{
     let noTracksLabel = UILabel()
-    
+    var viewModel: TrackerViewModel!
     var currentDate: Date = Date()
     var completedTrackers: [TrackerRecord] = []
     var allCategories: [TrackerCategory] = []
-    var categories: [TrackerCategory]  = []
-    
+    var categories  : [TrackerCategory]  = []
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            let managedObjectContext = appDelegate.persistentContainer.viewContext
+            viewModel = TrackerViewModel(managedObjectContext: managedObjectContext)
+        }
+
+        viewModel.onDataUpdated = { [weak self] in
+            self?.loadCategories()
+        }
+        
         configureNavigationBar()
         addSubViews()
         configureConstraints()
         configureDatePicker()
+        loadCategories()
         filterTrakersForCurrentDay()
         collectionView.reloadData()
     }
-    
+    // MARK: DataManager
+    private func loadCategories() {
+        viewModel.fetchAllCategories { [weak self] categories in
+            DispatchQueue.main.async {
+                self?.allCategories = categories
+                self?.filterTrakersForCurrentDay()
+                self?.collectionView.reloadData()
+            }
+        }
+    }
     
     private func addSubViews(){
         view.addSubview(noTracksLabel)
@@ -56,15 +76,21 @@ final class TrackerViewController: UIViewController{
         ])
     }
     
-    private func configureNoTracksLabel(){
-        if categories.isEmpty  {
-            noTracksLabel.text = "Что будем отслеживать?"
-            noTracksLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-            noTracksLabel.textAlignment = .center
-            noTracksLabel.translatesAutoresizingMaskIntoConstraints = false
-        } else {
-            noTracksLabel.isHidden = true
-            imageForNoTracks.isHidden = true
+    private func configureNoTracksLabel() {
+        viewModel.fetchAllCategories { [weak self] categories in
+            DispatchQueue.main.async {
+                if categories.isEmpty {
+                    self?.noTracksLabel.isHidden = false
+                    self?.imageForNoTracks.isHidden = false
+                    self?.noTracksLabel.text = "Что будем отслеживать?"
+                    self?.noTracksLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+                    self?.noTracksLabel.textAlignment = .center
+                    self?.noTracksLabel.translatesAutoresizingMaskIntoConstraints = false
+                } else {
+                    self?.noTracksLabel.isHidden = true
+                    self?.imageForNoTracks.isHidden = true
+                }
+            }
         }
     }
     
@@ -127,8 +153,7 @@ final class TrackerViewController: UIViewController{
         addButton.tintColor = .black
         navigationItem.leftBarButtonItem = addButton
         
-        
-        
+    
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = "Поиск"
         searchController.searchBar.searchTextField.backgroundColor = UIColor(named: "GrayForNavBar")
@@ -142,7 +167,7 @@ final class TrackerViewController: UIViewController{
     private func isDate(_ date: Date, matchesScheduleOf tracker: Tracker) -> Bool {
         let calendar = Calendar.current
         let weekday = calendar.component(.weekday, from: date)
-        return tracker.schedule.days[weekday - 2] // вот тут проверить что вернет
+        return tracker.schedule.days[weekday - 2]
     }
     
     func filterTrakersForCurrentDay() {
@@ -169,21 +194,18 @@ final class TrackerViewController: UIViewController{
         let navigationController = UINavigationController(rootViewController: vc)
         
         vc.newHabbitComplete = { [weak self] title, tracker in
-            guard let self else {return}
-            if let index = self.categories.firstIndex(where: { $0.title == title }) {
-                self.categories[index].trackers.append(tracker)
-            } else {
-                let newCategory = TrackerCategory(title: title, trackers: [tracker])
-                self.categories.append(newCategory)
-            }
-            self.allCategories = self.categories
-            filterTrakersForCurrentDay()
+            guard let self = self else { return }
+            DataManager.shared.addOrUpdateTracker(tracker: tracker, categoryTitle: title)
+            
+            // Reload data from CoreData
+            self.loadCategories()
             self.collectionView.reloadData()
             self.dismiss(animated: true)
-            configureNoTracksLabel()
+            self.configureNoTracksLabel()
         }
         present(navigationController, animated: true)
     }
+
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         currentDate = sender.date
@@ -193,7 +215,6 @@ final class TrackerViewController: UIViewController{
     
     
     @objc private func filterButtonTapped() {
-        // Действие при нажатии на кнопку
         print("Фильтр нажат")
     }
 }
@@ -214,27 +235,27 @@ extension TrackerViewController: UICollectionViewDataSource{
         cell.onIncrementCount = { [weak self] indexPath in
             guard let self = self else { return }
             let trackerItem = self.categories[indexPath.section].trackers[indexPath.item]
-
-            // Проверяем, является ли дата будущей
             let calendar = Calendar.current
-            let today = calendar.startOfDay(for: Date()) // Получаем начало текущего дня для точного сравнения
-            let currentDateStart = calendar.startOfDay(for: self.currentDate) // Получаем начало дня currentDate для точного сравнения
+            let today = calendar.startOfDay(for: Date())
+            let currentDateStart = calendar.startOfDay(for: self.currentDate)
             let isFutureDate = calendar.compare(currentDateStart, to: today, toGranularity: .day) == .orderedDescending
 
-            // Если дата будущая, ничего не делаем
             if isFutureDate {
                 return
             }
 
+            var newCount = trackerItem.count
             if let index = self.completedTrackers.firstIndex(where: { $0.trackerId == trackerItem.id && Calendar.current.isDate($0.date, inSameDayAs: self.currentDate) }) {
                 trackerItem.count -= 1
+                newCount = trackerItem.count
                 self.completedTrackers.remove(at: index)
             } else {
-
                 trackerItem.count += 1
+                newCount = trackerItem.count
                 let newRecord = TrackerRecord(trackerId: trackerItem.id, date: self.currentDate)
                 self.completedTrackers.append(newRecord)
             }
+            DataManager.shared.updateTracker(trackerId: trackerItem.id, newCount: newCount)
             self.collectionView.reloadItems(at: [indexPath])
         }
 
