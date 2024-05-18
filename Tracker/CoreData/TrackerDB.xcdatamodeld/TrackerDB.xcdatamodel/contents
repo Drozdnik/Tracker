@@ -6,7 +6,7 @@
     </entity>
     <entity name="TrackerCoreData" representedClassName="TrackerCoreData" syncable="YES" codeGenerationType="class">
         <attribute name="color" attributeType="String" valueTransformerName="ColorTransformer"/>
-        <attribute name="count" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="countOfDoneTrackers" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="emoji" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>

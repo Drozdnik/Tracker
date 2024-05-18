@@ -14,13 +14,14 @@ class Tracker{
     let color: UIColor
     let emoji: String
     let schedule: Schedule
-    var count: Int = 0
-    init(id: UUID, name: String, color: UIColor, emoji: String, schedule: Schedule, count: Int  = 0) {
+    var countOfDoneTrackers: Int = 0
+    init(id: UUID, name: String, color: UIColor, emoji: String, schedule: Schedule, countOfDoneTrackers: Int ) {
         self.id = id
         self.name = name
         self.color = color
         self.emoji = emoji
         self.schedule = schedule
+        self.countOfDoneTrackers = countOfDoneTrackers
     }
 }
 

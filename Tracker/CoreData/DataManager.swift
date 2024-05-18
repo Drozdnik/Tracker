@@ -33,7 +33,7 @@
 
             do {
                 if let trackerToUpdate = try context.fetch(fetchRequest).first {
-                    trackerToUpdate.count = Int32(newCount)
+                    trackerToUpdate.countOfDoneTrackers = Int32(newCount)
                     try context.save()
                 } else {
                     print("No tracker found with the given ID to update.")
@@ -74,7 +74,7 @@
                 trackerEntity.emoji = tracker.emoji
                 trackerEntity.color = Utility.encodeColor(tracker.color) 
                 trackerEntity.scheduleData = Utility.encodeSchedule(tracker.schedule)
-                trackerEntity.count = Int32(tracker.count)
+                trackerEntity.countOfDoneTrackers = Int32(tracker.countOfDoneTrackers)
 
                 let categoryFetchRequest: NSFetchRequest<TrackerCategoriesCoreData> = TrackerCategoriesCoreData.fetchRequest()
                 categoryFetchRequest.predicate = NSPredicate(format: "title == %@", categoryTitle)

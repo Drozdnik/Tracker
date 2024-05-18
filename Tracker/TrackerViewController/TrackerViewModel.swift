@@ -36,7 +36,7 @@ class TrackerViewModel: NSObject {
         
         let schedule = trackerCoreData.scheduleData.flatMap(Utility.decodeSchedule) ?? Schedule(days: [false, false, false, false, false, false, false])
         
-        return Tracker(id: trackerCoreData.id!, name: trackerCoreData.name!, color: color, emoji: trackerCoreData.emoji!, schedule: schedule, count: Int(trackerCoreData.count))
+        return Tracker(id: trackerCoreData.id!, name: trackerCoreData.name!, color: color, emoji: trackerCoreData.emoji!, schedule: schedule, countOfDoneTrackers: Int(trackerCoreData.countOfDoneTrackers))
     }
 
     func fetchAllCategories(completion: @escaping () -> Void) {
@@ -68,7 +68,7 @@ class TrackerViewModel: NSObject {
                 return nil
             }
             
-            return Tracker(id: id, name: name, color: color, emoji: emoji, schedule: schedule, count: Int(trackerCoreData.count))
+            return Tracker(id: id, name: name, color: color, emoji: emoji, schedule: schedule, countOfDoneTrackers: Int(trackerCoreData.countOfDoneTrackers))
         }
         
         return TrackerCategory(title: coreData.title ?? "Unknown Title", trackers: modelTrackers)
@@ -110,14 +110,14 @@ class TrackerViewModel: NSObject {
             return
         }
 
-        var newCount = tracker.count
+        var newCount = tracker.countOfDoneTrackers
         if let index = completedTrackers.firstIndex(where: { $0.trackerId == tracker.id && calendar.isDate($0.date, inSameDayAs: currentDate) }) {
-            tracker.count -= 1
-            newCount = tracker.count
+            tracker.countOfDoneTrackers -= 1
+            newCount = tracker.countOfDoneTrackers
             completedTrackers.remove(at: index)
         } else {
-            tracker.count += 1
-            newCount = tracker.count
+            tracker.countOfDoneTrackers += 1
+            newCount = tracker.countOfDoneTrackers
             let newRecord = TrackerRecord(trackerId: tracker.id, date: currentDate)
             completedTrackers.append(newRecord)
         }
