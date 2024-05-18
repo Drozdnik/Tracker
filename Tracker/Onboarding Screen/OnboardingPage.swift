@@ -30,9 +30,10 @@ final class OnboardingPage: UIViewController{
         
         //Настройка лейбла
         messageLabel.text = message
-        messageLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        messageLabel.font = UIFont.systemFont(ofSize: 32, weight: .bold)
         messageLabel.textAlignment = .center
-        messageLabel.textColor = .white
+        messageLabel.textColor = .black
+        messageLabel.numberOfLines = 2 
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(messageLabel)
         
@@ -51,7 +52,7 @@ final class OnboardingPage: UIViewController{
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             messageLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            messageLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50),
+            messageLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 50),
             messageLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             messageLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             

@@ -7,8 +7,8 @@ class OnBoardingViewController: UIPageViewController{
     
     lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
-        pageControl.currentPageIndicatorTintColor = .brown
-        pageControl.pageIndicatorTintColor = .orange
+        pageControl.currentPageIndicatorTintColor = .gray
+        pageControl.pageIndicatorTintColor = .black
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
     }()
@@ -18,7 +18,7 @@ class OnBoardingViewController: UIPageViewController{
         button.setTitle("Вот это технологии!", for: .normal)
         button.backgroundColor = .black
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        button.layer.cornerRadius = 20
+        button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         return button
@@ -26,20 +26,23 @@ class OnBoardingViewController: UIPageViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        dataSource = self
-        delegate = self
+        
         appendPages()
         setupViews()
+        
         if let firstPage = pages.first {
             setViewControllers([firstPage], direction: .forward, animated: true, completion: nil)
         }
+        
+        dataSource = self
+        delegate = self
     }
     
     private func appendPages(){
         let page1Image = UIImage(named: "Onboarding1")!
         let page2Image = UIImage(named: "Onboarding2")!
-        let page1Message = "Отслеживайте только то, что хотите 😍"
-        let page2Message = "Даже если это не литры воды и йога 🔥"
+        let page1Message = "Отслеживайте только то, что хотите"
+        let page2Message = "Даже если это не литры воды и йога"
         let page1 = OnboardingPage(image: page1Image, messageLabel: page1Message)
         let page2 = OnboardingPage(image: page2Image, messageLabel: page2Message)
         pages.append(contentsOf: [page1, page2])
@@ -48,18 +51,20 @@ class OnBoardingViewController: UIPageViewController{
     private func setupViews(){
         view.addSubview(pageControl)
         view.addSubview(actionButton)
+        pageControl.numberOfPages = pages.count
         NSLayoutConstraint.activate([
-            pageControl.bottomAnchor.constraint(equalTo: actionButton.topAnchor, constant: -10),
+            pageControl.bottomAnchor.constraint(equalTo: actionButton.topAnchor, constant: -24),
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            actionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            actionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -84),
             actionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            actionButton.heightAnchor.constraint(equalToConstant: 50),
-            actionButton.widthAnchor.constraint(equalToConstant: 200)
+            actionButton.heightAnchor.constraint(equalToConstant: 60),
+            actionButton.widthAnchor.constraint(equalToConstant: 335)
         ])
     }
     
     @objc private func actionButtonTapped() {
+        UserDefaults.standard.set(true, forKey: "HasViewedOnboarding")
         self.dismiss(animated: true)
     }
 }

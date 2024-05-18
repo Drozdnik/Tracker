@@ -9,12 +9,6 @@ final class TrackerViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        if UserDefaults.standard.bool(forKey: "HasViewedOnboarding") == false {
-            let onboardingVC = OnBoardingViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-            onboardingVC.modalPresentationStyle = .fullScreen
-            present(onboardingVC, animated: true, completion: nil)
-            UserDefaults.standard.set(true, forKey: "HasViewedOnboarding")
-        }
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             let managedObjectContext = appDelegate.persistentContainer.viewContext
             viewModel = TrackerViewModel(managedObjectContext: managedObjectContext)
@@ -24,7 +18,8 @@ final class TrackerViewController: UIViewController {
             self?.collectionView.reloadData()
             self?.configureNoTracksLabel()
         }
-
+        
+        showOnboardingIfNeeded()
         configureNavigationBar()
         addSubViews()
         configureConstraints()
@@ -33,7 +28,14 @@ final class TrackerViewController: UIViewController {
             self.viewModel.filterTrackersForCurrentDay()
         }
     }
-
+    
+    private func showOnboardingIfNeeded(){
+        if UserDefaults.standard.bool(forKey: "HasViewedOnboarding") == false {
+            let onboardingVC = OnBoardingViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+            onboardingVC.modalPresentationStyle = .fullScreen
+            present(onboardingVC, animated: true, completion: nil)
+        }
+    }
     private func addSubViews() {
         view.addSubview(noTracksLabel)
         view.addSubview(imageForNoTracks)
