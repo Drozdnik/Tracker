@@ -7,8 +7,8 @@ class OnBoardingViewController: UIPageViewController{
     
     lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
-        pageControl.currentPageIndicatorTintColor = .gray
-        pageControl.pageIndicatorTintColor = .black
+        pageControl.currentPageIndicatorTintColor = .black
+        pageControl.pageIndicatorTintColor = .gray
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
     }()
@@ -17,7 +17,7 @@ class OnBoardingViewController: UIPageViewController{
         let button = UIButton()
         button.setTitle("Вот это технологии!", for: .normal)
         button.backgroundColor = .black
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
@@ -46,12 +46,13 @@ class OnBoardingViewController: UIPageViewController{
         let page1 = OnboardingPage(image: page1Image, messageLabel: page1Message)
         let page2 = OnboardingPage(image: page2Image, messageLabel: page2Message)
         pages.append(contentsOf: [page1, page2])
+        
+        pageControl.numberOfPages = pages.count
     }
     
     private func setupViews(){
         view.addSubview(pageControl)
         view.addSubview(actionButton)
-        pageControl.numberOfPages = pages.count
         NSLayoutConstraint.activate([
             pageControl.bottomAnchor.constraint(equalTo: actionButton.topAnchor, constant: -24),
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -71,17 +72,29 @@ class OnBoardingViewController: UIPageViewController{
 
 extension OnBoardingViewController: UIPageViewControllerDataSource{
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let viewControllerIndex = pages.firstIndex(of: viewController), viewControllerIndex > 0 else {
+        guard let viewControllerIndex = pages.firstIndex(of: viewController) else {
             return nil
         }
-        return pages[viewControllerIndex - 1]
+
+        let previousIndex = viewControllerIndex - 1
+        if previousIndex < 0 {
+            return pages.last
+        } else {
+            return pages[previousIndex]
+        }
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let viewControllerIndex = pages.firstIndex(of: viewController), viewControllerIndex < pages.count - 1 else {
+        guard let viewControllerIndex = pages.firstIndex(of: viewController) else {
             return nil
         }
-        return pages[viewControllerIndex + 1]
+
+        let nextIndex = viewControllerIndex + 1
+        if nextIndex >= pages.count {
+            return pages.first
+        } else {
+            return pages[nextIndex]
+        }
     }
 }
 
