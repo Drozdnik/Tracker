@@ -39,6 +39,7 @@
 		8790692C2BFA439100FDB963 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790692B2BFA439000FDB963 /* CategoryTableViewCell.swift */; };
 		8790692E2BFA566500FDB963 /* ChooseTrackerTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790692D2BFA566500FDB963 /* ChooseTrackerTitleViewModel.swift */; };
 		879069302BFA577100FDB963 /* addCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790692F2BFA577100FDB963 /* addCategoryViewModel.swift */; };
+		879069322BFA5F0800FDB963 /* OnboardingPageEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879069312BFA5F0800FDB963 /* OnboardingPageEnum.swift */; };
 		87B6B87B2BF8C93500F3D197 /* OnBoardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6B87A2BF8C93400F3D197 /* OnBoardingViewController.swift */; };
 		87B6B87D2BF8D31000F3D197 /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6B87C2BF8D30F00F3D197 /* OnboardingPage.swift */; };
 		87E3FF382BD19F9A00F79C21 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E3FF372BD19F9A00F79C21 /* Schedule.swift */; };
@@ -102,6 +103,7 @@
 		8790692B2BFA439000FDB963 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		8790692D2BFA566500FDB963 /* ChooseTrackerTitleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseTrackerTitleViewModel.swift; sourceTree = "<group>"; };
 		8790692F2BFA577100FDB963 /* addCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addCategoryViewModel.swift; sourceTree = "<group>"; };
+		879069312BFA5F0800FDB963 /* OnboardingPageEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageEnum.swift; sourceTree = "<group>"; };
 		87B6B87A2BF8C93400F3D197 /* OnBoardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewController.swift; sourceTree = "<group>"; };
 		87B6B87C2BF8D30F00F3D197 /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
 		87E3FF372BD19F9A00F79C21 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 			children = (
 				87B6B87A2BF8C93400F3D197 /* OnBoardingViewController.swift */,
 				87B6B87C2BF8D30F00F3D197 /* OnboardingPage.swift */,
+				879069312BFA5F0800FDB963 /* OnboardingPageEnum.swift */,
 			);
 			path = "Onboarding Screen";
 			sourceTree = "<group>";
@@ -453,6 +456,7 @@
 				8790692E2BFA566500FDB963 /* ChooseTrackerTitleViewModel.swift in Sources */,
 				87B6B87D2BF8D31000F3D197 /* OnboardingPage.swift in Sources */,
 				8790692C2BFA439100FDB963 /* CategoryTableViewCell.swift in Sources */,
+				879069322BFA5F0800FDB963 /* OnboardingPageEnum.swift in Sources */,
 				8710EDA72BE969530091EC11 /* Utility.swift in Sources */,
 				877CB6B92BC16E6100C4164D /* StatisticViewController.swift in Sources */,
 				877CB64B2BBF397700C4164D /* SceneDelegate.swift in Sources */,

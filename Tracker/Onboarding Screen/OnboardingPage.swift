@@ -1,10 +1,3 @@
-//
-//  OnboardingPage.swift
-//  Tracker
-//
-//  Created by Михаил  on 18.05.2024.
-//
-
 import UIKit
 
 final class OnboardingPage: UIViewController{

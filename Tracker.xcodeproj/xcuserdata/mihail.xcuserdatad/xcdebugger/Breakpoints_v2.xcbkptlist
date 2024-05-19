@@ -819,8 +819,8 @@
             filePath = "Tracker/Onboarding Screen/OnBoardingViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
             landmarkName = "setupViews()"
             landmarkType = "7">
          </BreakpointContent>

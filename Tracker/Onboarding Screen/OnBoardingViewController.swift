@@ -38,17 +38,19 @@ class OnBoardingViewController: UIPageViewController{
         delegate = self
     }
     
-    private func appendPages(){
-        let page1Image = UIImage(named: "Onboarding1")!
-        let page2Image = UIImage(named: "Onboarding2")!
-        let page1Message = "Отслеживайте только то, что хотите"
-        let page2Message = "Даже если это не литры воды и йога"
-        let page1 = OnboardingPage(image: page1Image, messageLabel: page1Message)
-        let page2 = OnboardingPage(image: page2Image, messageLabel: page2Message)
-        pages.append(contentsOf: [page1, page2])
+    
+    private func appendPages() {
+        let page1 = OnboardingPageEnum.page1
+        let page1ViewController = OnboardingPage(image: page1.image, messageLabel: page1.message)
+        
+        let page2 = OnboardingPageEnum.page2
+        let page2ViewController = OnboardingPage(image: page2.image, messageLabel: page2.message)
+        
+        pages.append(contentsOf: [page1ViewController, page2ViewController])
         
         pageControl.numberOfPages = pages.count
     }
+
     
     private func setupViews(){
         view.addSubview(pageControl)
