@@ -23,7 +23,7 @@ final class NewHabbitViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .white
         setupScrollView()
         setupContentView()
@@ -268,7 +268,10 @@ extension NewHabbitViewController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.row == 0 {
-            habitCategory = "Важное"
+            let vc = ChooseTrackerTitleView()
+            let navigationController = UINavigationController(rootViewController: vc)
+            vc.delegate = self
+            present(navigationController, animated: true)
             let categoryIndexPath = IndexPath(row: 0, section: 0)
             tableView.reloadRows(at: [categoryIndexPath], with: .none)
             updateCreateButtonState()
@@ -411,3 +414,9 @@ extension NewHabbitViewController{
     }
 }
 
+extension NewHabbitViewController: selectedCategoryPassDelegate{
+    func selectedCategoryPass(selectedCategory: String) {
+        habitCategory = selectedCategory
+        tableView.reloadData()
+    }
+}

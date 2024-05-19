@@ -13,9 +13,9 @@ final class AddCategoryViewController: UIViewController{
         textField.placeholder = "Введите название категории"
         textField.borderStyle = .none
         
-        textField.layer.cornerRadius = 12
+        textField.layer.cornerRadius = 16
         textField.layer.masksToBounds = true
-        textField.backgroundColor = UIColor(named: "GrayForNavBar")
+        textField.backgroundColor = UIColor(named: "GrayForTableViews")?.withAlphaComponent(0.3)
         textField.textColor = UIColor.black
         textField.font = UIFont.systemFont(ofSize: 17)
         

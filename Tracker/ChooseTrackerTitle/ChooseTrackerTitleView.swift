@@ -1,8 +1,12 @@
 import UIKit
 
+protocol selectedCategoryPassDelegate: AnyObject{
+    func selectedCategoryPass(selectedCategory: String)
+}
+
 final class ChooseTrackerTitleView: UIViewController {
     private let tableView = UITableView()
-    
+    weak var delegate: selectedCategoryPassDelegate?
     var categories: [String] = [] {
         didSet {
             imageForNoCategories.isHidden = !categories.isEmpty
@@ -64,7 +68,7 @@ final class ChooseTrackerTitleView: UIViewController {
     }
     
     private func addSubViews() {
-        view.addSubviews([imageForNoCategories, labelForNoCategories, addButton, tableView])
+        view.addSubviews([tableView, imageForNoCategories, labelForNoCategories, addButton])
     }
     
     private func configureConstraints() {
@@ -96,12 +100,16 @@ final class ChooseTrackerTitleView: UIViewController {
     }
     
     @objc private func addCategoryTapped() {
-        let vc = AddCategoryViewController()
-        vc.delegate = self
-        let navigationController = UINavigationController(rootViewController: vc)
-        present(navigationController, animated: true)
+        if let selectedCategory{
+            delegate?.selectedCategoryPass(selectedCategory: selectedCategory)
+            dismiss(animated: true)
+        } else {
+            let vc = AddCategoryViewController()
+            vc.delegate = self
+            let navigationController = UINavigationController(rootViewController: vc)
+            present(navigationController, animated: true)
+        }
     }
-    
 }
 
 extension ChooseTrackerTitleView: addCategoryDelegate {
