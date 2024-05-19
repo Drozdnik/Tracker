@@ -48,10 +48,12 @@ final class ChooseDayViewController: UIViewController{
             doneButton.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
+    
     private func configureNavBar(){
         navigationItem.title = "Расписание"
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
     }
+    
     private lazy var doneButton:UIButton = {
         let button = UIButton()
         button.setTitle("Готово", for: .normal)

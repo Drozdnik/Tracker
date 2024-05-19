@@ -130,8 +130,6 @@ final class NewHabbitViewController: UIViewController{
         ])
     }
  
-    
-    // Сделать ext для UIViewController и вызывать оттуда configureNavBar(title)
     private lazy var textField: UITextView = {
         let textView = UITextView()
         textView.text = "Введите название трекера"
