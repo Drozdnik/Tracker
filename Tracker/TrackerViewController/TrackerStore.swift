@@ -1,4 +1,3 @@
-
 import CoreData
 import UIKit
 
@@ -8,7 +7,7 @@ class TrackerStore {
     private(set) var allCategories: [TrackerCategory] = []
     private(set) var categories: [TrackerCategory] = []
     var currentDate: Date = Date()
-    var completedTrackers: [TrackerRecord] = []
+    private(set) var completedTrackers: [TrackerRecord] = []
 
     init(dataManager: DataManager, managedObjectContext: NSManagedObjectContext) {
         self.dataManager = dataManager
@@ -16,6 +15,7 @@ class TrackerStore {
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         try? fetchedResultsController.performFetch()
+        self.completedTrackers = dataManager.fetchCompletedTrackers().map { TrackerRecord(trackerId: $0.trackerId!, date: $0.date!) }
     }
 
     func fetchAllCategories(completion: @escaping () -> Void) {
@@ -43,10 +43,10 @@ class TrackerStore {
     }
 
     func updateTrackerCount(trackerId: UUID, newCount: Int, completion: (() -> Void)? = nil) {
-            dataManager.updateTracker(trackerId: trackerId, newCount: newCount)
-            filterTrackersForCurrentDay()
-            completion?()
-        }
+        dataManager.updateTracker(trackerId: trackerId, newCount: newCount)
+        filterTrackersForCurrentDay()
+        completion?()
+    }
 
     func filterTrackersForCurrentDay() {
         var calendar = Calendar(identifier: .gregorian)
@@ -64,16 +64,20 @@ class TrackerStore {
             return TrackerCategory(title: category.title, trackers: filteredTrackers)
         }
     }
-    
+
     func addCompletedTracker(record: TrackerRecord, completion: (() -> Void)? = nil) {
-           completedTrackers.append(record)
-           completion?()
-       }
+        completedTrackers.append(record)
+        dataManager.addTrackerRecord(trackerRecord: record)
+        completion?()
+    }
 
     func removeCompletedTracker(at index: Int, completion: (() -> Void)? = nil) {
-            if index >= 0 && index < completedTrackers.count {
-                completedTrackers.remove(at: index)
-            }
-            completion?()
+        if index >= 0 && index < completedTrackers.count {
+            let record = completedTrackers[index]
+            completedTrackers.remove(at: index)
+            dataManager.removeTrackerRecord(trackerRecord: record)
         }
+        completion?()
+    }
 }
+
