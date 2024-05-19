@@ -10,9 +10,11 @@ final class TrackerViewController: UIViewController {
         view.backgroundColor = .white
         
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            let managedObjectContext = appDelegate.persistentContainer.viewContext
-            viewModel = TrackerViewModel(managedObjectContext: managedObjectContext)
-        }
+                let managedObjectContext = appDelegate.persistentContainer.viewContext
+                let dataManager = DataManager.shared
+                let trackerStore = TrackerStore(dataManager: dataManager, managedObjectContext: managedObjectContext)
+                viewModel = TrackerViewModel(trackerStore: trackerStore)
+            }
 
         viewModel.onDataUpdated = { [weak self] in
             self?.collectionView.reloadData()
@@ -24,9 +26,7 @@ final class TrackerViewController: UIViewController {
         addSubViews()
         configureConstraints()
         configureDatePicker()
-        viewModel.fetchAllCategories {
-            self.viewModel.filterTrackersForCurrentDay()
-        }
+        viewModel.fetchAllCategories()
     }
     
     private func showOnboardingIfNeeded(){
@@ -154,9 +154,7 @@ final class TrackerViewController: UIViewController {
             guard let self = self else { return }
             DataManager.shared.addOrUpdateTracker(tracker: tracker, categoryTitle: title)
             
-            self.viewModel.fetchAllCategories {
-                self.viewModel.filterTrackersForCurrentDay()
-            }
+            self.viewModel.fetchAllCategories ()
             self.dismiss(animated: true)
             self.configureNoTracksLabel()
         }

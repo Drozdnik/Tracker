@@ -756,8 +756,8 @@
             filePath = "Tracker/TrackerViewController/TrackerViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "24"
-            endingLineNumber = "24"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
             <Locations>
@@ -822,22 +822,6 @@
             startingLineNumber = "56"
             endingLineNumber = "56"
             landmarkName = "setupViews()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "6E639DDE-828F-490A-B99B-0AB275218D6F"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tracker/TrackerViewController/TrackerViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
-            landmarkName = "convertToTrackerCategory(coreData:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
