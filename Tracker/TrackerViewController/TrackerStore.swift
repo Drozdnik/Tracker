@@ -1,7 +1,7 @@
 import CoreData
 
 
-class TrackerStore {
+final class TrackerStore {
     private var dataManager: DataManager
     private var fetchedResultsController: NSFetchedResultsController<TrackerCoreData>
     private(set) var allCategories: [TrackerCategory] = []

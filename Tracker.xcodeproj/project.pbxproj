@@ -34,6 +34,8 @@
 		877CB6B92BC16E6100C4164D /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB6B82BC16E6100C4164D /* StatisticViewController.swift */; };
 		877CB6BB2BC1746000C4164D /* tabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 877CB6BA2BC1746000C4164D /* tabBarViewController.swift */; };
 		879069232BF9FCCE00FDB963 /* TrackerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879069222BF9FCCE00FDB963 /* TrackerStore.swift */; };
+		879069262BFA08B500FDB963 /* ChooseTrackerTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879069252BFA08B500FDB963 /* ChooseTrackerTitleView.swift */; };
+		8790692A2BFA25B900FDB963 /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879069292BFA25B900FDB963 /* AddCategoryViewController.swift */; };
 		87B6B87B2BF8C93500F3D197 /* OnBoardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6B87A2BF8C93400F3D197 /* OnBoardingViewController.swift */; };
 		87B6B87D2BF8D31000F3D197 /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6B87C2BF8D30F00F3D197 /* OnboardingPage.swift */; };
 		87E3FF382BD19F9A00F79C21 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E3FF372BD19F9A00F79C21 /* Schedule.swift */; };
@@ -92,6 +94,8 @@
 		877CB6BA2BC1746000C4164D /* tabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tabBarViewController.swift; sourceTree = "<group>"; };
 		877DDCF02BE22D6500235A31 /* TrackerDB.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackerDB.xcdatamodel; sourceTree = "<group>"; };
 		879069222BF9FCCE00FDB963 /* TrackerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStore.swift; sourceTree = "<group>"; };
+		879069252BFA08B500FDB963 /* ChooseTrackerTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseTrackerTitleView.swift; sourceTree = "<group>"; };
+		879069292BFA25B900FDB963 /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
 		87B6B87A2BF8C93400F3D197 /* OnBoardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewController.swift; sourceTree = "<group>"; };
 		87B6B87C2BF8D30F00F3D197 /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
 		87E3FF372BD19F9A00F79C21 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
@@ -182,6 +186,7 @@
 		877CB6472BBF397700C4164D /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				879069242BFA088E00FDB963 /* ChooseTrackerTitle */,
 				87B6B8792BF8C54400F3D197 /* Onboarding Screen */,
 				8710ED9F2BE635A10091EC11 /* CoreData */,
 				877DDCF32BE230D800235A31 /* Extensions */,
@@ -233,6 +238,15 @@
 				877CB67A2BBF455E00C4164D /* UIView extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		879069242BFA088E00FDB963 /* ChooseTrackerTitle */ = {
+			isa = PBXGroup;
+			children = (
+				879069252BFA08B500FDB963 /* ChooseTrackerTitleView.swift */,
+				879069292BFA25B900FDB963 /* AddCategoryViewController.swift */,
+			);
+			path = ChooseTrackerTitle;
 			sourceTree = "<group>";
 		};
 		87B6B8792BF8C54400F3D197 /* Onboarding Screen */ = {
@@ -423,6 +437,8 @@
 				872A55A42BC70DAD00A9920D /* EmojiCollectionViewCell.swift in Sources */,
 				872A55A82BC70EE600A9920D /* ConstantsForCells.swift in Sources */,
 				872A55A62BC70DD200A9920D /* ColorCollectionViewCell.swift in Sources */,
+				879069262BFA08B500FDB963 /* ChooseTrackerTitleView.swift in Sources */,
+				8790692A2BFA25B900FDB963 /* AddCategoryViewController.swift in Sources */,
 				877CB6492BBF397700C4164D /* AppDelegate.swift in Sources */,
 				87B6B87D2BF8D31000F3D197 /* OnboardingPage.swift in Sources */,
 				8710EDA72BE969530091EC11 /* Utility.swift in Sources */,

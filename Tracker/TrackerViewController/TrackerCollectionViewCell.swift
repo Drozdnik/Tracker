@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class TrackerCollectionViewCell: UICollectionViewCell {
+final class TrackerCollectionViewCell: UICollectionViewCell {
     var onIncrementCount: ((IndexPath) -> Void)?
     var indexPath: IndexPath?
     var isCompleted: Bool = false

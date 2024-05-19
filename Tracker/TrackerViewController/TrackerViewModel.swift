@@ -1,6 +1,6 @@
 import Foundation
 
-class TrackerViewModel: NSObject {
+final class TrackerViewModel: NSObject {
     var onDataUpdated: (() -> Void)?
     private var trackerStore: TrackerStore
 
