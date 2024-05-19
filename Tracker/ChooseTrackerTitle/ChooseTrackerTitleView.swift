@@ -1,22 +1,14 @@
 import UIKit
 
-protocol selectedCategoryPassDelegate: AnyObject{
+protocol SelectedCategoryPassDelegate: AnyObject {
     func selectedCategoryPass(selectedCategory: String)
 }
 
 final class ChooseTrackerTitleView: UIViewController {
     private let tableView = UITableView()
-    weak var delegate: selectedCategoryPassDelegate?
-    var categories: [String] = [] {
-        didSet {
-            imageForNoCategories.isHidden = !categories.isEmpty
-            labelForNoCategories.isHidden = !categories.isEmpty
-            tableView.reloadData()
-        }
-    }
-    
-    private var selectedCategory: String?
-    
+    weak var delegate: SelectedCategoryPassDelegate?
+    private let viewModel = ChooseTrackerTitleViewModel()
+
     private lazy var imageForNoCategories: UIImageView = {
         let image = UIImage(named: "NoTracks")
         let noTracksImage = UIImageView(image: image)
@@ -54,6 +46,16 @@ final class ChooseTrackerTitleView: UIViewController {
         setupTableView()
         addSubViews()
         configureConstraints()
+        bindViewModel()
+    }
+    
+    private func bindViewModel() {
+        viewModel.onCategoriesUpdated = { [weak self] in
+            guard let self = self else { return }
+            self.imageForNoCategories.isHidden = !self.viewModel.categories.isEmpty
+            self.labelForNoCategories.isHidden = !self.viewModel.categories.isEmpty
+            self.tableView.reloadData()
+        }
     }
     
     private func setupTableView() {
@@ -100,7 +102,7 @@ final class ChooseTrackerTitleView: UIViewController {
     }
     
     @objc private func addCategoryTapped() {
-        if let selectedCategory{
+        if let selectedCategory = viewModel.selectedCategory {
             delegate?.selectedCategoryPass(selectedCategory: selectedCategory)
             dismiss(animated: true)
         } else {
@@ -112,24 +114,23 @@ final class ChooseTrackerTitleView: UIViewController {
     }
 }
 
-extension ChooseTrackerTitleView: addCategoryDelegate {
+extension ChooseTrackerTitleView: AddCategoryDelegate {
     func didAddCategory(name: String) {
-        categories.append(name)
-        tableView.reloadData()
+        viewModel.addCategory(name)
     }
 }
 
 extension ChooseTrackerTitleView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories.count
+        return viewModel.categoriesCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTableViewCell", for: indexPath) as? CategoryTableViewCell else {
             return UITableViewCell()
         }
-        let category = categories[indexPath.row]
-        let isSelected = category == selectedCategory
+        let category = viewModel.category(at: indexPath.row)
+        let isSelected = category == viewModel.selectedCategory
         cell.configure(with: category, isSelected: isSelected)
         return cell
     }
@@ -137,16 +138,7 @@ extension ChooseTrackerTitleView: UITableViewDataSource {
 
 extension ChooseTrackerTitleView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if selectedCategory == categories[indexPath.row] {
-            deselectCategory()
-        } else {
-            selectedCategory = categories[indexPath.row]
-            tableView.reloadData()
-        }
-    }
-    
-    func deselectCategory() {
-        selectedCategory = nil
+        viewModel.selectCategory(at: indexPath.row)
         tableView.reloadData()
     }
     
@@ -154,4 +146,3 @@ extension ChooseTrackerTitleView: UITableViewDelegate {
         return 75
     }
 }
-

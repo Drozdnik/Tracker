@@ -37,6 +37,8 @@
 		879069262BFA08B500FDB963 /* ChooseTrackerTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879069252BFA08B500FDB963 /* ChooseTrackerTitleView.swift */; };
 		8790692A2BFA25B900FDB963 /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879069292BFA25B900FDB963 /* AddCategoryViewController.swift */; };
 		8790692C2BFA439100FDB963 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790692B2BFA439000FDB963 /* CategoryTableViewCell.swift */; };
+		8790692E2BFA566500FDB963 /* ChooseTrackerTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790692D2BFA566500FDB963 /* ChooseTrackerTitleViewModel.swift */; };
+		879069302BFA577100FDB963 /* addCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790692F2BFA577100FDB963 /* addCategoryViewModel.swift */; };
 		87B6B87B2BF8C93500F3D197 /* OnBoardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6B87A2BF8C93400F3D197 /* OnBoardingViewController.swift */; };
 		87B6B87D2BF8D31000F3D197 /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B6B87C2BF8D30F00F3D197 /* OnboardingPage.swift */; };
 		87E3FF382BD19F9A00F79C21 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E3FF372BD19F9A00F79C21 /* Schedule.swift */; };
@@ -98,6 +100,8 @@
 		879069252BFA08B500FDB963 /* ChooseTrackerTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseTrackerTitleView.swift; sourceTree = "<group>"; };
 		879069292BFA25B900FDB963 /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
 		8790692B2BFA439000FDB963 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
+		8790692D2BFA566500FDB963 /* ChooseTrackerTitleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseTrackerTitleViewModel.swift; sourceTree = "<group>"; };
+		8790692F2BFA577100FDB963 /* addCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addCategoryViewModel.swift; sourceTree = "<group>"; };
 		87B6B87A2BF8C93400F3D197 /* OnBoardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewController.swift; sourceTree = "<group>"; };
 		87B6B87C2BF8D30F00F3D197 /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
 		87E3FF372BD19F9A00F79C21 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
@@ -248,6 +252,8 @@
 				879069252BFA08B500FDB963 /* ChooseTrackerTitleView.swift */,
 				8790692B2BFA439000FDB963 /* CategoryTableViewCell.swift */,
 				879069292BFA25B900FDB963 /* AddCategoryViewController.swift */,
+				8790692F2BFA577100FDB963 /* addCategoryViewModel.swift */,
+				8790692D2BFA566500FDB963 /* ChooseTrackerTitleViewModel.swift */,
 			);
 			path = ChooseTrackerTitle;
 			sourceTree = "<group>";
@@ -437,12 +443,14 @@
 				87E3FF422BD86C0500F79C21 /* Tracker type.swift in Sources */,
 				8763D3A62BC9C57700B31704 /* ScheduleTableViewCell.swift in Sources */,
 				8763D39D2BC854A500B31704 /* CollectionHeaderView.swift in Sources */,
+				879069302BFA577100FDB963 /* addCategoryViewModel.swift in Sources */,
 				872A55A42BC70DAD00A9920D /* EmojiCollectionViewCell.swift in Sources */,
 				872A55A82BC70EE600A9920D /* ConstantsForCells.swift in Sources */,
 				872A55A62BC70DD200A9920D /* ColorCollectionViewCell.swift in Sources */,
 				879069262BFA08B500FDB963 /* ChooseTrackerTitleView.swift in Sources */,
 				8790692A2BFA25B900FDB963 /* AddCategoryViewController.swift in Sources */,
 				877CB6492BBF397700C4164D /* AppDelegate.swift in Sources */,
+				8790692E2BFA566500FDB963 /* ChooseTrackerTitleViewModel.swift in Sources */,
 				87B6B87D2BF8D31000F3D197 /* OnboardingPage.swift in Sources */,
 				8790692C2BFA439100FDB963 /* CategoryTableViewCell.swift in Sources */,
 				8710EDA72BE969530091EC11 /* Utility.swift in Sources */,

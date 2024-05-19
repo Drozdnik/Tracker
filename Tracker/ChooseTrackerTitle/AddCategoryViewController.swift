@@ -1,12 +1,12 @@
-
 import UIKit
 
-protocol addCategoryDelegate: AnyObject{
+protocol AddCategoryDelegate: AnyObject {
     func didAddCategory(name: String)
 }
 
-final class AddCategoryViewController: UIViewController{
-    weak var delegate: addCategoryDelegate?
+final class AddCategoryViewController: UIViewController {
+    weak var delegate: AddCategoryDelegate?
+    private let viewModel = AddCategoryViewModel()
     
     private lazy var textField: UITextField = {
         let textField = UITextField()
@@ -44,13 +44,21 @@ final class AddCategoryViewController: UIViewController{
         addSubviews()
         configureConstraints()
         configureNavBar()
+        bindViewModel()
     }
     
-    private func addSubviews(){
+    private func bindViewModel() {
+        viewModel.onCategoryNameUpdated = { [weak self] name in
+            self?.doneButton.isEnabled = !name.isEmpty
+            self?.doneButton.backgroundColor = name.isEmpty ? .gray : .black
+        }
+    }
+    
+    private func addSubviews() {
         view.addSubviews([textField, doneButton])
     }
     
-    private func configureConstraints(){
+    private func configureConstraints() {
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -64,20 +72,18 @@ final class AddCategoryViewController: UIViewController{
         ])
     }
     
-    private func configureNavBar(){
+    private func configureNavBar() {
         navigationItem.title = "Новая категория"
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
     }
     
-    @objc private func doneButtonTapped(){
-        guard let categoryName = textField.text, !categoryName.isEmpty else {return}
+    @objc private func doneButtonTapped() {
+        guard let categoryName = textField.text, !categoryName.isEmpty else { return }
         delegate?.didAddCategory(name: categoryName)
         dismiss(animated: true)
     }
     
-    @objc private func textFieldDidChangeSelection(){
-        let text = textField.text ?? ""
-        doneButton.isEnabled = !text.isEmpty
-        doneButton.backgroundColor = doneButton.isEnabled ? .black : .gray
+    @objc private func textFieldDidChangeSelection() {
+        viewModel.categoryName = textField.text ?? ""
     }
 }

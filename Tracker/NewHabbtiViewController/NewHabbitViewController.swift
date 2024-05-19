@@ -1,9 +1,3 @@
-//
-//  NewHabbitViewController.swift
-//  Tracker
-//
-//  Created by Михаил  on 09.04.2024.
-//
 
 import Foundation
 import UIKit
@@ -414,7 +408,7 @@ extension NewHabbitViewController{
     }
 }
 
-extension NewHabbitViewController: selectedCategoryPassDelegate{
+extension NewHabbitViewController: SelectedCategoryPassDelegate{
     func selectedCategoryPass(selectedCategory: String) {
         habitCategory = selectedCategory
         tableView.reloadData()
