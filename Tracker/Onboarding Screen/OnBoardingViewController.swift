@@ -1,11 +1,11 @@
 import UIKit
 
 class OnBoardingViewController: UIPageViewController{
-    lazy var pages: [UIViewController] = {
+    private lazy var pages: [UIViewController] = {
         return []
     }()
     
-    lazy var pageControl: UIPageControl = {
+    private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.currentPageIndicatorTintColor = .black
         pageControl.pageIndicatorTintColor = .gray
@@ -13,7 +13,7 @@ class OnBoardingViewController: UIPageViewController{
         return pageControl
     }()
     
-    lazy var actionButton: UIButton = {
+    private lazy var actionButton: UIButton = {
         let button = UIButton()
         button.setTitle("Вот это технологии!", for: .normal)
         button.backgroundColor = .black

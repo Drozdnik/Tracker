@@ -411,6 +411,7 @@ extension NewHabbitViewController{
 extension NewHabbitViewController: SelectedCategoryPassDelegate{
     func selectedCategoryPass(selectedCategory: String) {
         habitCategory = selectedCategory
+        updateCreateButtonState()
         tableView.reloadData()
     }
 }

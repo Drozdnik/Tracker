@@ -48,8 +48,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "307"
             endingLineNumber = "307"
-            landmarkName = "NewHabbitViewController"
-            landmarkType = "21">
+            landmarkName = "collectionView(_:cellForItemAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -80,7 +80,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "91"
             endingLineNumber = "91"
-            landmarkName = "setupScrollView()"
+            landmarkName = "configureConstraintsForContentView()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -96,7 +96,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "90"
             endingLineNumber = "90"
-            landmarkName = "setupScrollView()"
+            landmarkName = "configureConstraintsForContentView()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -534,7 +534,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "381"
             endingLineNumber = "381"
-            landmarkName = "collectionView(_:didDeselectItemAt:)"
+            landmarkName = "updateCreateButtonState()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -829,7 +829,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "2D28A2E0-93C6-465D-8EEA-03125223AA6E"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tracker/CoreData/DataManager.swift"
@@ -877,7 +877,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "EB86D5B0-DDE0-4FD7-9AF8-E0C8F08211FD"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tracker/CoreData/DataManager.swift"
@@ -899,8 +899,8 @@
             filePath = "Tracker/NewHabbtiViewController/NewHabbitViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "415"
-            endingLineNumber = "415"
+            startingLineNumber = "416"
+            endingLineNumber = "416"
             landmarkName = "NewHabbitViewController"
             landmarkType = "21">
          </BreakpointContent>
@@ -917,7 +917,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "413"
             endingLineNumber = "413"
-            landmarkName = "didTapCreateButton()"
+            landmarkName = "selectedCategoryPass(selectedCategory:)"
             landmarkType = "7">
             <Locations>
                <Location

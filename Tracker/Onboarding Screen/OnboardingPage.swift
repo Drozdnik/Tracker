@@ -8,9 +8,9 @@
 import UIKit
 
 final class OnboardingPage: UIViewController{
-    private var imageView = UIImageView()
-    private var messageLabel = UILabel()
-    private var actionButton = UIButton()
+    private lazy var imageView = UIImageView()
+    private lazy var messageLabel = UILabel()
+    private lazy var actionButton = UIButton()
     
     init(image: UIImage, messageLabel: String) {
         super.init(nibName: nil, bundle: nil)
@@ -36,14 +36,7 @@ final class OnboardingPage: UIViewController{
         messageLabel.numberOfLines = 2 
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(messageLabel)
-        
-        //Настройка button
-//        actionButton.setTitle("Вот это технологии!", for: .normal)
-//        actionButton.backgroundColor = .black
-//        actionButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-//        actionButton.layer.cornerRadius = 20
-//        actionButton.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(actionButton)
+    
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -55,11 +48,6 @@ final class OnboardingPage: UIViewController{
             messageLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 50),
             messageLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             messageLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
-//            actionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            actionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
-//            actionButton.heightAnchor.constraint(equalToConstant: 40),
-//            actionButton.widthAnchor.constraint(equalToConstant: 200)
         ])
         
     }
