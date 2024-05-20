@@ -2,6 +2,8 @@ import Foundation
 
 final class TrackerViewModel: NSObject {
     var onDataUpdated: (() -> Void)?
+    
+    private var filteredCategories: [TrackerCategory] = []
     private var trackerStore: TrackerStore
 
     init(trackerStore: TrackerStore) {
@@ -9,7 +11,7 @@ final class TrackerViewModel: NSObject {
     }
 
     var categories: [TrackerCategory] {
-        return trackerStore.categories
+        return filteredCategories
     }
 
     var completedTrackers: [TrackerRecord] {
@@ -21,10 +23,11 @@ final class TrackerViewModel: NSObject {
     }
 
     func fetchAllCategories() {
-        trackerStore.fetchAllCategories {
-            self.onDataUpdated?()
+            trackerStore.fetchAllCategories {
+                self.filteredCategories = self.trackerStore.categories.filter { !$0.trackers.isEmpty }
+                self.onDataUpdated?()
+            }
         }
-    }
 
     func incrementTrackerCount(at indexPath: IndexPath) {
         let tracker = categories[indexPath.section].trackers[indexPath.row]

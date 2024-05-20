@@ -45,6 +45,7 @@ final class AddCategoryViewController: UIViewController {
         configureConstraints()
         configureNavBar()
         bindViewModel()
+        textField.delegate = self
     }
     
     private func bindViewModel() {
@@ -85,5 +86,12 @@ final class AddCategoryViewController: UIViewController {
     
     @objc private func textFieldDidChangeSelection() {
         viewModel.categoryName = textField.text ?? ""
+    }
+}
+
+extension AddCategoryViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

@@ -45,9 +45,21 @@
         
         func insertNewCategory(title: String) {
             let context = persistentContainer.viewContext
-            let newCategory = TrackerCategoriesCoreData(context: context)
-            newCategory.title = title
-            saveContext()
+            let fetchRequest: NSFetchRequest<TrackerCategoriesCoreData> = TrackerCategoriesCoreData.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "title == %@", title)
+
+            do {
+                let results = try context.fetch(fetchRequest)
+                if results.isEmpty { 
+                    let newCategory = TrackerCategoriesCoreData(context: context)
+                    newCategory.title = title
+                    saveContext() // Сохраняем контекст, если категория уникальна
+                } else {
+                    print("Category \(title) already exists.")
+                }
+            } catch let error as NSError {
+                print("Could not fetch. \(error), \(error.userInfo)")
+            }
         }
 
         func fetchCategories() -> [TrackerCategoriesCoreData] {

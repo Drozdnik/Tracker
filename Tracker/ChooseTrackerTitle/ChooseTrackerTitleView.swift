@@ -47,17 +47,23 @@ final class ChooseTrackerTitleView: UIViewController {
         addSubViews()
         configureConstraints()
         bindViewModel()
+        viewModel.loadCategoriesFromCoreData()
     }
+    
+    func updateUI(){
+         let hasCategories = !viewModel.categories.isEmpty
+         imageForNoCategories.isHidden = hasCategories
+         labelForNoCategories.isHidden = hasCategories
+         tableView.reloadData()
+     }
     
     private func bindViewModel() {
         viewModel.onCategoriesUpdated = { [weak self] in
             guard let self = self else { return }
-            self.imageForNoCategories.isHidden = !self.viewModel.categories.isEmpty
-            self.labelForNoCategories.isHidden = !self.viewModel.categories.isEmpty
-            self.tableView.reloadData()
+            updateUI()
         }
     }
-
+    
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self

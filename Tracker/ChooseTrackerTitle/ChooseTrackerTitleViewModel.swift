@@ -4,12 +4,26 @@ class ChooseTrackerTitleViewModel {
     var categories: [String] = [] {
         didSet {
             onCategoriesUpdated?()
+            saveCategoriesToCoreData()
         }
     }
     var selectedCategory: String?
     
     var onCategoriesUpdated: (() -> Void)?
     
+    private func saveCategoriesToCoreData() {
+        guard let lastCategory = categories.last else { return }
+
+        DataManager.shared.insertNewCategory(title: lastCategory)
+    }
+
+    func loadCategoriesFromCoreData() {
+        let fetchedCategories = DataManager.shared.fetchCategories().compactMap { $0.title }
+        DispatchQueue.main.async { [weak self] in
+            self?.categories = fetchedCategories
+            self?.onCategoriesUpdated?()  
+        }
+    }
     var categoriesCount: Int {
         return categories.count
     }

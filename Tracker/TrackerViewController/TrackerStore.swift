@@ -6,6 +6,7 @@ final class TrackerStore {
     private var fetchedResultsController: NSFetchedResultsController<TrackerCoreData>
     private(set) var allCategories: [TrackerCategory] = []
     private(set) var categories: [TrackerCategory] = []
+    private(set) var filteredCategories: [TrackerCategory] = []
     var currentDate: Date = Date()
     private(set) var completedTrackers: [TrackerRecord] = []
 
@@ -21,6 +22,7 @@ final class TrackerStore {
     func fetchAllCategories(completion: @escaping () -> Void) {
         let categories = dataManager.fetchCategories()
         self.allCategories = categories.map { convertToTrackerCategory(coreData: $0) }
+        self.filteredCategories = self.allCategories.filter { !$0.trackers.isEmpty }
         filterTrackersForCurrentDay()
         completion()
     }
