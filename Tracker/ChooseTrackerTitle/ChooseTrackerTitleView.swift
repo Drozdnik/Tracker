@@ -57,14 +57,16 @@ final class ChooseTrackerTitleView: UIViewController {
             self.tableView.reloadData()
         }
     }
-    
+
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
         tableView.layer.cornerRadius = 16
-        tableView.isScrollEnabled = false
+        tableView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         tableView.layer.masksToBounds = true
+        tableView.separatorStyle = .singleLine
+        tableView.isScrollEnabled = true
         tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: "CategoryTableViewCell")
         view.addSubview(tableView)
     }
@@ -133,6 +135,21 @@ extension ChooseTrackerTitleView: UITableViewDataSource {
         let isSelected = category == viewModel.selectedCategory
         cell.configure(with: category, isSelected: isSelected)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.layer.cornerRadius = 0
+        cell.layer.maskedCorners = []
+        
+        if indexPath.row == 0 {
+            cell.layer.cornerRadius = 16
+            cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        }
+        
+        if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
+            cell.layer.cornerRadius = 16
+            cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        }
     }
 }
 

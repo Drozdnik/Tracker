@@ -23,9 +23,8 @@ class CategoryTableViewCell: UITableViewCell {
         contentView.addSubview(categoryLabel)
         contentView.addSubview(checkmarkImageView)
         setupConstraints()
-        self.backgroundColor = UIColor(named: "GrayForNavBar")
-        self.layer.cornerRadius = 16
-        self.layer.masksToBounds = true
+        self.backgroundColor = UIColor(named: "GrayForTableViews")!.withAlphaComponent(0.3)
+        self.selectionStyle = .none
     }
 
     required init?(coder: NSCoder) {
