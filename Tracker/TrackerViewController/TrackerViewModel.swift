@@ -1,74 +1,68 @@
-import CoreData
-import UIKit
+import Foundation
 
-class TrackerViewModel: NSObject {
+final class TrackerViewModel: NSObject {
     var onDataUpdated: (() -> Void)?
-    private var fetchedResultsController: NSFetchedResultsController<TrackerCoreData>
-    private let managedObjectContext: NSManagedObjectContext
     
-    init(managedObjectContext: NSManagedObjectContext) {
-        self.managedObjectContext = managedObjectContext
-        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
-        super.init()
-        fetchedResultsController.delegate = self
-        try? fetchedResultsController.performFetch()
+    private var filteredCategories: [TrackerCategory] = []
+    private var trackerStore: TrackerStore
+
+    init(trackerStore: TrackerStore) {
+        self.trackerStore = trackerStore
     }
-    
-    var count: Int {
-        return fetchedResultsController.sections?[0].numberOfObjects ?? 0
+
+    var categories: [TrackerCategory] {
+        return filteredCategories
     }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+
+    var completedTrackers: [TrackerRecord] {
+        return trackerStore.completedTrackers
+    }
+
+    var currentDate: Date {
+        return trackerStore.currentDate
+    }
+
+    func fetchAllCategories() {
+            trackerStore.fetchAllCategories {
+                self.filteredCategories = self.trackerStore.categories.filter { !$0.trackers.isEmpty }
+                self.onDataUpdated?()
+            }
+        }
+
+    func incrementTrackerCount(at indexPath: IndexPath) {
+        let tracker = categories[indexPath.section].trackers[indexPath.row]
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let currentDateStart = calendar.startOfDay(for: currentDate)
+        let isFutureDate = calendar.compare(currentDateStart, to: today, toGranularity: .day) == .orderedDescending
+
+        if isFutureDate {
+            return
+        }
+
+        var newCount = tracker.countOfDoneTrackers
+        if let index = completedTrackers.firstIndex(where: { $0.trackerId == tracker.id && calendar.isDate($0.date, inSameDayAs: currentDate) }) {
+            newCount -= 1
+            tracker.countOfDoneTrackers = newCount
+            trackerStore.removeCompletedTracker(at: index) { [weak self] in
+                self?.onDataUpdated?()
+            }
+        } else {
+            newCount += 1
+            tracker.countOfDoneTrackers = newCount
+            let newRecord = TrackerRecord(trackerId: tracker.id, date: currentDate)
+            trackerStore.addCompletedTracker(record: newRecord) { [weak self] in
+                self?.onDataUpdated?()
+            }
+        }
+        trackerStore.updateTrackerCount(trackerId: tracker.id, newCount: newCount) { [weak self] in
+            self?.onDataUpdated?()
+        }
+    }
+
+    func updateCurrentDate(_ date: Date) {
+        trackerStore.currentDate = date
+        trackerStore.filterTrackersForCurrentDay()
         onDataUpdated?()
     }
-    
-    func tracker(at indexPath: IndexPath) -> Tracker {
-        let trackerCoreData = fetchedResultsController.object(at: indexPath)
-        
-        let color = trackerCoreData.color.flatMap(Utility.decodeColor) ?? UIColor.black
-        
-        let schedule = trackerCoreData.scheduleData.flatMap(Utility.decodeSchedule) ?? Schedule(days: [false, false, false, false, false, false, false])
-        
-        return Tracker(id: trackerCoreData.id!, name: trackerCoreData.name!, color: color, emoji: trackerCoreData.emoji!, schedule: schedule, count: Int(trackerCoreData.count))
-    }
-    
-    func fetchAllCategories(completion: @escaping ([TrackerCategory]) -> Void) {
-        // Perform fetching
-        do {
-            let categories = try managedObjectContext.fetch(TrackerCategoriesCoreData.fetchRequest()) as [TrackerCategoriesCoreData]
-            let mappedCategories = categories.map { convertToTrackerCategory(coreData: $0) }
-            completion(mappedCategories)
-        } catch {
-            print("Error loading categories: \(error)")
-            completion([])  
-        }
-    }
-    
-    private func convertToTrackerCategory(coreData: TrackerCategoriesCoreData) -> TrackerCategory {
-        let trackers = coreData.trackers as? Set<TrackerCoreData> ?? []
-        
-        let modelTrackers = trackers.compactMap { trackerCoreData -> Tracker? in
-            guard let id = trackerCoreData.id,
-                  let name = trackerCoreData.name,
-                  let emoji = trackerCoreData.emoji,
-                  let colorString = trackerCoreData.color,
-                  let scheduleString = trackerCoreData.scheduleData,
-                  let color = Utility.decodeColor(colorString),
-                  let schedule = Utility.decodeSchedule(scheduleString) else {
-                print("One of the required properties is nil")
-                print("ID: \(String(describing: trackerCoreData.id)), Name: \(String(describing: trackerCoreData.name)), Emoji: \(String(describing: trackerCoreData.emoji))")
-                print("Color Data: \(String(describing: trackerCoreData.color)), Schedule Data: \(String(describing: trackerCoreData.scheduleData))")
-                return nil
-            }
-            
-            return Tracker(id: id, name: name, color: color, emoji: emoji, schedule: schedule, count: Int(trackerCoreData.count))
-        }
-        
-        return TrackerCategory(title: coreData.title ?? "Unknown Title", trackers: modelTrackers)
-    }
-}
-
-extension TrackerViewModel: NSFetchedResultsControllerDelegate {
 }

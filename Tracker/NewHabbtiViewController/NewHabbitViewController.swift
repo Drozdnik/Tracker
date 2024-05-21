@@ -1,9 +1,3 @@
-//
-//  NewHabbitViewController.swift
-//  Tracker
-//
-//  Created by Михаил  on 09.04.2024.
-//
 
 import Foundation
 import UIKit
@@ -23,7 +17,7 @@ final class NewHabbitViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .white
         setupScrollView()
         setupContentView()
@@ -130,8 +124,6 @@ final class NewHabbitViewController: UIViewController{
         ])
     }
  
-    
-    // Сделать ext для UIViewController и вызывать оттуда configureNavBar(title)
     private lazy var textField: UITextView = {
         let textView = UITextView()
         textView.text = "Введите название трекера"
@@ -270,7 +262,10 @@ extension NewHabbitViewController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.row == 0 {
-            habitCategory = "Важное"
+            let vc = ChooseTrackerTitleView()
+            let navigationController = UINavigationController(rootViewController: vc)
+            vc.delegate = self
+            present(navigationController, animated: true)
             let categoryIndexPath = IndexPath(row: 0, section: 0)
             tableView.reloadRows(at: [categoryIndexPath], with: .none)
             updateCreateButtonState()
@@ -402,7 +397,8 @@ extension NewHabbitViewController{
             name: habitName,
             color: habitColor,
             emoji: habitEmoji,
-            schedule: habitSchedule
+            schedule: habitSchedule,
+            countOfDoneTrackers: 0
         )
         
         
@@ -412,3 +408,10 @@ extension NewHabbitViewController{
     }
 }
 
+extension NewHabbitViewController: SelectedCategoryPassDelegate{
+    func selectedCategoryPass(selectedCategory: String) {
+        habitCategory = selectedCategory
+        updateCreateButtonState()
+        tableView.reloadData()
+    }
+}

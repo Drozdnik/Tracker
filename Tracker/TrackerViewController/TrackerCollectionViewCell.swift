@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class TrackerCollectionViewCell: UICollectionViewCell {
+final class TrackerCollectionViewCell: UICollectionViewCell {
     var onIncrementCount: ((IndexPath) -> Void)?
     var indexPath: IndexPath?
     var isCompleted: Bool = false
@@ -112,7 +112,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         nameLabel.text = tracker.name
         topContainer.backgroundColor = tracker.color
         addButton.backgroundColor = tracker.color
-        countOfDays = getDayText(count: tracker.count)
+        countOfDays = getDayText(count: tracker.countOfDoneTrackers)
         dayLabel.text = "\(countOfDays)"
         addButton.layer.opacity = 1
         self.completedTrackers = completedTrackers
