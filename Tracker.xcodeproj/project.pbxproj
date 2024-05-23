@@ -194,6 +194,7 @@
 		877CB6472BBF397700C4164D /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				87C655682BFFB7CA003050A0 /* Resources */,
 				879069242BFA088E00FDB963 /* ChooseTrackerTitle */,
 				87B6B8792BF8C54400F3D197 /* Onboarding Screen */,
 				8710ED9F2BE635A10091EC11 /* CoreData */,
@@ -203,10 +204,6 @@
 				87E3FF3A2BD5AFF600F79C21 /* TrackerViewController */,
 				8763D3A42BC9C4E200B31704 /* ChooseDayForHabbit */,
 				872A55A22BC70D5100A9920D /* NewHabbtiViewController */,
-				877CB6482BBF397700C4164D /* AppDelegate.swift */,
-				877CB64A2BBF397700C4164D /* SceneDelegate.swift */,
-				877CB6512BBF397900C4164D /* Assets.xcassets */,
-				877CB6532BBF397900C4164D /* LaunchScreen.storyboard */,
 				877CB6562BBF397900C4164D /* Info.plist */,
 				87E3FF392BD19FB900F79C21 /* Models */,
 				877CB6BA2BC1746000C4164D /* tabBarViewController.swift */,
@@ -268,6 +265,17 @@
 				879069312BFA5F0800FDB963 /* OnboardingPageEnum.swift */,
 			);
 			path = "Onboarding Screen";
+			sourceTree = "<group>";
+		};
+		87C655682BFFB7CA003050A0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				877CB6482BBF397700C4164D /* AppDelegate.swift */,
+				877CB64A2BBF397700C4164D /* SceneDelegate.swift */,
+				877CB6512BBF397900C4164D /* Assets.xcassets */,
+				877CB6532BBF397900C4164D /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		87E3FF392BD19FB900F79C21 /* Models */ = {
