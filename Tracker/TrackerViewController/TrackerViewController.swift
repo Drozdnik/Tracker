@@ -85,13 +85,14 @@ final class TrackerViewController: UIViewController {
         navigationItem.leftBarButtonItem = addButton
         
         let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
         searchController.searchBar.placeholder = "Поиск"
         searchController.searchBar.searchTextField.backgroundColor = UIColor(named: "GrayForNavBar")
         searchController.searchBar.searchTextField.layer.cornerRadius = 6
         searchController.searchBar.searchTextField.clipsToBounds = true
         searchController.searchBar.searchTextField.font = UIFont.systemFont(ofSize: 16)
         navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = true // или false если не хотим скрывать
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
 
     private func configureDatePicker() {
@@ -222,4 +223,14 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.bounds.width, height: 50)
     }
+}
+
+
+extension TrackerViewController: UISearchResultsUpdating{
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else { return }
+        viewModel.filterContentForSearchText(searchText)
+    }
+    
+    
 }

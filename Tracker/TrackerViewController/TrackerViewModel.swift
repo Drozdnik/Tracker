@@ -3,6 +3,7 @@ import Foundation
 final class TrackerViewModel: NSObject {
     var onDataUpdated: (() -> Void)?
     
+    private var allCategories: [TrackerCategory] = []
     private var filteredCategories: [TrackerCategory] = []
     private var trackerStore: TrackerStore
 
@@ -23,11 +24,30 @@ final class TrackerViewModel: NSObject {
     }
 
     func fetchAllCategories() {
-            trackerStore.fetchAllCategories {
-                self.filteredCategories = self.trackerStore.categories.filter { !$0.trackers.isEmpty }
-                self.onDataUpdated?()
+        trackerStore.fetchAllCategories {
+            self.allCategories = self.trackerStore.categories
+            self.applyFilters()
+        }
+    }
+
+    private func applyFilters(searchText: String = "") {
+        let nonEmptyCategories = allCategories.filter { !$0.trackers.isEmpty }
+
+        if searchText.isEmpty {
+            filteredCategories = nonEmptyCategories
+        } else {
+            filteredCategories = nonEmptyCategories.filter {
+                $0.title.lowercased().contains(searchText.lowercased()) ||
+                $0.trackers.contains(where: { $0.name.lowercased().contains(searchText.lowercased()) })
             }
         }
+        onDataUpdated?()
+    }
+
+
+    func filterContentForSearchText(_ searchText: String) {
+        applyFilters(searchText: searchText)
+    }
 
     func incrementTrackerCount(at indexPath: IndexPath) {
         let tracker = categories[indexPath.section].trackers[indexPath.row]
