@@ -188,7 +188,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         cell.onIncrementCount = { [weak self] indexPath in
             self?.viewModel.incrementTrackerCount(at: indexPath)
         }
-        
+        cell.viewModel = self.viewModel
         cell.configureWith(tracker: tracker, completedTrackers: viewModel.completedTrackers, currentDate: viewModel.currentDate)
         return cell
     }
@@ -236,22 +236,27 @@ extension TrackerViewController: UISearchResultsUpdating{
 extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ -> UIMenu? in
-            guard let self = self else { return nil }
+            guard self != nil else { return nil }
             let pinAction = UIAction(title: "Закрепить"){ action in
                 
             }
             
 
-            let editAction = UIAction(title: "Редактировать", image: UIImage(systemName: "pencil")) { _ in
+            let editAction = UIAction(title: "Редактировать") { _ in
                 
             }
 
-            let deleteAction = UIAction(title: "Удалить", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-            
+            let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { _ in
+                self?.delete()
             }
 
             return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
         }
     }
     
+    private func delete(){
+        if let indexPath = self.indexPath{
+            viewModel?.deleteTracker(at: indexPath)
+        }
+    }
 }

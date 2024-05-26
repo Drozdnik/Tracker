@@ -125,6 +125,23 @@
                    print("Failed to fetch or remove tracker record: \(error)")
                }
            }
+        
+        func removeTrackerRecordBy(trackerId: UUID) {
+            let context = persistentContainer.viewContext
+            let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", trackerId as CVarArg)
+
+            do {
+                if let trackerRecordToRemove = try context.fetch(fetchRequest).first {
+                    context.delete(trackerRecordToRemove)
+                    saveContext()
+                } else {
+                    print("No tracker record found with the given ID to remove.")
+                }
+            } catch {
+                print("Failed to fetch or remove tracker record: \(error)")
+            }
+        }
 
            func fetchCompletedTrackers() -> [TrackerRecordCoreData] {
                let context = persistentContainer.viewContext

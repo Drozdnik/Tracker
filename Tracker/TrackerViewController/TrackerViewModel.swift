@@ -85,4 +85,15 @@ final class TrackerViewModel: NSObject {
         trackerStore.filterTrackersForCurrentDay()
         onDataUpdated?()
     }
+    
+    func deleteTracker(at indexPath: IndexPath) {
+        let tracker = categories[indexPath.section].trackers[indexPath.row]
+        trackerStore.deleteTracker(trackerId: tracker.id) { [weak self] success in
+            if success {
+                self?.fetchAllCategories()
+                self?.onDataUpdated?()
+            }
+        }
+    }
+
 }

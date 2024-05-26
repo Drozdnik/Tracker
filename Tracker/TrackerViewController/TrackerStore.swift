@@ -81,5 +81,10 @@ final class TrackerStore {
         }
         completion?()
     }
+    
+    func deleteTracker(trackerId: UUID, completion: @escaping (Bool) -> Void) {
+        dataManager.removeTrackerRecordBy(trackerId: trackerId)
+        completion(true)
+    }
 }
 

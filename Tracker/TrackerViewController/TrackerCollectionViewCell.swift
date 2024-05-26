@@ -14,7 +14,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     var isCompleted: Bool = false
     var completedTrackers: [TrackerRecord] = []
     var selectedDate: Date = Date()
-    
+    var trackerId: UUID?
+    var viewModel: TrackerViewModel?
     // Элементы UI для верхней секции
     private lazy var emojiLabel = UILabel()
     private lazy var nameLabel = UILabel()
@@ -25,6 +26,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     let addButton = UIButton()
     private let bottomContainer = UIView()
     static let identifier = "TrackerCell"
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -52,6 +54,9 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }
 
     private func delete() {
+        if let indexPath = self.indexPath{
+            viewModel?.deleteTracker(at: indexPath)
+        }
     }
     
     private func setupViews() {
