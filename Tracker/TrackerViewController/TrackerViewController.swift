@@ -3,19 +3,19 @@ import UIKit
 final class TrackerViewController: UIViewController {
     let noTracksLabel = UILabel()
     var viewModel: TrackerViewModel!
-
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                let managedObjectContext = appDelegate.persistentContainer.viewContext
-                let dataManager = DataManager.shared
-                let trackerStore = TrackerStore(dataManager: dataManager, managedObjectContext: managedObjectContext)
-                viewModel = TrackerViewModel(trackerStore: trackerStore)
-            }
-
+            let managedObjectContext = appDelegate.persistentContainer.viewContext
+            let dataManager = DataManager.shared
+            let trackerStore = TrackerStore(dataManager: dataManager, managedObjectContext: managedObjectContext)
+            viewModel = TrackerViewModel(trackerStore: trackerStore)
+        }
+        
         viewModel.onDataUpdated = { [weak self] in
             self?.collectionView.reloadData()
             self?.configureNoTracksLabel()
@@ -42,7 +42,7 @@ final class TrackerViewController: UIViewController {
         view.addSubview(collectionView)
         view.addSubview(filterButton)
     }
-
+    
     private func configureConstraints() {
         configureNoTracksLabel()
         NSLayoutConstraint.activate([
@@ -67,7 +67,7 @@ final class TrackerViewController: UIViewController {
             filterButton.widthAnchor.constraint(equalToConstant: 114)
         ])
     }
-
+    
     private func configureNoTracksLabel() {
         noTracksLabel.isHidden = viewModel.categories.isEmpty ? false : true
         imageForNoTracks.isHidden = viewModel.categories.isEmpty ? false : true
@@ -76,7 +76,7 @@ final class TrackerViewController: UIViewController {
         noTracksLabel.textAlignment = .center
         noTracksLabel.translatesAutoresizingMaskIntoConstraints = false
     }
-
+    
     private func configureNavigationBar() {
         navigationItem.title = "Трекеры"
         
@@ -94,7 +94,7 @@ final class TrackerViewController: UIViewController {
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
     }
-
+    
     private func configureDatePicker() {
         let dateButton = UIDatePicker()
         dateButton.datePickerMode = .date
@@ -115,37 +115,37 @@ final class TrackerViewController: UIViewController {
     }
     
     private lazy var imageForNoTracks: UIImageView = {
-          let image = UIImage(named: "NoTracks")
-          let noTracksImage = UIImageView(image: image)
-          noTracksImage.translatesAutoresizingMaskIntoConstraints = false
-          return noTracksImage
-      }()
+        let image = UIImage(named: "NoTracks")
+        let noTracksImage = UIImageView(image: image)
+        noTracksImage.translatesAutoresizingMaskIntoConstraints = false
+        return noTracksImage
+    }()
     
     private lazy var collectionView: UICollectionView = {
-           let layout = UICollectionViewFlowLayout()
-           let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-           collectionView.backgroundColor = .clear
-           collectionView.translatesAutoresizingMaskIntoConstraints = false
-           
-           collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "TrackerCell")
-           collectionView.register(CollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderView.identifier)
-           collectionView.dataSource = self
-           collectionView.delegate = self
-           return collectionView
-       }()
+        let layout = UICollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "TrackerCell")
+        collectionView.register(CollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderView.identifier)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        return collectionView
+    }()
     
     private lazy var filterButton: UIButton = {
-            let button = UIButton()
-            button.setTitle("Фильтры", for: .normal)
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-            button.backgroundColor = .systemBlue
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.backgroundColor = UIColor(named: "BlueForFilter")
-            button.layer.cornerRadius = 16
-            button.layer.masksToBounds = true
-            button.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
-            return button
-        }()
+        let button = UIButton()
+        button.setTitle("Фильтры", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.backgroundColor = .systemBlue
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor(named: "BlueForFilter")
+        button.layer.cornerRadius = 16
+        button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        return button
+    }()
     
     @objc private func addTapped() {
         let vc = ChooseTypeOfTracker()
@@ -161,11 +161,11 @@ final class TrackerViewController: UIViewController {
         }
         present(navigationController, animated: true)
     }
-
+    
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         viewModel.updateCurrentDate(sender.date)
     }
-
+    
     @objc private func filterButtonTapped() {
         print("Фильтр нажат")
     }
@@ -184,11 +184,11 @@ extension TrackerViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCell", for: indexPath) as! TrackerCollectionViewCell
         let tracker = viewModel.categories[indexPath.section].trackers[indexPath.row]
         cell.indexPath = indexPath
-
+        
         cell.onIncrementCount = { [weak self] indexPath in
             self?.viewModel.incrementTrackerCount(at: indexPath)
         }
-
+        
         cell.configureWith(tracker: tracker, completedTrackers: viewModel.completedTrackers, currentDate: viewModel.currentDate)
         return cell
     }
@@ -231,6 +231,27 @@ extension TrackerViewController: UISearchResultsUpdating{
         guard let searchText = searchController.searchBar.text else { return }
         viewModel.filterContentForSearchText(searchText)
     }
-    
+}
+
+extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ -> UIMenu? in
+            guard let self = self else { return nil }
+            let pinAction = UIAction(title: "Закрепить"){ action in
+                
+            }
+            
+
+            let editAction = UIAction(title: "Редактировать", image: UIImage(systemName: "pencil")) { _ in
+                
+            }
+
+            let deleteAction = UIAction(title: "Удалить", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+            
+            }
+
+            return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
+        }
+    }
     
 }

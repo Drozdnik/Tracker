@@ -18,7 +18,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     // Элементы UI для верхней секции
     private lazy var emojiLabel = UILabel()
     private lazy var nameLabel = UILabel()
-    private lazy var topContainer = UIView()
+    lazy var topContainer = UIView()
     private var countOfDays: String = ""
     // Элементы UI для нижней секции
     private let dayLabel = UILabel()
@@ -29,10 +29,29 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         setupViews()
         setupConstraints()
+        addContextMenuInterection()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func addContextMenuInterection(){
+        let interection = UIContextMenuInteraction(delegate: self)
+        topContainer.addInteraction(interection)
+    }
+    
+    private func pin() {
+    }
+
+    private func unpin() {
+    }
+
+    private func edit() {
+
+    }
+
+    private func delete() {
     }
     
     private func setupViews() {
