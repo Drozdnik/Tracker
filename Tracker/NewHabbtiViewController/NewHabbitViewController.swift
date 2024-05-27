@@ -398,6 +398,7 @@ extension NewHabbitViewController{
             color: habitColor,
             emoji: habitEmoji,
             schedule: habitSchedule,
+            isPinned: false,
             countOfDoneTrackers: 0
         )
         

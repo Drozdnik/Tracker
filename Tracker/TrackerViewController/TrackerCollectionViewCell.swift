@@ -27,6 +27,13 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private let bottomContainer = UIView()
     static let identifier = "TrackerCell"
     
+    private lazy var pinImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "pin.fill"))
+        imageView.isHidden = true // Скрыт по умолчанию
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -66,7 +73,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             contentView.addSubview($0)
         }
         
-        [emojiLabel, nameLabel].forEach {
+        [emojiLabel, nameLabel, pinImageView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             topContainer.addSubview($0)
         }
@@ -127,7 +134,10 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             addButton.trailingAnchor.constraint(equalTo: bottomContainer.trailingAnchor, constant: -12),
             addButton.centerYAnchor.constraint(equalTo: bottomContainer.centerYAnchor),
             addButton.widthAnchor.constraint(equalToConstant: 30),
-            addButton.heightAnchor.constraint(equalToConstant: 30)
+            addButton.heightAnchor.constraint(equalToConstant: 30),
+            
+            pinImageView.topAnchor.constraint(equalTo: topContainer.topAnchor, constant: 5),
+            pinImageView.trailingAnchor.constraint(equalTo: topContainer.trailingAnchor, constant: -5)
         ])
     }
     
@@ -140,7 +150,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         dayLabel.text = "\(countOfDays)"
         addButton.layer.opacity = 1
         self.completedTrackers = completedTrackers
-        
+        pinImageView.isHidden = !tracker.isPinned
         isCompleted = completedTrackers.contains {
             $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: currentDate)
         }

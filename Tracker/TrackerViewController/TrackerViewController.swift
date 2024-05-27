@@ -236,20 +236,32 @@ extension TrackerViewController: UISearchResultsUpdating{
 extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ -> UIMenu? in
-            guard self != nil else { return nil }
-            let pinAction = UIAction(title: "Закрепить"){ action in
-                
+            guard let self = self, let indexPath = self.indexPath,
+                  let viewModel = self.viewModel,
+                  indexPath.section < viewModel.categories.count,
+                  indexPath.row < viewModel.categories[indexPath.section].trackers.count else {
+                return nil
             }
             
-
+            let tracker = viewModel.categories[indexPath.section].trackers[indexPath.row]
+            
+            let pinActionTitle = tracker.isPinned ? "Открепить" : "Закрепить"
+            let pinAction = UIAction(title: pinActionTitle) { _ in
+                if tracker.isPinned {
+                    viewModel.unpinTracker(at: indexPath)
+                } else {
+                    viewModel.pinTracker(at: indexPath)
+                }
+            }
+            
             let editAction = UIAction(title: "Редактировать") { _ in
-                
+                // Реализация редактирования
             }
-
+            
             let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { _ in
-                self?.delete()
+                self.delete()
             }
-
+            
             return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
         }
     }
