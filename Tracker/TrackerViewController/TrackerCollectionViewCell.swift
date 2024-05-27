@@ -29,7 +29,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     private lazy var pinImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(systemName: "pin.fill"))
-        imageView.isHidden = true // Скрыт по умолчанию
+        imageView.tintColor = .white
+        imageView.isHidden = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -50,15 +51,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         topContainer.addInteraction(interection)
     }
     
-    private func pin() {
-    }
-
-    private func unpin() {
-    }
-
-    private func edit() {
-
-    }
 
     private func delete() {
         if let indexPath = self.indexPath{
@@ -136,8 +128,10 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             addButton.widthAnchor.constraint(equalToConstant: 30),
             addButton.heightAnchor.constraint(equalToConstant: 30),
             
-            pinImageView.topAnchor.constraint(equalTo: topContainer.topAnchor, constant: 5),
-            pinImageView.trailingAnchor.constraint(equalTo: topContainer.trailingAnchor, constant: -5)
+            pinImageView.topAnchor.constraint(equalTo: topContainer.topAnchor, constant: 18),
+            pinImageView.trailingAnchor.constraint(equalTo: topContainer.trailingAnchor, constant: -12),
+            pinImageView.widthAnchor.constraint(equalToConstant: 8),
+            pinImageView.heightAnchor.constraint(equalToConstant: 12)
         ])
     }
     

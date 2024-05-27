@@ -26,23 +26,50 @@ final class TrackerViewModel: NSObject {
     func fetchAllCategories() {
         trackerStore.fetchAllCategories {
             self.allCategories = self.trackerStore.categories
-            self.applyFilters()
+            self.prepareCategories()
         }
     }
-    
-    private func applyFilters(searchText: String = "") {
-        let nonEmptyCategories = allCategories.filter { !$0.trackers.isEmpty }
-        
-        if searchText.isEmpty {
-            filteredCategories = nonEmptyCategories
-        } else {
-            filteredCategories = nonEmptyCategories.filter {
-                $0.title.lowercased().contains(searchText.lowercased()) ||
-                $0.trackers.contains(where: { $0.name.lowercased().contains(searchText.lowercased()) })
+
+    func prepareCategories() {
+        var newCategories: [TrackerCategory] = []
+        var pinnedTrackers: [Tracker] = []
+
+        for category in self.allCategories {
+            var regularTrackers: [Tracker] = []
+            for tracker in category.trackers {
+                if tracker.isPinned {
+                    pinnedTrackers.append(tracker)
+                } else {
+                    regularTrackers.append(tracker)
+                }
+            }
+            if !regularTrackers.isEmpty {
+                newCategories.append(TrackerCategory(title: category.title, trackers: regularTrackers))
             }
         }
+
+        if !pinnedTrackers.isEmpty {
+            let pinnedCategory = TrackerCategory(title: "Закреплённые", trackers: pinnedTrackers)
+            newCategories.insert(pinnedCategory, at: 0)
+        }
+
+        filteredCategories = newCategories
         onDataUpdated?()
     }
+
+    private func applyFilters(searchText: String = "") {
+            let nonEmptyCategories = allCategories.filter { !$0.trackers.isEmpty }
+            
+            if searchText.isEmpty {
+                filteredCategories = nonEmptyCategories
+            } else {
+                filteredCategories = nonEmptyCategories.filter {
+                    $0.title.lowercased().contains(searchText.lowercased()) ||
+                    $0.trackers.contains(where: { $0.name.lowercased().contains(searchText.lowercased()) })
+                }
+            }
+            onDataUpdated?()
+        }
     
     
     func filterContentForSearchText(_ searchText: String) {
@@ -101,17 +128,16 @@ final class TrackerViewModel: NSObject {
         let tracker = categories[indexPath.section].trackers[indexPath.row]
         tracker.isPinned = true
         trackerStore.updateTracker(tracker) {
-            self.onDataUpdated?()
+            self.fetchAllCategories()
         }
     }
 
-    
     func unpinTracker(at indexPath: IndexPath) {
         guard indexPath.section < categories.count, indexPath.row < categories[indexPath.section].trackers.count else { return }
         let tracker = categories[indexPath.section].trackers[indexPath.row]
         tracker.isPinned = false
         trackerStore.updateTracker(tracker) {
-            self.onDataUpdated?()
+            self.fetchAllCategories()
         }
     }
 }

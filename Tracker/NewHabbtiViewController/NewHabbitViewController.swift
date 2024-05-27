@@ -402,8 +402,6 @@ extension NewHabbitViewController{
             countOfDoneTrackers: 0
         )
         
-        
-        
         newHabbitComplete?(habitCategory ,newTracker)
         dismiss(animated: true)
     }
