@@ -167,7 +167,9 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func filterButtonTapped() {
-        print("Фильтр нажат")
+        let vc = FilterViewController()
+        let navigationController = UINavigationController(rootViewController: vc)
+        present(navigationController, animated: true)
     }
 }
 
