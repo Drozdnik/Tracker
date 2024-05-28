@@ -18,10 +18,17 @@ final class NewHabbitViewController: UIViewController{
     let contentView = UIView()
     let tableView = UITableView()
     
-    init(trackerCategory: TrackerCategory? = nil){
+    init(trackerCategory: TrackerCategory? = nil, initialSchedule: Schedule = Schedule(days: Array(repeating: false, count: 7))){
         self.trackerCategory = trackerCategory
         self.tracker = trackerCategory?.trackers.first
+        self.habitSchedule = initialSchedule // Присваиваем начальное расписание
         super.init(nibName: nil, bundle: nil)
+
+        if let tracker = self.tracker {
+            self.trackerType = (tracker.schedule == self.habitSchedule) ? .irregularEvent : .habit
+        } else {
+            self.trackerType = .habit
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -33,12 +40,10 @@ final class NewHabbitViewController: UIViewController{
         
         view.backgroundColor = .white
         setupScrollView()
-        loadTrackerDataIfNeeded()
         setupContentView()
         configureNavBar()
         setupTableView()
         updateCreateButtonState()
-        
         //Регестрируем ячейку таблицы и коллекция
         emojiCollectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "EmojiCell")
         colorCollectionView.register(ColorCollectionViewCell.self, forCellWithReuseIdentifier: "ColorCell")
@@ -46,21 +51,49 @@ final class NewHabbitViewController: UIViewController{
         emojiCollectionView.register(CollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderView.identifier)
         
         colorCollectionView.register(CollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderView.identifier)
+        loadTrackerDataIfNeeded()
     }
     
-    private func loadTrackerDataIfNeeded(){
-        guard let tracker = tracker else {return}
-        guard let trackerCategory else {return}
+    private func loadTrackerDataIfNeeded() {
+        guard let tracker = tracker else { return }
+        guard let trackerCategory = trackerCategory else { return }
+        
         habitName = tracker.name
         habitColor = tracker.color
         habitEmoji = tracker.emoji
         habitCategory = trackerCategory.title
-        if tracker.schedule == habitSchedule {
-            trackerType = .irregularEvent
-        } else {
-            trackerType = .habit
-            habitSchedule = tracker.schedule
+        habitSchedule = tracker.schedule
+        updateUI()
+    }
+
+    private func updateUI() {
+        textField.text = habitName
+        textField.textColor = UIColor.black
+        updateSelectedEmoji()
+        updateSelectedColor()
+        tableView.reloadData()
+    }
+
+    private func updateSelectedEmoji() {
+        guard let emojiIndex = emojiList.firstIndex(of: habitEmoji) else {
+            print("Emoji not found")
+            return
         }
+        let emojiIndexPath = IndexPath(item: emojiIndex, section: 0)
+        emojiCollectionView.selectItem(at: emojiIndexPath, animated: true, scrollPosition: .centeredHorizontally)
+        emojiCollectionView.delegate?.collectionView?(emojiCollectionView, didSelectItemAt: emojiIndexPath)
+    }
+
+    private func updateSelectedColor() {
+        guard let colorIndex = colorList.firstIndex(where: { $0.isEqualToColor(habitColor) }) else {
+            print("Color not found")
+            return
+        }
+        let colorIndexPath = IndexPath(item: colorIndex, section: 0)
+        colorCollectionView.reloadData()
+        colorCollectionView.layoutIfNeeded()
+        colorCollectionView.selectItem(at: colorIndexPath, animated: true, scrollPosition: .centeredHorizontally)
+        colorCollectionView.delegate?.collectionView?(colorCollectionView, didSelectItemAt: colorIndexPath)
     }
     
     private func setupContentView(){
