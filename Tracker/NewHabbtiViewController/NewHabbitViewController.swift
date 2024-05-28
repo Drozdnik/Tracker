@@ -63,6 +63,7 @@ final class NewHabbitViewController: UIViewController{
         habitEmoji = tracker.emoji
         habitCategory = trackerCategory.title
         habitSchedule = tracker.schedule
+        
         updateUI()
     }
 
@@ -455,7 +456,7 @@ extension NewHabbitViewController{
     
     @objc private func didTapCreateButton(){
         let newTracker = Tracker (
-            id: UUID(),
+            id: tracker?.id ?? UUID(),
             name: habitName,
             color: habitColor,
             emoji: habitEmoji,

@@ -255,19 +255,20 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
                     }
                 }
                 
-                let editAction = UIAction(title: "Редактировать") { _ in
-                    let vc = NewHabbitViewController(trackerCategory: category)
-                    let navigationController = UINavigationController(rootViewController: vc)
-                    vc.newHabbitComplete = { [weak self] title, updatedTracker in
-                        guard let self = self else { return }
-                        viewModel.updateTracker(updatedTracker, shouldRefreshCategories: true) { success in
-                            if success {
-                                self.viewModel?.onDataUpdated?()
+                let editAction = UIAction(title: "Редактировать") { [weak self] _ in
+                                guard let self = self else { return }
+                                let vc = NewHabbitViewController(trackerCategory: category)
+                                let navigationController = UINavigationController(rootViewController: vc)
+                                vc.newHabbitComplete = { [weak self] title, updatedTracker in
+                                    guard let self = self else { return }
+                                    viewModel.updateTracker(updatedTracker, shouldRefreshCategories: true) { success in
+                                        if success {
+                                            self.viewModel?.onDataUpdated?()
+                                        }
+                                    }
+                                }
+                                self.window?.rootViewController?.present(navigationController, animated: true, completion: nil)
                             }
-                        }
-                    }
-                    self.window?.rootViewController?.present(navigationController, animated: true, completion: nil)
-                }
                 
                 let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { _ in
                     self.delete()
