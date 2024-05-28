@@ -46,6 +46,7 @@
 		87C6556A2C007710003050A0 /* AnalyticsServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C655692C007710003050A0 /* AnalyticsServices.swift */; };
 		87C6557F2C06128D003050A0 /* string extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C6557E2C06128C003050A0 /* string extension.swift */; };
 		87C655822C06215E003050A0 /* filterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C655812C06215E003050A0 /* filterViewController.swift */; };
+		87C655852C06618B003050A0 /* extension UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C655842C06618B003050A0 /* extension UIColor.swift */; };
 		87E3FF382BD19F9A00F79C21 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E3FF372BD19F9A00F79C21 /* Schedule.swift */; };
 		87E3FF3C2BD5B24600F79C21 /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E3FF3B2BD5B24600F79C21 /* TrackerCollectionViewCell.swift */; };
 		87E3FF402BD8289400F79C21 /* CategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E3FF3F2BD8289400F79C21 /* CategoryHeaderView.swift */; };
@@ -119,6 +120,7 @@
 		87C655692C007710003050A0 /* AnalyticsServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsServices.swift; sourceTree = "<group>"; };
 		87C6557E2C06128C003050A0 /* string extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "string extension.swift"; sourceTree = "<group>"; };
 		87C655812C06215E003050A0 /* filterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = filterViewController.swift; sourceTree = "<group>"; };
+		87C655842C06618B003050A0 /* extension UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension UIColor.swift"; sourceTree = "<group>"; };
 		87E3FF372BD19F9A00F79C21 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		87E3FF3B2BD5B24600F79C21 /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
 		87E3FF3F2BD8289400F79C21 /* CategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryHeaderView.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 				872A55A02BC5F0E300A9920D /* UITextField extension.swift */,
 				877CB67A2BBF455E00C4164D /* UIView extensions.swift */,
 				87C6557E2C06128C003050A0 /* string extension.swift */,
+				87C655842C06618B003050A0 /* extension UIColor.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -458,6 +461,9 @@
 				Base,
 			);
 			mainGroup = 877CB63C2BBF397700C4164D;
+			packageReferences = (
+				87C655832C065DD1003050A0 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+			);
 			productRefGroup = 877CB6462BBF397700C4164D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -637,6 +643,7 @@
 				877CB64B2BBF397700C4164D /* SceneDelegate.swift in Sources */,
 				87C6557F2C06128D003050A0 /* string extension.swift in Sources */,
 				87E3FF382BD19F9A00F79C21 /* Schedule.swift in Sources */,
+				87C655852C06618B003050A0 /* extension UIColor.swift in Sources */,
 				87E3FF3C2BD5B24600F79C21 /* TrackerCollectionViewCell.swift in Sources */,
 				87B6B87B2BF8C93500F3D197 /* OnBoardingViewController.swift in Sources */,
 				872A55A12BC5F0E300A9920D /* UITextField extension.swift in Sources */,
@@ -993,6 +1000,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		87C655832C065DD1003050A0 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.16.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCVersionGroup section */
 		877DDCEF2BE22D6500235A31 /* TrackerDB.xcdatamodeld */ = {
