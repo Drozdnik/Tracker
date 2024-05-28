@@ -3,7 +3,7 @@ import Foundation
 final class TrackerViewModel: NSObject {
     var onDataUpdated: (() -> Void)?
     
-    private var allCategories: [TrackerCategory] = []
+    var allCategories: [TrackerCategory] = []
     private var filteredCategories: [TrackerCategory] = []
     private var trackerStore: TrackerStore
     

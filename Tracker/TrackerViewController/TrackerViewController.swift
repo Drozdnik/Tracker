@@ -70,6 +70,7 @@ final class TrackerViewController: UIViewController {
     
     private func configureNoTracksLabel() {
         noTracksLabel.isHidden = viewModel.categories.isEmpty ? false : true
+        filterButton.isHidden = viewModel.allCategories.isEmpty ? true : false
         imageForNoTracks.isHidden = viewModel.categories.isEmpty ? false : true
         noTracksLabel.text = "Что будем отслеживать?"
         noTracksLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
