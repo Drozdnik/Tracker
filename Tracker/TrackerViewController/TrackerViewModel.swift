@@ -125,19 +125,34 @@ final class TrackerViewModel: NSObject {
     
     func pinTracker(at indexPath: IndexPath) {
         guard indexPath.section < categories.count, indexPath.row < categories[indexPath.section].trackers.count else { return }
-        let tracker = categories[indexPath.section].trackers[indexPath.row]
+        var tracker = categories[indexPath.section].trackers[indexPath.row]
         tracker.isPinned = true
-        trackerStore.updateTracker(tracker) {
-            self.fetchAllCategories()
+        updateTracker(tracker, shouldRefreshCategories: true) { success in
+            if success {
+                print("Tracker successfully pinned")
+            }
         }
     }
 
     func unpinTracker(at indexPath: IndexPath) {
         guard indexPath.section < categories.count, indexPath.row < categories[indexPath.section].trackers.count else { return }
-        let tracker = categories[indexPath.section].trackers[indexPath.row]
+        var tracker = categories[indexPath.section].trackers[indexPath.row]
         tracker.isPinned = false
-        trackerStore.updateTracker(tracker) {
-            self.fetchAllCategories()
+        updateTracker(tracker, shouldRefreshCategories: true) { success in
+            if success {
+                print("Tracker successfully unpinned")
+            }
         }
     }
+
+    
+    func updateTracker(_ tracker: Tracker, shouldRefreshCategories: Bool, completion: @escaping (Bool) -> Void) {
+        trackerStore.updateTracker(tracker) { success in
+            if success && shouldRefreshCategories {
+                self.fetchAllCategories()
+            }
+            completion(success)
+        }
+    }
+
 }

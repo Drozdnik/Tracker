@@ -1,11 +1,16 @@
 import Foundation
 
-class Schedule: Codable {
+class Schedule: Codable, Equatable {
     var days: [Bool]
     let dayNames = ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"]
 
     init(days: [Bool]) {
         self.days = days
+    }
+
+    // Реализация протокола Equatable
+    static func ==(lhs: Schedule, rhs: Schedule) -> Bool {
+        return lhs.days == rhs.days
     }
 
     // Декодирующий инициализатор требуется для соответствия протоколу Codable

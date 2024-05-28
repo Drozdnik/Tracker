@@ -3,8 +3,11 @@ import Foundation
 import UIKit
 
 final class NewHabbitViewController: UIViewController{
+    private var tracker: Tracker?
+    private var trackerCategory: TrackerCategory?
     var trackerType: TrackerType = .habit
     var newHabbitComplete: ((String, Tracker) -> Void)?
+    
     private var habitName: String = ""
     private var habitCategory: String = ""
     private var habitSchedule: Schedule = Schedule(days: Array(repeating: false, count: 7))
@@ -15,15 +18,27 @@ final class NewHabbitViewController: UIViewController{
     let contentView = UIView()
     let tableView = UITableView()
     
+    init(trackerCategory: TrackerCategory? = nil){
+        self.trackerCategory = trackerCategory
+        self.tracker = trackerCategory?.trackers.first
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         setupScrollView()
+        loadTrackerDataIfNeeded()
         setupContentView()
         configureNavBar()
         setupTableView()
         updateCreateButtonState()
+        
         //Регестрируем ячейку таблицы и коллекция
         emojiCollectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "EmojiCell")
         colorCollectionView.register(ColorCollectionViewCell.self, forCellWithReuseIdentifier: "ColorCell")
@@ -33,6 +48,20 @@ final class NewHabbitViewController: UIViewController{
         colorCollectionView.register(CollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderView.identifier)
     }
     
+    private func loadTrackerDataIfNeeded(){
+        guard let tracker = tracker else {return}
+        guard let trackerCategory else {return}
+        habitName = tracker.name
+        habitColor = tracker.color
+        habitEmoji = tracker.emoji
+        habitCategory = trackerCategory.title
+        if tracker.schedule == habitSchedule {
+            trackerType = .irregularEvent
+        } else {
+            trackerType = .habit
+            habitSchedule = tracker.schedule
+        }
+    }
     
     private func setupContentView(){
         contentView.addSubviews([tableView, textField, characterLimitLabel,  emojiCollectionView, colorCollectionView, cancelButton, createButton])

@@ -168,7 +168,7 @@ class DataManager {
                 trackerToUpdate.color = Utility.encodeColor(tracker.color)
                 trackerToUpdate.scheduleData = Utility.encodeSchedule(tracker.schedule)
                 try context.save()
-                completion()
+                completion()  
             } else {
                 print("No tracker found with the given ID to update.")
             }
@@ -176,6 +176,7 @@ class DataManager {
             print("Failed to fetch or update tracker: \(error)")
         }
     }
+
     
 }
 

@@ -235,39 +235,50 @@ extension TrackerViewController: UISearchResultsUpdating{
 
 extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ -> UIMenu? in
-            guard let self = self, let indexPath = self.indexPath,
-                  let viewModel = self.viewModel,
-                  indexPath.section < viewModel.categories.count,
-                  indexPath.row < viewModel.categories[indexPath.section].trackers.count else {
-                return nil
-            }
-            
-            let tracker = viewModel.categories[indexPath.section].trackers[indexPath.row]
-            
-            let pinActionTitle = tracker.isPinned ? "Открепить" : "Закрепить"
-            let pinAction = UIAction(title: pinActionTitle) { _ in
-                if tracker.isPinned {
-                    viewModel.unpinTracker(at: indexPath)
-                } else {
-                    viewModel.pinTracker(at: indexPath)
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ -> UIMenu? in
+                guard let self = self, let indexPath = self.indexPath,
+                      let viewModel = self.viewModel,
+                      indexPath.section < viewModel.categories.count,
+                      indexPath.row < viewModel.categories[indexPath.section].trackers.count else {
+                    return nil
                 }
+                
+                let category = viewModel.categories[indexPath.section]
+                let tracker = category.trackers[indexPath.row]
+                
+                let pinActionTitle = tracker.isPinned ? "Открепить" : "Закрепить"
+                let pinAction = UIAction(title: pinActionTitle) { _ in
+                    if tracker.isPinned {
+                        viewModel.unpinTracker(at: indexPath)
+                    } else {
+                        viewModel.pinTracker(at: indexPath)
+                    }
+                }
+                
+                let editAction = UIAction(title: "Редактировать") { _ in
+                    let vc = NewHabbitViewController(trackerCategory: category)
+                    let navigationController = UINavigationController(rootViewController: vc)
+                    vc.newHabbitComplete = { [weak self] title, updatedTracker in
+                        guard let self = self else { return }
+                        viewModel.updateTracker(updatedTracker, shouldRefreshCategories: true) { success in
+                            if success {
+                                self.viewModel?.onDataUpdated?()
+                            }
+                        }
+                    }
+                    self.window?.rootViewController?.present(navigationController, animated: true, completion: nil)
+                }
+                
+                let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { _ in
+                    self.delete()
+                }
+                
+                return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
             }
-            
-            let editAction = UIAction(title: "Редактировать") { _ in
-                // Реализация редактирования
-            }
-            
-            let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { _ in
-                self.delete()
-            }
-            
-            return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
         }
-    }
     
     private func delete(){
-        if let indexPath = self.indexPath{
+        if let indexPath = self.indexPath {
             viewModel?.deleteTracker(at: indexPath)
         }
     }

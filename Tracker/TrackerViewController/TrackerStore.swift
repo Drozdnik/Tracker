@@ -88,8 +88,16 @@ final class TrackerStore {
         completion(true)
     }
     
-    func updateTracker(_ tracker: Tracker, completion: @escaping () -> Void) {
-        dataManager.updateTracker(tracker, completion: completion)
+    func updateTracker(_ tracker: Tracker, shouldRefreshCategories: Bool = true, completion: @escaping (Bool) -> Void) {
+        dataManager.updateTracker(tracker) {
+            if shouldRefreshCategories {
+                self.fetchAllCategories() {
+                    completion(true)
+                }
+            } else {
+                completion(true) 
+            }
+        }
     }
 }
 
