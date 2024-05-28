@@ -7,7 +7,7 @@ final class TrackerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "clearWhite")
         
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             let managedObjectContext = appDelegate.persistentContainer.viewContext
@@ -82,7 +82,7 @@ final class TrackerViewController: UIViewController {
         navigationItem.title = "Трекеры"
         
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
-        addButton.tintColor = .black
+        addButton.tintColor = UIColor(named: "TotalBlack")
         navigationItem.leftBarButtonItem = addButton
         
         let searchController = UISearchController(searchResultsController: nil)
@@ -99,6 +99,9 @@ final class TrackerViewController: UIViewController {
     private func configureDatePicker() {
         let dateButton = UIDatePicker()
         dateButton.datePickerMode = .date
+        dateButton.backgroundColor = UIColor(named: "datePicker")
+        dateButton.layer.cornerRadius = 8
+        dateButton.layer.masksToBounds = true
         dateButton.locale = Locale(identifier: "ru_RU")
         dateButton.timeZone = TimeZone(identifier: "Europe/Moscow")
         dateButton.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
@@ -230,6 +233,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         
         let categoryTitle = viewModel.categories[indexPath.section].title
         headerView.configure(with: categoryTitle)
+        
         
         return headerView
     }
