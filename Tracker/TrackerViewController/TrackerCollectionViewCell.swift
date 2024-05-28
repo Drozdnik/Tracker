@@ -28,8 +28,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     static let identifier = "TrackerCell"
     
     private lazy var pinImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "pin.fill"))
-        imageView.tintColor = .white
+        let imageView = UIImageView(image: UIImage(named: "pinForTracker"))
         imageView.isHidden = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -164,9 +163,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             addButton.isEnabled = true
         }
     }
-    
-
-    
     
     func getDayText(count: Int) -> String {
         return "\(count) " + String.getNoun(number: count, one: "день", two: "дня", five: "дней")
