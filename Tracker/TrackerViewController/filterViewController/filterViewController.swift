@@ -1,10 +1,11 @@
 import UIKit
 
-class FilterViewController: UIViewController {
+final class FilterViewController: UIViewController {
     var tableView: UITableView!
     
-    let filters = ["Все трекеры", "Трекеры на сегодня", "Завершенные", "Не завершенные"]
+   let filters = ["Все трекеры", "Трекеры на сегодня", "Завершенные", "Не завершенные"]
     var selectedFilter: String = "Трекеры на сегодня"
+    var onFilterSelected: ((String) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,6 +77,7 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedFilter = filters[indexPath.row]
         tableView.reloadData()
+        onFilterSelected?(selectedFilter) 
         dismiss(animated: true, completion: nil)
     }
 }

@@ -3,7 +3,7 @@ import UIKit
 final class TrackerViewController: UIViewController {
     let noTracksLabel = UILabel()
     var viewModel: TrackerViewModel!
-    
+    var filterEnabled: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -167,10 +167,31 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func filterButtonTapped() {
-        let vc = FilterViewController()
-        let navigationController = UINavigationController(rootViewController: vc)
+        let filterVC = FilterViewController()
+        filterVC.selectedFilter = filterEnabled ?? "Все трекеры"
+        filterVC.onFilterSelected = { [weak self] selectedFilter in
+            self?.filterEnabled = selectedFilter
+            self?.applyFilter()  // Примените фильтр
+            self?.dismiss(animated: true, completion: nil)
+        }
+        let navigationController = UINavigationController(rootViewController: filterVC)
         present(navigationController, animated: true)
     }
+    
+    private func applyFilter() {
+        switch filterEnabled {
+        case "Трекеры на сегодня":
+            viewModel.filterForToday()
+        case "Завершенные":
+            viewModel.filterCompleted()
+        case "Не завершенные":
+            viewModel.filterNotCompleted()
+        default:
+            viewModel.clearFilter()
+        }
+        collectionView.reloadData()
+    }
+
 }
 
 extension TrackerViewController: UICollectionViewDataSource {

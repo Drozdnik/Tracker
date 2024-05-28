@@ -154,5 +154,48 @@ final class TrackerViewModel: NSObject {
             completion(success)
         }
     }
-
 }
+
+extension TrackerViewModel {
+    func filterForToday() {
+        let today = Calendar.current.startOfDay(for: Date())
+        filteredCategories = allCategories.map { category in
+            let filteredTrackers = category.trackers.filter { tracker in
+                guard let record = completedTrackers.first(where: { $0.trackerId == tracker.id }) else {
+                    return false
+                }
+                return Calendar.current.isDate(record.date, inSameDayAs: today)
+            }
+            return TrackerCategory(title: category.title, trackers: filteredTrackers)
+        }.filter { !$0.trackers.isEmpty }
+        onDataUpdated?()
+    }
+
+    func filterCompleted() {
+        let today = Calendar.current.startOfDay(for: Date())
+        filteredCategories = allCategories.map { category in
+            let filteredTrackers = category.trackers.filter { tracker in
+                completedTrackers.contains(where: { $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: today) })
+            }
+            return TrackerCategory(title: category.title, trackers: filteredTrackers)
+        }.filter { !$0.trackers.isEmpty }
+        onDataUpdated?()
+    }
+
+    func filterNotCompleted() {
+        let today = Calendar.current.startOfDay(for: Date())
+        filteredCategories = allCategories.map { category in
+            let filteredTrackers = category.trackers.filter { tracker in
+                !completedTrackers.contains(where: { $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: today) })
+            }
+            return TrackerCategory(title: category.title, trackers: filteredTrackers)
+        }.filter { !$0.trackers.isEmpty }
+        onDataUpdated?()
+    }
+
+    func clearFilter() {
+        filteredCategories = allCategories.filter { !$0.trackers.isEmpty }
+        onDataUpdated?()
+    }
+}
+
