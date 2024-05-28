@@ -125,7 +125,7 @@ final class TrackerViewModel: NSObject {
     
     func pinTracker(at indexPath: IndexPath) {
         guard indexPath.section < categories.count, indexPath.row < categories[indexPath.section].trackers.count else { return }
-        var tracker = categories[indexPath.section].trackers[indexPath.row]
+        let tracker = categories[indexPath.section].trackers[indexPath.row]
         tracker.isPinned = true
         updateTracker(tracker, shouldRefreshCategories: true) { success in
             if success {
@@ -136,7 +136,7 @@ final class TrackerViewModel: NSObject {
 
     func unpinTracker(at indexPath: IndexPath) {
         guard indexPath.section < categories.count, indexPath.row < categories[indexPath.section].trackers.count else { return }
-        var tracker = categories[indexPath.section].trackers[indexPath.row]
+        let tracker = categories[indexPath.section].trackers[indexPath.row]
         tracker.isPinned = false
         updateTracker(tracker, shouldRefreshCategories: true) { success in
             if success {

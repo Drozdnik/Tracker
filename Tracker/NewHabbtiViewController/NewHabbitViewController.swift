@@ -21,7 +21,7 @@ final class NewHabbitViewController: UIViewController{
     init(trackerCategory: TrackerCategory? = nil, initialSchedule: Schedule = Schedule(days: Array(repeating: false, count: 7))){
         self.trackerCategory = trackerCategory
         self.tracker = trackerCategory?.trackers.first
-        self.habitSchedule = initialSchedule // Присваиваем начальное расписание
+        self.habitSchedule = initialSchedule
         super.init(nibName: nil, bundle: nil)
 
         if let tracker = self.tracker {
@@ -43,6 +43,7 @@ final class NewHabbitViewController: UIViewController{
         setupContentView()
         configureNavBar()
         setupTableView()
+        
         updateCreateButtonState()
         //Регестрируем ячейку таблицы и коллекция
         emojiCollectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "EmojiCell")
@@ -53,17 +54,17 @@ final class NewHabbitViewController: UIViewController{
         colorCollectionView.register(CollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderView.identifier)
         loadTrackerDataIfNeeded()
     }
-    
+ 
     private func loadTrackerDataIfNeeded() {
         guard let tracker = tracker else { return }
         guard let trackerCategory = trackerCategory else { return }
-        
+        let countOfDays = "\(tracker.countOfDoneTrackers) " + String.getNoun(number: tracker.countOfDoneTrackers, one: "день", two: "дня", five: "дней")
         habitName = tracker.name
         habitColor = tracker.color
         habitEmoji = tracker.emoji
         habitCategory = trackerCategory.title
         habitSchedule = tracker.schedule
-        
+        dayCountLabel.text = countOfDays
         updateUI()
     }
 
@@ -98,7 +99,8 @@ final class NewHabbitViewController: UIViewController{
     }
     
     private func setupContentView(){
-        contentView.addSubviews([tableView, textField, characterLimitLabel,  emojiCollectionView, colorCollectionView, cancelButton, createButton])
+        contentView.addSubview(dayCountLabel)
+        contentView.addSubviews([ tableView, textField, characterLimitLabel,  emojiCollectionView, colorCollectionView, cancelButton, createButton])
         configureConstraintsForContentView()
     }
     
@@ -149,8 +151,9 @@ final class NewHabbitViewController: UIViewController{
     
     private func configureConstraintsForContentView(){
         let heightConstants: CGFloat = trackerType == .habit ? 149 : 75
+        let topConstantWithEdit: CGFloat = tracker == nil ? 24 : 102
         NSLayoutConstraint.activate([
-            textField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
+            textField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: topConstantWithEdit),
             textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             textField.heightAnchor.constraint(equalToConstant: 63),
@@ -183,7 +186,11 @@ final class NewHabbitViewController: UIViewController{
             createButton.topAnchor.constraint(equalTo: cancelButton.topAnchor),
             createButton.heightAnchor.constraint(equalTo: cancelButton.heightAnchor),
             createButton.widthAnchor.constraint(equalTo: cancelButton.widthAnchor),
-            createButton.trailingAnchor.constraint(equalTo: colorCollectionView.trailingAnchor)
+            createButton.trailingAnchor.constraint(equalTo: colorCollectionView.trailingAnchor),
+            
+            dayCountLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 24),
+            dayCountLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            dayCountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
         ])
     }
  
@@ -191,7 +198,6 @@ final class NewHabbitViewController: UIViewController{
         let textView = UITextView()
         textView.text = "Введите название трекера"
         textView.textAlignment = .left
-        
         textView.textColor = UIColor.lightGray
         textView.backgroundColor = UIColor(named: "GrayForNavBar")
         textView.font = UIFont.systemFont(ofSize: 17)
@@ -208,6 +214,18 @@ final class NewHabbitViewController: UIViewController{
         label.text = "Ограничение 38 символов"
         label.textColor = .red
         label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var dayCountLabel: UILabel = {
+       let label = UILabel()
+        label.text = ""
+        label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        label.textColor = .black
+        label.textAlignment = .center
+        label.isHidden = false
+        
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -462,7 +480,7 @@ extension NewHabbitViewController{
             emoji: habitEmoji,
             schedule: habitSchedule,
             isPinned: false,
-            countOfDoneTrackers: 0
+            countOfDoneTrackers: tracker?.countOfDoneTrackers ?? 0
         )
         
         newHabbitComplete?(habitCategory ,newTracker)
