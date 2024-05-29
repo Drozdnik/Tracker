@@ -85,11 +85,15 @@ class StatisticsViewController: UIViewController, UITableViewDataSource, UITable
     
     private func fetchAndDisplayStatistics() {
         let stats = DataManager.shared.computeStatistics()
+        let bestPeriod = NSLocalizedString("Best_Period", comment: "")
+        let perfectDays = NSLocalizedString("Perfect_Day", comment:"")
+        let trackersCompleted = NSLocalizedString("Trackers_Completed", comment:"")
+        let averageValue = NSLocalizedString("Average_Value", comment: "")
         statistics = [
-            (title: "Best Period", value: "\(stats.bestPeriod)"),
-            (title: "Perfect Days", value: "\(stats.perfectDays)"),
-            (title: "Trackers Completed", value: "\(stats.trackersCompleted)"),
-            (title: "Average Value", value: String(format: "%.2f", stats.averageValue))
+            (title: bestPeriod, value: "\(stats.bestPeriod)"),
+            (title: perfectDays, value: "\(stats.perfectDays)"),
+            (title: trackersCompleted, value: "\(stats.trackersCompleted)"),
+            (title: averageValue, value: String(format: "%.2f", stats.averageValue))
         ]
         isEmpty = stats.trackersCompleted == 0
         tableView.isHidden = isEmpty
