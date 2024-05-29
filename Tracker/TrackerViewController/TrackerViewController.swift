@@ -88,7 +88,8 @@ final class TrackerViewController: UIViewController {
     }
     
     private func configureNavigationBar() {
-        navigationItem.title = "Трекеры"
+        let trackers = NSLocalizedString("Trackers", comment: "Trackers title for nav bar")
+        navigationItem.title = trackers
         
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
         addButton.tintColor = UIColor(named: "TotalBlack")
@@ -149,7 +150,8 @@ final class TrackerViewController: UIViewController {
     
     private lazy var filterButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Фильтры", for: .normal)
+        let filterTitle = NSLocalizedString("Filters", comment: "FilterTitle to filter button")
+        button.setTitle(filterTitle, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         button.backgroundColor = .systemBlue
         button.translatesAutoresizingMaskIntoConstraints = false

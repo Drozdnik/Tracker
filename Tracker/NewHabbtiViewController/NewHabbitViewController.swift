@@ -58,7 +58,7 @@ final class NewHabbitViewController: UIViewController{
     private func loadTrackerDataIfNeeded() {
         guard let tracker = tracker else { return }
         guard let trackerCategory = trackerCategory else { return }
-        let countOfDays = "\(tracker.countOfDoneTrackers) " + String.getNoun(number: tracker.countOfDoneTrackers, one: "день", two: "дня", five: "дней")
+        let countOfDays = "\(tracker.countOfDoneTrackers) " + String.getLocalizedNounForNumber(tracker.countOfDoneTrackers)
         habitName = tracker.name
         habitColor = tracker.color
         habitEmoji = tracker.emoji

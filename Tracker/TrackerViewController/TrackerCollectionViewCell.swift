@@ -165,7 +165,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }
     
     func getDayText(count: Int) -> String {
-        return "\(count) " + String.getNoun(number: count, one: "день", two: "дня", five: "дней")
+        return "\(count) " + String.getLocalizedNounForNumber(count)
     }
     
     @objc func plusButtonTapped() {
