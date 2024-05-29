@@ -47,6 +47,8 @@
 		87C6557F2C06128D003050A0 /* string extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C6557E2C06128C003050A0 /* string extension.swift */; };
 		87C655822C06215E003050A0 /* filterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C655812C06215E003050A0 /* filterViewController.swift */; };
 		87C655852C06618B003050A0 /* extension UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C655842C06618B003050A0 /* extension UIColor.swift */; };
+		87C655872C075CFB003050A0 /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 87C655862C075CFB003050A0 /* InlineSnapshotTesting */; };
+		87C655892C075CFB003050A0 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 87C655882C075CFB003050A0 /* SnapshotTesting */; };
 		87E3FF382BD19F9A00F79C21 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E3FF372BD19F9A00F79C21 /* Schedule.swift */; };
 		87E3FF3C2BD5B24600F79C21 /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E3FF3B2BD5B24600F79C21 /* TrackerCollectionViewCell.swift */; };
 		87E3FF402BD8289400F79C21 /* CategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E3FF3F2BD8289400F79C21 /* CategoryHeaderView.swift */; };
@@ -146,6 +148,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87C655892C075CFB003050A0 /* SnapshotTesting in Frameworks */,
+				87C655872C075CFB003050A0 /* InlineSnapshotTesting in Frameworks */,
 				16CF72B3AEFF58930B4D6563 /* Pods_TrackerTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -405,6 +409,10 @@
 				877CB65D2BBF397900C4164D /* PBXTargetDependency */,
 			);
 			name = TrackerTests;
+			packageProductDependencies = (
+				87C655862C075CFB003050A0 /* InlineSnapshotTesting */,
+				87C655882C075CFB003050A0 /* SnapshotTesting */,
+			);
 			productName = TrackerTests;
 			productReference = 877CB65B2BBF397900C4164D /* TrackerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -1011,6 +1019,19 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		87C655862C075CFB003050A0 /* InlineSnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 87C655832C065DD1003050A0 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = InlineSnapshotTesting;
+		};
+		87C655882C075CFB003050A0 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 87C655832C065DD1003050A0 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		877DDCEF2BE22D6500235A31 /* TrackerDB.xcdatamodeld */ = {

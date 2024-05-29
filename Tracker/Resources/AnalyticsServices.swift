@@ -8,9 +8,15 @@ struct AnalyticsServices{
         YMMYandexMetrica.activate(with: configuration)
     }
     
-    func report(event: String, params : [AnyHashable : Any]) {
+    static func report(event: String, screen: String, item: String? = nil) {
+        var params: [String: Any] = ["event": event, "screen": screen]
+        if let item = item {
+            params["item"] = item
+        }
+        
         YMMYandexMetrica.reportEvent(event, parameters: params, onFailure: { error in
-            print("REPORT ERROR: %@", error.localizedDescription)
+            print("REPORT ERROR: \(error.localizedDescription)")
         })
     }
 }
+

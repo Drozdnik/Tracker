@@ -1,5 +1,5 @@
 import UIKit
-
+import YandexMobileMetrica
 final class TrackerViewController: UIViewController {
     let noTracksLabel = UILabel()
     var viewModel: TrackerViewModel!
@@ -29,6 +29,15 @@ final class TrackerViewController: UIViewController {
         viewModel.fetchAllCategories()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AnalyticsServices.report(event: "open", screen: "Main")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        AnalyticsServices.report(event: "close", screen: "main")
+    }
     private func showOnboardingIfNeeded(){
         if UserDefaults.standard.bool(forKey: "HasViewedOnboarding") == false {
             let onboardingVC = OnBoardingViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -152,6 +161,7 @@ final class TrackerViewController: UIViewController {
     }()
     
     @objc private func addTapped() {
+        AnalyticsServices.report(event: "tapped", screen: "main", item: "add_tracker")
         let vc = ChooseTypeOfTracker()
         let navigationController = UINavigationController(rootViewController: vc)
         
@@ -171,6 +181,7 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func filterButtonTapped() {
+        AnalyticsServices.report(event: "tap", screen: "main", item: "filter")
         let filterVC = FilterViewController()
         filterVC.selectedFilter = filterEnabled ?? "Все трекеры"
         filterVC.onFilterSelected = { [weak self] selectedFilter in
@@ -276,6 +287,7 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
                 
                 let pinActionTitle = tracker.isPinned ? "Открепить" : "Закрепить"
                 let pinAction = UIAction(title: pinActionTitle) { _ in
+                    AnalyticsServices.report(event: "tap", screen: "main", item: "pin")
                     if tracker.isPinned {
                         viewModel.unpinTracker(at: indexPath)
                     } else {
@@ -284,6 +296,7 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
                 }
                 
                 let editAction = UIAction(title: "Редактировать") { [weak self] _ in
+                    AnalyticsServices.report(event: "tap", screen: "main", item: "edit")
                                 guard let self = self else { return }
                                 let vc = NewHabbitViewController(trackerCategory: category)
                                 let navigationController = UINavigationController(rootViewController: vc)
@@ -299,6 +312,7 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
                             }
                 
                 let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { _ in
+                    AnalyticsServices.report(event: "tap", screen: "main", item: "delete")
                     self.delete()
                 }
                 
