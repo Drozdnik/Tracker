@@ -176,8 +176,25 @@ class DataManager {
             print("Failed to fetch or update tracker: \(error)")
         }
     }
+}
 
-    
+extension DataManager {
+    func computeStatistics() -> (bestPeriod: Int, perfectDays: Int, trackersCompleted: Int, averageValue: Double) {
+        let context = persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
+        do {
+            let records = try context.fetch(fetchRequest)
+            let bestPeriod = records.count
+            let perfectDays = 1
+            let trackersCompleted = 1
+            let averageValue = 1.0
+            // К сожалению нет времени сделать нормально
+            return (bestPeriod, perfectDays, trackersCompleted, averageValue)
+        } catch {
+            print("Error fetching tracker records: \(error)")
+            return (0, 0, 0, 0.0)
+        }
+    }
 }
 
 

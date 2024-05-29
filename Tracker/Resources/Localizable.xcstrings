@@ -69,6 +69,23 @@
         }
       }
     },
+    "no_data_message" : {
+      "comment" : "Message shown when there is no data to analyze",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No data for analyze"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Анализировать пока нечего"
+          }
+        }
+      }
+    },
     "Statistics" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -76,6 +93,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Statistics"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Статистика"
+          }
+        }
+      }
+    },
+    "statistics_title" : {
+      "comment" : "Title for the statistics screen",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statistic"
           }
         },
         "ru" : {

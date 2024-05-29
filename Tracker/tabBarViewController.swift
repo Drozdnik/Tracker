@@ -9,7 +9,7 @@ final class TabBarViewController: UITabBarController{
     
     private func setupViewController(){
         let tracker = TrackerViewController()
-        let statistic = StatisticViewController()
+        let statistic = StatisticsViewController()
         
         
         let trackerViewController = UINavigationController(rootViewController: tracker)
