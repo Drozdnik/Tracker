@@ -3,6 +3,7 @@ import Foundation
 final class TrackerViewModel: NSObject {
     var onDataUpdated: (() -> Void)?
     
+    
     var allCategories: [TrackerCategory] = []
     private var filteredCategories: [TrackerCategory] = []
     private var trackerStore: TrackerStore
@@ -12,7 +13,7 @@ final class TrackerViewModel: NSObject {
     }
     
     var categories: [TrackerCategory] {
-        return filteredCategories
+        return trackerStore.categories
     }
     
     var completedTrackers: [TrackerRecord] {
@@ -157,20 +158,11 @@ final class TrackerViewModel: NSObject {
 }
 
 extension TrackerViewModel {
-    func filterForToday() {
-        let today = Calendar.current.startOfDay(for: Date())
-        filteredCategories = allCategories.map { category in
-            let filteredTrackers = category.trackers.filter { tracker in
-                guard let record = completedTrackers.first(where: { $0.trackerId == tracker.id }) else {
-                    return false
-                }
-                return Calendar.current.isDate(record.date, inSameDayAs: today)
-            }
-            return TrackerCategory(title: category.title, trackers: filteredTrackers)
-        }.filter { !$0.trackers.isEmpty }
-        onDataUpdated?()
+    func filterForSelectedDate() {
+        trackerStore.filterTrackersForCurrentDay()
+           onDataUpdated?()
     }
-
+    
     func filterCompleted() {
         let today = Calendar.current.startOfDay(for: Date())
         filteredCategories = allCategories.map { category in

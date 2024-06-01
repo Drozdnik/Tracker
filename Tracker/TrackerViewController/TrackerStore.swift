@@ -66,6 +66,7 @@ final class TrackerStore {
             }
             return TrackerCategory(title: category.title, trackers: filteredTrackers)
         }
+        
     }
 
     func addCompletedTracker(record: TrackerRecord, completion: (() -> Void)? = nil) {

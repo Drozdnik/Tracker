@@ -19,6 +19,7 @@ final class TrackerViewController: UIViewController {
         viewModel.onDataUpdated = { [weak self] in
             self?.collectionView.reloadData()
             self?.configureNoTracksLabel()
+            print("Случился апдейт")
         }
         
         showOnboardingIfNeeded()
@@ -188,7 +189,7 @@ final class TrackerViewController: UIViewController {
         filterVC.selectedFilter = filterEnabled ?? "Все трекеры"
         filterVC.onFilterSelected = { [weak self] selectedFilter in
             self?.filterEnabled = selectedFilter
-            self?.applyFilter()  // Примените фильтр
+            self?.applyFilter()
             self?.dismiss(animated: true, completion: nil)
         }
         let navigationController = UINavigationController(rootViewController: filterVC)
@@ -198,17 +199,22 @@ final class TrackerViewController: UIViewController {
     private func applyFilter() {
         switch filterEnabled {
         case "Трекеры на сегодня":
-            viewModel.filterForToday()
+                        viewModel.filterForSelectedDate()
+            fish()
         case "Завершенные":
-            viewModel.filterCompleted()
+            //            viewModel.filterCompleted()
+            fish()
         case "Не завершенные":
-            viewModel.filterNotCompleted()
+            //            viewModel.filterNotCompleted()
+            fish()
         default:
-            viewModel.clearFilter()
+            //            viewModel.clearFilter()
+            fish()
         }
-        collectionView.reloadData()
+        //        collectionView.reloadData()
     }
-
+    private func fish(){
+}
 }
 
 extension TrackerViewController: UICollectionViewDataSource {
@@ -289,7 +295,7 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
                 
                 let pinActionTitle = tracker.isPinned ? "Открепить" : "Закрепить"
                 let pinAction = UIAction(title: pinActionTitle) { _ in
-                    AnalyticsServices.report(event: "tap", screen: "main", item: "pin")
+                    AnalyticsServices.report(event: "tap", screen: "main", item: "track")
                     if tracker.isPinned {
                         viewModel.unpinTracker(at: indexPath)
                     } else {
