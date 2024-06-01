@@ -181,6 +181,7 @@ final class TrackerViewController: UIViewController {
     
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         viewModel.updateCurrentDate(sender.date)
+        viewModel.fetchAllCategories()
     }
     
     @objc private func filterButtonTapped() {

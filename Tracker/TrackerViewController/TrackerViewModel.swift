@@ -13,7 +13,7 @@ final class TrackerViewModel: NSObject {
     }
     
     var categories: [TrackerCategory] {
-        return trackerStore.categories
+        return filteredCategories
     }
     
     var completedTrackers: [TrackerRecord] {
