@@ -19,6 +19,7 @@ final class TrackerViewController: UIViewController {
         viewModel.onDataUpdated = { [weak self] in
             self?.collectionView.reloadData()
             self?.configureNoTracksLabel()
+//            self?.applyFilter()
             print("Случился апдейт")
         }
         
@@ -182,12 +183,13 @@ final class TrackerViewController: UIViewController {
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         viewModel.updateCurrentDate(sender.date)
         viewModel.fetchAllCategories()
+        applyFilter()
     }
     
     @objc private func filterButtonTapped() {
         AnalyticsServices.report(event: "tap", screen: "main", item: "filter")
         let filterVC = FilterViewController()
-        filterVC.selectedFilter = filterEnabled ?? "Все трекеры"
+        filterVC.selectedFilter = filterEnabled ?? "Трекеры на сегодня"
         filterVC.onFilterSelected = { [weak self] selectedFilter in
             self?.filterEnabled = selectedFilter
             self?.applyFilter()
@@ -200,23 +202,21 @@ final class TrackerViewController: UIViewController {
     private func applyFilter() {
         switch filterEnabled {
         case "Трекеры на сегодня":
-                        viewModel.filterForSelectedDate()
-            fish()
+            viewModel.filterForSelectedDate()
         case "Завершенные":
-            //            viewModel.filterCompleted()
-            fish()
+            viewModel.filterCompleted()
         case "Не завершенные":
-            //            viewModel.filterNotCompleted()
-            fish()
+            viewModel.filterNotCompleted()
+        case "Все трекеры":
+            viewModel.filterForAllCategories()
         default:
-            //            viewModel.clearFilter()
-            fish()
+            print ("Something went wrong")
         }
-        //        collectionView.reloadData()
+        
+        collectionView.reloadData()
     }
-    private func fish(){
 }
-}
+
 
 extension TrackerViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -234,6 +234,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         
         cell.onIncrementCount = { [weak self] indexPath in
             self?.viewModel.incrementTrackerCount(at: indexPath)
+            // вот где то здесь вставить applyFilter()
         }
         cell.viewModel = self.viewModel
         cell.configureWith(tracker: tracker, completedTrackers: viewModel.completedTrackers, currentDate: viewModel.currentDate)

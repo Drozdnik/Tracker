@@ -159,8 +159,7 @@ final class TrackerViewModel: NSObject {
 
 extension TrackerViewModel {
     func filterForSelectedDate() {
-        trackerStore.filterTrackersForCurrentDay()
-           onDataUpdated?()
+        fetchAllCategories()
     }
     
     func filterCompleted() {
@@ -185,9 +184,13 @@ extension TrackerViewModel {
         onDataUpdated?()
     }
 
-    func clearFilter() {
-        filteredCategories = allCategories.filter { !$0.trackers.isEmpty }
-        onDataUpdated?()
+    func filterForAllCategories() {
+        trackerStore.fetchAllCategories { [weak self] in
+            guard let self = self else { return }
+            let filtered = self.trackerStore.allCategories.filter { !$0.trackers.isEmpty }
+                self.filteredCategories = filtered
+                self.onDataUpdated?()
+            }
+        }
     }
-}
 
