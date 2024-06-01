@@ -48,6 +48,7 @@ class StatisticsViewController: UIViewController, UITableViewDataSource, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateStatistics), name: .didUpdateCompletedTrackers, object: nil)
         view.backgroundColor = UIColor.systemBackground
         setupNavigationBar()
         addSubviews()
@@ -84,18 +85,12 @@ class StatisticsViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     private func fetchAndDisplayStatistics() {
-        let stats = DataManager.shared.computeStatistics()
-        let bestPeriod = NSLocalizedString("Best_Period", comment: "")
-        let perfectDays = NSLocalizedString("Perfect_Day", comment:"")
+        let stats = DataManager.shared.computeTotalCompletedTrackers()
         let trackersCompleted = NSLocalizedString("Trackers_Completed", comment:"")
-        let averageValue = NSLocalizedString("Average_Value", comment: "")
         statistics = [
-            (title: bestPeriod, value: "\(stats.bestPeriod)"),
-            (title: perfectDays, value: "\(stats.perfectDays)"),
-            (title: trackersCompleted, value: "\(stats.trackersCompleted)"),
-            (title: averageValue, value: String(format: "%.2f", stats.averageValue))
+            (title: trackersCompleted, value: "\(stats)")
         ]
-        isEmpty = stats.trackersCompleted == 0
+        isEmpty = stats == 0
         tableView.isHidden = isEmpty
         emptyScreenView.isHidden = !isEmpty
         tableView.reloadData()
@@ -122,5 +117,13 @@ class StatisticsViewController: UIViewController, UITableViewDataSource, UITable
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    deinit{
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc private func updateStatistics() {
+        fetchAndDisplayStatistics()
     }
 }

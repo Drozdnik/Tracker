@@ -235,6 +235,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         cell.onIncrementCount = { [weak self] indexPath in
             self?.viewModel.incrementTrackerCount(at: indexPath)
             self?.applyFilter()
+            NotificationCenter.default.post(name: .didUpdateCompletedTrackers, object: nil)
         }
         cell.viewModel = self.viewModel
         cell.configureWith(tracker: tracker, completedTrackers: viewModel.completedTrackers, currentDate: viewModel.currentDate)
