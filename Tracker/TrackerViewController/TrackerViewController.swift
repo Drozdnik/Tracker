@@ -234,7 +234,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         
         cell.onIncrementCount = { [weak self] indexPath in
             self?.viewModel.incrementTrackerCount(at: indexPath)
-            // вот где то здесь вставить applyFilter()
+            self?.applyFilter()
         }
         cell.viewModel = self.viewModel
         cell.configureWith(tracker: tracker, completedTrackers: viewModel.completedTrackers, currentDate: viewModel.currentDate)
