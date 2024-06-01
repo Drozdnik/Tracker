@@ -1,5 +1,5 @@
 import UIKit
-class StatisticsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+final class StatisticsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     private var statistics: [(title: String, value: String)] = []
     private var isEmpty: Bool = true

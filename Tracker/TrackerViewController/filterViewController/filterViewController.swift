@@ -3,7 +3,7 @@ import UIKit
 final class FilterViewController: UIViewController {
     var tableView: UITableView!
     
-   let filters = ["Все трекеры", "Трекеры на сегодня", "Завершенные", "Не завершенные"]
+    let filters = ["Все трекеры", "Трекеры на сегодня", "Завершенные", "Не завершенные"]
     var selectedFilter: String = "Трекеры на сегодня"
     var onFilterSelected: ((String) -> Void)?
     
@@ -71,8 +71,8 @@ extension FilterViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            return 75
-        }
+        return 75
+    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedFilter = filters[indexPath.row]

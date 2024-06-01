@@ -16,7 +16,13 @@ class Tracker{
     let schedule: Schedule
     var countOfDoneTrackers: Int = 0
     var isPinned: Bool = false 
-    init(id: UUID, name: String, color: UIColor, emoji: String, schedule: Schedule, isPinned: Bool, countOfDoneTrackers: Int ) {
+    init(id: UUID, 
+         name: String,
+         color: UIColor,
+         emoji: String,
+         schedule: Schedule,
+         isPinned: Bool,
+         countOfDoneTrackers: Int ) {
         self.id = id
         self.name = name
         self.color = color

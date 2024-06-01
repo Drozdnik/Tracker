@@ -1,6 +1,6 @@
 import UIKit
 
-class StatisticTableViewCell: UITableViewCell {
+final class StatisticTableViewCell: UITableViewCell {
     
     private let containerView: UIView = {
         let view = UIView()

@@ -1,6 +1,6 @@
 import Foundation
 
-class Schedule: Codable, Equatable {
+final class Schedule: Codable, Equatable {
     var days: [Bool]
     let dayNames = ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"]
 
