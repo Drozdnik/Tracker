@@ -163,7 +163,7 @@ extension TrackerViewModel {
     }
     
     func filterCompleted() {
-        let today = Calendar.current.startOfDay(for: Date())
+        let today = trackerStore.currentDate
         filteredCategories = allCategories.map { category in
             let filteredTrackers = category.trackers.filter { tracker in
                 completedTrackers.contains(where: { $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: today) })
@@ -174,7 +174,7 @@ extension TrackerViewModel {
     }
 
     func filterNotCompleted() {
-        let today = Calendar.current.startOfDay(for: Date())
+        let today = trackerStore.currentDate
         filteredCategories = allCategories.map { category in
             let filteredTrackers = category.trackers.filter { tracker in
                 !completedTrackers.contains(where: { $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: today) })
