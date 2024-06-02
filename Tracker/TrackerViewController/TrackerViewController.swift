@@ -1,24 +1,26 @@
 import UIKit
-
+import YandexMobileMetrica
 final class TrackerViewController: UIViewController {
     let noTracksLabel = UILabel()
     var viewModel: TrackerViewModel!
-
-
+    var filterEnabled: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "clearWhite")
         
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                let managedObjectContext = appDelegate.persistentContainer.viewContext
-                let dataManager = DataManager.shared
-                let trackerStore = TrackerStore(dataManager: dataManager, managedObjectContext: managedObjectContext)
-                viewModel = TrackerViewModel(trackerStore: trackerStore)
-            }
-
+            let managedObjectContext = appDelegate.persistentContainer.viewContext
+            let dataManager = DataManager.shared
+            let trackerStore = TrackerStore(dataManager: dataManager, managedObjectContext: managedObjectContext)
+            viewModel = TrackerViewModel(trackerStore: trackerStore)
+        }
+        
         viewModel.onDataUpdated = { [weak self] in
             self?.collectionView.reloadData()
             self?.configureNoTracksLabel()
+//            self?.applyFilter()
+            print("Случился апдейт")
         }
         
         showOnboardingIfNeeded()
@@ -29,6 +31,15 @@ final class TrackerViewController: UIViewController {
         viewModel.fetchAllCategories()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AnalyticsServices.report(event: "open", screen: "Main")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        AnalyticsServices.report(event: "close", screen: "main")
+    }
     private func showOnboardingIfNeeded(){
         if UserDefaults.standard.bool(forKey: "HasViewedOnboarding") == false {
             let onboardingVC = OnBoardingViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -42,7 +53,7 @@ final class TrackerViewController: UIViewController {
         view.addSubview(collectionView)
         view.addSubview(filterButton)
     }
-
+    
     private func configureConstraints() {
         configureNoTracksLabel()
         NSLayoutConstraint.activate([
@@ -67,36 +78,42 @@ final class TrackerViewController: UIViewController {
             filterButton.widthAnchor.constraint(equalToConstant: 114)
         ])
     }
-
+    
     private func configureNoTracksLabel() {
         noTracksLabel.isHidden = viewModel.categories.isEmpty ? false : true
+        filterButton.isHidden = viewModel.allCategories.isEmpty ? true : false
         imageForNoTracks.isHidden = viewModel.categories.isEmpty ? false : true
         noTracksLabel.text = "Что будем отслеживать?"
         noTracksLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         noTracksLabel.textAlignment = .center
         noTracksLabel.translatesAutoresizingMaskIntoConstraints = false
     }
-
+    
     private func configureNavigationBar() {
-        navigationItem.title = "Трекеры"
+        let trackers = NSLocalizedString("Trackers", comment: "Trackers title for nav bar")
+        navigationItem.title = trackers
         
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
-        addButton.tintColor = .black
+        addButton.tintColor = UIColor(named: "TotalBlack")
         navigationItem.leftBarButtonItem = addButton
         
         let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
         searchController.searchBar.placeholder = "Поиск"
         searchController.searchBar.searchTextField.backgroundColor = UIColor(named: "GrayForNavBar")
         searchController.searchBar.searchTextField.layer.cornerRadius = 6
         searchController.searchBar.searchTextField.clipsToBounds = true
         searchController.searchBar.searchTextField.font = UIFont.systemFont(ofSize: 16)
         navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = true // или false если не хотим скрывать
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
-
+    
     private func configureDatePicker() {
         let dateButton = UIDatePicker()
         dateButton.datePickerMode = .date
+        dateButton.backgroundColor = UIColor(named: "datePicker")
+        dateButton.layer.cornerRadius = 8
+        dateButton.layer.masksToBounds = true
         dateButton.locale = Locale(identifier: "ru_RU")
         dateButton.timeZone = TimeZone(identifier: "Europe/Moscow")
         dateButton.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
@@ -114,39 +131,41 @@ final class TrackerViewController: UIViewController {
     }
     
     private lazy var imageForNoTracks: UIImageView = {
-          let image = UIImage(named: "NoTracks")
-          let noTracksImage = UIImageView(image: image)
-          noTracksImage.translatesAutoresizingMaskIntoConstraints = false
-          return noTracksImage
-      }()
+        let image = UIImage(named: "NoTracks")
+        let noTracksImage = UIImageView(image: image)
+        noTracksImage.translatesAutoresizingMaskIntoConstraints = false
+        return noTracksImage
+    }()
     
     private lazy var collectionView: UICollectionView = {
-           let layout = UICollectionViewFlowLayout()
-           let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-           collectionView.backgroundColor = .clear
-           collectionView.translatesAutoresizingMaskIntoConstraints = false
-           
-           collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "TrackerCell")
-           collectionView.register(CollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderView.identifier)
-           collectionView.dataSource = self
-           collectionView.delegate = self
-           return collectionView
-       }()
+        let layout = UICollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        collectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "TrackerCell")
+        collectionView.register(CollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderView.identifier)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        return collectionView
+    }()
     
     private lazy var filterButton: UIButton = {
-            let button = UIButton()
-            button.setTitle("Фильтры", for: .normal)
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-            button.backgroundColor = .systemBlue
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.backgroundColor = UIColor(named: "BlueForFilter")
-            button.layer.cornerRadius = 16
-            button.layer.masksToBounds = true
-            button.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
-            return button
-        }()
+        let button = UIButton()
+        let filterTitle = NSLocalizedString("Filters", comment: "FilterTitle to filter button")
+        button.setTitle(filterTitle, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.backgroundColor = .systemBlue
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor(named: "BlueForFilter")
+        button.layer.cornerRadius = 16
+        button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        return button
+    }()
     
     @objc private func addTapped() {
+        AnalyticsServices.report(event: "tapped", screen: "main", item: "add_tracker")
         let vc = ChooseTypeOfTracker()
         let navigationController = UINavigationController(rootViewController: vc)
         
@@ -160,15 +179,44 @@ final class TrackerViewController: UIViewController {
         }
         present(navigationController, animated: true)
     }
-
+    
     @objc func datePickerValueChanged(_ sender: UIDatePicker) {
         viewModel.updateCurrentDate(sender.date)
+        viewModel.fetchAllCategories()
+        applyFilter()
     }
-
+    
     @objc private func filterButtonTapped() {
-        print("Фильтр нажат")
+        AnalyticsServices.report(event: "tap", screen: "main", item: "filter")
+        let filterVC = FilterViewController()
+        filterVC.selectedFilter = filterEnabled ?? "Трекеры на сегодня"
+        filterVC.onFilterSelected = { [weak self] selectedFilter in
+            self?.filterEnabled = selectedFilter
+            self?.applyFilter()
+            self?.dismiss(animated: true, completion: nil)
+        }
+        let navigationController = UINavigationController(rootViewController: filterVC)
+        present(navigationController, animated: true)
+    }
+    
+    private func applyFilter() {
+        switch filterEnabled {
+        case "Трекеры на сегодня":
+            viewModel.filterForSelectedDate()
+        case "Завершенные":
+            viewModel.filterCompleted()
+        case "Не завершенные":
+            viewModel.filterNotCompleted()
+        case "Все трекеры":
+            viewModel.filterForAllCategories()
+        default:
+            print ("Something went wrong")
+        }
+        
+        collectionView.reloadData()
     }
 }
+
 
 extension TrackerViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -183,11 +231,13 @@ extension TrackerViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCell", for: indexPath) as! TrackerCollectionViewCell
         let tracker = viewModel.categories[indexPath.section].trackers[indexPath.row]
         cell.indexPath = indexPath
-
+        
         cell.onIncrementCount = { [weak self] indexPath in
             self?.viewModel.incrementTrackerCount(at: indexPath)
+            self?.applyFilter()
+            NotificationCenter.default.post(name: .didUpdateCompletedTrackers, object: nil)
         }
-
+        cell.viewModel = self.viewModel
         cell.configureWith(tracker: tracker, completedTrackers: viewModel.completedTrackers, currentDate: viewModel.currentDate)
         return cell
     }
@@ -206,6 +256,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         let categoryTitle = viewModel.categories[indexPath.section].title
         headerView.configure(with: categoryTitle)
         
+        
         return headerView
     }
 }
@@ -221,5 +272,68 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.bounds.width, height: 50)
+    }
+}
+
+
+extension TrackerViewController: UISearchResultsUpdating{
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else { return }
+        viewModel.filterContentForSearchText(searchText)
+    }
+}
+
+extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+            return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ -> UIMenu? in
+                guard let self = self, let indexPath = self.indexPath,
+                      let viewModel = self.viewModel,
+                      indexPath.section < viewModel.categories.count,
+                      indexPath.row < viewModel.categories[indexPath.section].trackers.count else {
+                    return nil
+                }
+                
+                let category = viewModel.categories[indexPath.section]
+                let tracker = category.trackers[indexPath.row]
+                
+                let pinActionTitle = tracker.isPinned ? "Открепить" : "Закрепить"
+                let pinAction = UIAction(title: pinActionTitle) { _ in
+                    AnalyticsServices.report(event: "tap", screen: "main", item: "track")
+                    if tracker.isPinned {
+                        viewModel.unpinTracker(at: indexPath)
+                    } else {
+                        viewModel.pinTracker(at: indexPath)
+                    }
+                }
+                
+                let editAction = UIAction(title: "Редактировать") { [weak self] _ in
+                    AnalyticsServices.report(event: "tap", screen: "main", item: "edit")
+                                guard let self = self else { return }
+                                let vc = NewHabbitViewController(trackerCategory: category)
+                                let navigationController = UINavigationController(rootViewController: vc)
+                                vc.newHabbitComplete = { [weak self] title, updatedTracker in
+                                    guard let self = self else { return }
+                                    viewModel.updateTracker(updatedTracker, shouldRefreshCategories: true) { success in
+                                        if success {
+                                            self.viewModel?.onDataUpdated?()
+                                        }
+                                    }
+                                }
+                                self.window?.rootViewController?.present(navigationController, animated: true, completion: nil)
+                            }
+                
+                let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { _ in
+                    AnalyticsServices.report(event: "tap", screen: "main", item: "delete")
+                    self.delete()
+                }
+                
+                return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
+            }
+        }
+    
+    private func delete(){
+        if let indexPath = self.indexPath {
+            viewModel?.deleteTracker(at: indexPath)
+        }
     }
 }

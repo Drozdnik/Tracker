@@ -14,25 +14,47 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     var isCompleted: Bool = false
     var completedTrackers: [TrackerRecord] = []
     var selectedDate: Date = Date()
-    
+    var trackerId: UUID?
+    var viewModel: TrackerViewModel?
     // Элементы UI для верхней секции
     private lazy var emojiLabel = UILabel()
     private lazy var nameLabel = UILabel()
-    private lazy var topContainer = UIView()
+    lazy var topContainer = UIView()
     private var countOfDays: String = ""
     // Элементы UI для нижней секции
     private let dayLabel = UILabel()
     let addButton = UIButton()
     private let bottomContainer = UIView()
     static let identifier = "TrackerCell"
+    
+    private lazy var pinImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "pinForTracker"))
+        imageView.isHidden = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
         setupConstraints()
+        addContextMenuInterection()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func addContextMenuInterection(){
+        let interection = UIContextMenuInteraction(delegate: self)
+        topContainer.addInteraction(interection)
+    }
+    
+
+    private func delete() {
+        if let indexPath = self.indexPath{
+            viewModel?.deleteTracker(at: indexPath)
+        }
     }
     
     private func setupViews() {
@@ -42,7 +64,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             contentView.addSubview($0)
         }
         
-        [emojiLabel, nameLabel].forEach {
+        [emojiLabel, nameLabel, pinImageView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             topContainer.addSubview($0)
         }
@@ -103,7 +125,12 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             addButton.trailingAnchor.constraint(equalTo: bottomContainer.trailingAnchor, constant: -12),
             addButton.centerYAnchor.constraint(equalTo: bottomContainer.centerYAnchor),
             addButton.widthAnchor.constraint(equalToConstant: 30),
-            addButton.heightAnchor.constraint(equalToConstant: 30)
+            addButton.heightAnchor.constraint(equalToConstant: 30),
+            
+            pinImageView.topAnchor.constraint(equalTo: topContainer.topAnchor, constant: 18),
+            pinImageView.trailingAnchor.constraint(equalTo: topContainer.trailingAnchor, constant: -12),
+            pinImageView.widthAnchor.constraint(equalToConstant: 8),
+            pinImageView.heightAnchor.constraint(equalToConstant: 12)
         ])
     }
     
@@ -116,7 +143,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         dayLabel.text = "\(countOfDays)"
         addButton.layer.opacity = 1
         self.completedTrackers = completedTrackers
-        
+        pinImageView.isHidden = !tracker.isPinned
         isCompleted = completedTrackers.contains {
             $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: currentDate)
         }
@@ -137,24 +164,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func getNoun(number: Int, one: String, two: String, five: String) -> String {
-        let n = abs(number) % 100
-        if n >= 5 && n <= 20 {
-            return five
-        }
-        switch n % 10 {
-        case 1:
-            return one
-        case 2...4:
-            return two
-        default:
-            return five
-        }
-    }
-    
-    
     func getDayText(count: Int) -> String {
-        return "\(count) " + getNoun(number: count, one: "день", two: "дня", five: "дней")
+        return "\(count) " + String.getLocalizedNounForNumber(count)
     }
     
     @objc func plusButtonTapped() {

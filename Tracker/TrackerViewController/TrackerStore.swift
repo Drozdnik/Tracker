@@ -39,7 +39,8 @@ final class TrackerStore {
                   let schedule = Utility.decodeSchedule(scheduleString) else {
                 return nil
             }
-            return Tracker(id: id, name: name, color: color, emoji: emoji, schedule: schedule, countOfDoneTrackers: Int(trackerCoreData.countOfDoneTrackers))
+            let isPinned = trackerCoreData.isPinned 
+            return Tracker(id: id, name: name, color: color, emoji: emoji, schedule: schedule, isPinned: isPinned, countOfDoneTrackers: Int(trackerCoreData.countOfDoneTrackers))
         }
         return TrackerCategory(title: coreData.title ?? "Unknown Title", trackers: modelTrackers)
     }
@@ -65,6 +66,7 @@ final class TrackerStore {
             }
             return TrackerCategory(title: category.title, trackers: filteredTrackers)
         }
+        
     }
 
     func addCompletedTracker(record: TrackerRecord, completion: (() -> Void)? = nil) {
@@ -80,6 +82,23 @@ final class TrackerStore {
             dataManager.removeTrackerRecord(trackerRecord: record)
         }
         completion?()
+    }
+    
+    func deleteTracker(trackerId: UUID, completion: @escaping (Bool) -> Void) {
+        dataManager.removeTrackerRecordBy(trackerId: trackerId)
+        completion(true)
+    }
+    
+    func updateTracker(_ tracker: Tracker, shouldRefreshCategories: Bool = true, completion: @escaping (Bool) -> Void) {
+        dataManager.updateTracker(tracker) {
+            if shouldRefreshCategories {
+                self.fetchAllCategories() {
+                    completion(true)
+                }
+            } else {
+                completion(true) 
+            }
+        }
     }
 }
 

@@ -38,5 +38,6 @@ final class CollectionHeaderView: UICollectionReusableView{
     
     func configure(with title: String){
         titleLabel.text = title
+        titleLabel.textColor = UIColor(named: "TotalBlack")
     }
 }
